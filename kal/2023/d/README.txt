@@ -1,1 +1,0 @@
-Images group D
