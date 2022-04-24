@@ -1,0 +1,159 @@
+/* WIDGET */
+.widget-wrap❌ {
+  max-width: 500px;
+  padding: 10px;
+  border-radius: 20px;
+  background: #fcf87c;
+  border:5px solid #ab5409;
+}
+#demo button {
+  color: #fff;
+  background: #b90a0a;
+  border: 0;
+  padding: 4px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.demo {
+margin-top: 30px;
+  color:#fff;
+ font-size: 1.3em;
+  font-style: normal;
+  width: 205px;
+  margin-bottom: -10px;
+}
+.demo0 {
+margin-top: 30px;
+  color:#fff;
+ font-size: 1.2em;
+  font-style: normal;
+  margin-bottom: 20px;
+  text-align: right;
+}
+.demo2 {
+margin-top: 0px;
+  color:#fff;
+ font-size: 1.0em;
+  font-style: normal;
+}
+.demo3 {
+margin-top: 0px;
+  color:#fff;
+ font-size: 1.1em;
+  font-style: normal;
+}
+.demo4 {
+margin-top: 0px;
+  color: #944704;
+ font-size: 1.1em;
+  font-style: normal;
+}
+.demo5 {
+margin-top: 0px;
+  color: yellow;
+ font-size: 1.2em;
+}
+.demo6 {
+margin-top: 0px;
+  color: #fae3f9;
+ font-size: 1.2em;
+ width: 255px;
+}
+.demo7 {
+margin-top: 30px;
+  color:#ffdbfb;
+ font-size: 1.0em;
+  font-style: normal;
+  margin-bottom: 10px;
+  text-align: right;
+}
+.demo8 {
+margin-top: 10px;
+  color:#eee;
+ font-size: 1.0em;
+  font-style: normal;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.demo9 {
+margin-top: 15px;
+  color:#fff;
+ font-size: 1.2em;
+  font-style: normal;
+  margin-bottom: 20px;
+  text-align: right;
+}
+.selamat {
+  color: #698eff;
+ font-size: 1.5em;
+  font-style: normal;
+  width: 205px;
+}
+.selamat0 {
+  color: yellow;
+ font-size: 1.5em;
+  font-style: normal;
+  width: 285px;
+}
+.selamat2 {
+  color: blue;
+ font-size: 1.5em;
+  font-style: normal;
+  width: 235px;
+}
+.selamat3 {
+  color: #8f140b;
+ font-size: 1.5em;
+  font-style: normal;
+  width: 300px;
+}
+.selamat4 {
+  color: #fff;
+ font-size: 1.7em;
+  font-style: normal;
+  width: 300px;
+}
+.selamat6 {
+  color: #f2110a;
+ font-size: 1.7em;
+  font-style: normal;
+  width: 300px;
+}
+.selamat7 {
+  color: #fff;
+ font-size: 1.5em;
+  font-style: normal;
+  width: 300px;
+}
+.selamat8 {
+  color: #fff;
+ font-size: 1.5em;
+  font-style: normal;
+  width: 300px;
+  text-align: left;
+}
+.selamat9 {
+  color: yellow;
+ font-size: 1.7em;
+  font-style: normal;
+  width: 300px;
+  text-align: right;
+  background: rgba(0, 0, 0, 0.4);
+}
+ h1 {
+  font-style: normal;
+  font-size: 1.2em;
+}
+
+/* FOOTER */
+#code-boxx {
+  font-weight: 600;
+  margin-top: 50px;
+}
+#code-boxx a {
+  display: inline-block;
+  padding: 5px;
+  text-decoration: none;
+  background: #b90a0a;
+  color: #fff;
+}
