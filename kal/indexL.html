@@ -91,14 +91,7 @@
 </head>
 <body>
   
-  <div class="fd-out">  
-  <div class="bln-out">
-  <span id="bln-out"></span>
-  </div>
-  <center id="tgl" class="tgl"></center>
-   <center id="mgg" class="mgg"></center>
-</div>
-
+  
 <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
@@ -241,13 +234,6 @@ document.getElementById("mgg").innerHTML = days[d.getDay()];
 <script>
 var d = new Date();
 document.getElementById("tgl").innerHTML = d.getDate();
-</script>
-
-<script src="jquery-1.7.1.min.js"></script>
-<script>
-$(document).ready(function(){
-    $(".fd-out").fadeOut(6500);
-  });
 </script>
 
 <script>
