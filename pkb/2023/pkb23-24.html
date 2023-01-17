@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>PKB 2023</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="pkb-js/style.css">
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="pkb-js/swiper.css">
+
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      position: relative;
+      height: 100%;
+    }
+
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0 15px;
+      padding: 0;
+     overflow: hidden;
+    background-image:url("pkb-js/pkbbg2.webp"); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;
+    }
+
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+    .swiper-slide {
+    background: #fff ;
+     margin-top: 10px;
+      font-size: 18px;
+     width: 100%;
+      height: 95%;
+      overflow: auto;
+       overflow-x: hidden;
+   background: rgb(255,255,255, 0.9) ;
+    }
+
+    .swiper-pagination-bullet {
+      width: 16px;
+      height: 16px;
+      text-align: center;
+      line-height: 16px;
+      font-size: 10px;
+      color: #fff;
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 0.1px solid red;
+     bottom: 0px;
+     position: relative;
+    }
+
+    .swiper-pagination-bullet-active {
+      color: yellow;
+      background: #cc170a;
+    }
+#pkbhome {
+ width: 100%;
+      height: 95%;
+  background-image:url("pkb-js/pkbbg.webp"); background-position: center; background-repeat: no-repeat; background-size: 102% 102%;
+}
+#dirut {
+ width: 100%;
+      height: 95%;
+  background-image:url("pkb-js/dirut.webp"); background-position: top; background-repeat: no-repeat; background-size: 100% 80%;
+}
+#blk {
+ width: 100%;
+      height: 95%;
+  background-image:url("pkb-js/blk.webp"); background-position: center; background-repeat: no-repeat; background-size: 100% 100%;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Swiper -->
+  <div class="swiper-container">
+ <!-- Add Pagination -->
+  <div class="swiper-pagination"></div>
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" id="pkbhome">
+</div>
+     <div class="swiper-slide"><br>
+ <script src="pkb-js/hal-2.js"></script>
+</div>
+
+      <div class="swiper-slide"><script src="pkb-js/dafisi.js"></script></div>
+
+      <div class="swiper-slide"> <script src="pkb-js/hal-4.js"></script><script src="pkb-js/hal-4a.js"></script><script src="pkb-js/hal-4b.js"></script></div>
+
+      <div class="swiper-slide"> <script src="pkb-js/hal-5.js"></script> <script src="pkb-js/hal-5a.js"></script><script src="pkb-js/hal-5b.js"></script></div>
+
+      <div class="swiper-slide"><script src="pkb-js/hal-6.js"></script></div>
+
+      <div class="swiper-slide"><script src="pkb-js/hal-7.js"></script><script src="pkb-js/hal-7a.js"></script></div>
+
+      <div class="swiper-slide"><script src="pkb-js/hal-8.js"></script><script src="pkb-js/hal-8a.js"></script></div>
+
+      <div class="swiper-slide"><script src="pkb-js/hal-9.js"></script></div>
+
+      <div class="swiper-slide"><script src="pkb-js/hal-10.js"></script></div>
+
+    <div class="swiper-slide"><script src="pkb-js/hal-11.js"></script></div>
+
+      <div class="swiper-slide" id="dirut"></div>
+
+      <div class="swiper-slide" id="blk"><i style="font-size: 6.5px;margin-top:0px;float:right;">scaner-text@otoygta</div>
+    
+    </div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="pkb-js/swiper.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+          return '<span class="' + className + '">' + (index + 1) + '</span>';
+        },
+      },
+    });
+  </script>
+</body>
+
+</html>
