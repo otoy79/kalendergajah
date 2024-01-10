@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+ <title>Kalender-GT 2026</title>
+<head>
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no" />
+    <link href="style.css" rel="stylesheet" />
+ <link rel="stylesheet" href="css/swiper.css">
+  <style>
+    html, body {
+      position: relative;
+      height: 100%;
+    }
+    body {
+      background: #eee;
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      color:#000;
+      margin: 0;
+      padding: 0;
+    }
+    .swiper-container {
+      width: 100%;
+      height: 100%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .swiper-slide {
+      text-align: center;
+      font-size: 18px;
+      background: rgb(255, 249, 230 0.9);
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      overflow-x: hidden; 
+      padding-top:10px;
+    }
+  </style>
+<style>
+ .fd-out {
+  background: #fff; 
+  position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+  top:10px;
+	right: 15px;
+  border-radius: 20px;
+  border: 4px solid #888;
+  padding: 1px;
+  z-index: 999;
+}
+.bln-out {
+  background: red; 
+  border-radius: 15px 15px 0 0;
+  font-size: 1.6rem;
+  padding: 6px;
+  font-weight: bold;
+  color: #fff;
+  display: block;
+  text-align: center;
+}
+.mgg {
+  font-size: 1.2rem;
+  border-top: 2px solid #bbb;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.tgl {
+  font-weight: bold;
+  font-size: 4rem;
+  padding-top: 0px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 0px;
+}
+ .next {
+  background: rgb(0,191,255);
+  position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+  top:5px;
+	right: 8px;
+  border-radius: 20px;
+  border: 0.2px solid #888;
+  padding: 1px 5px;
+  z-index: 999;
+  color: #fff;
+}
+</style>
+</head>
+<body>
+  
+  <div style="display:none">  
+  <div class="fd-out">  
+  <div class="bln-out">
+  <span id="bln-out"></span>
+  </div>
+  <center id="tgl" class="tgl"></center>
+   <center id="mgg" class="mgg"></center>
+</div>
+</div>
+
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+     <img src="2026/1.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+    <img src="2026/2.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+   <img src="2026/3.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide"> 
+   <img src="2026/4.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+    <img src="2026/5.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide"> 
+    <img src="2026/6.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+    <img src="2026/7.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+   <img src="2026/8.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+    <img src="2026/9.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+    <img src="2026/10.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+   <img src="2026/11.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+      <div class="swiper-slide">
+    <img src="2026/12.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+</div>
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+   
+<script>
+var d = new Date();
+var months = ["<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>"];
+document.getElementById("bln-1").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>"];
+document.getElementById("bln-2").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>"];
+document.getElementById("bln-3").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>"];
+document.getElementById("bln-4").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>"];
+document.getElementById("bln-5").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>"];
+document.getElementById("bln-6").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>"];
+document.getElementById("bln-7").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>"];
+document.getElementById("bln-8").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>"];
+document.getElementById("bln-9").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='okt'></span>","<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>"];
+document.getElementById("bln-10").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='nov'></span>","<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>"];
+document.getElementById("bln-11").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["<span id='des'></span>","<span id='jan'></span>","<span id='feb'></span>","<span id='mar'></span>","<span id='apr'></span>","<span id='mei'></span>","<span id='jun'></span>","<span id='jul'></span>","<span id='ags'></span>","<span id='sep'></span>","<span id='okt'></span>","<span id='nov'></span>"];
+document.getElementById("bln-12").innerHTML = months[d.getMonth()];
+
+var d = new Date();
+var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+document.getElementById("bln-out").innerHTML = months[d.getMonth()];
+</script>
+
+
+ <script>
+document.getElementById("jan").innerHTML = ' <img src="2025/1.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("feb").innerHTML = ' <img src="2025/2.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("mar").innerHTML = ' <img src="2025/3.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("apr").innerHTML = ' <img src="2025/4.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("mei").innerHTML = ' <img src="2025/5.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("jun").innerHTML = ' <img src="2025/6.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("jul").innerHTML = ' <img src="2025/7.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("ags").innerHTML = ' <img src="2025/8.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("sep").innerHTML = ' <img src="2025/9.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("okt").innerHTML = ' <img src="2025/10.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("nov").innerHTML = ' <img src="2025/11.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+<script>
+document.getElementById("des").innerHTML = ' <img src="2025/12.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+ </script>
+
+<script>
+var d = new Date();
+var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum`at", "Sabtu"];
+document.getElementById("mgg").innerHTML = days[d.getDay()];
+</script>
+<script>
+var d = new Date();
+document.getElementById("tgl").innerHTML = d.getDate();
+</script>
+
+<script src="css/jquery-1.7.1.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    $(".fd-out").fadeOut(3000);
+  });
+</script>
+
+<script>
+$(".swiper-slide").hide().fadeIn(9000
+</script>
+
+<script src="css/swiper.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper('.swiper-container', {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  </script>
+</body>
+</html>
