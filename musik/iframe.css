@@ -1,0 +1,22 @@
+ #iframeM {
+    position: fixed;
+    border: none;
+    top: 10px; 
+   right: 20px;
+    width: 22px;
+      height: 22px;
+   z-index: 9;
+   background: rgb(255, 255, 255, 0.0);
+   border-radius: 50%;
+}
+   #iframeS {
+    position: relative;
+    border: none;
+   background: rgb(255, 255, 255, 0.0);
+   height: 60px;
+   width: 100%;
+}
+  .iframe {
+    border-radius: 50%;
+   opacity: 0.7;  
+  }
