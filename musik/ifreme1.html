@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+ <title>Kalender-GT</title>
+<head>
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no" />
+  
+  <style>
+    body {
+      background: rgb(255, 255, 255, 0.0);
+      font-family: serif;
+      font-size: 16px;
+      color:#000;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+ .body❌ {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+   .text-container > span {
+  margin-left: -1.9px;
+  margin-bottom: 1px;
+  text-transform: uppercase;
+  animation: glow 10s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    color: #e65e7b;
+    text-shadow: 0 0 2px #0652DD, 0 0 10px #0652DD, 0 0 100px #0652DD;
+  }
+  
+  10%, 90% {
+    color: #10797a;
+    text-shadow: none;
+  }
+}
+
+.text-container > span:nth-child(2) {
+  animation-delay: 0.10s;
+}
+
+.text-container > span:nth-child(3) {
+  animation-delay: 0.20s;
+}
+
+.text-container > span:nth-child(4) {
+  animation-delay: 0.30s;
+}
+
+.text-container > span:nth-child(5) {
+  animation-delay: 0.40s;
+}
+
+.text-container > span:nth-child(6) {
+  animation-delay: 0.50s;
+}
+
+.text-container > span:nth-child(7) {
+  animation-delay: 0.60s;
+}
+.text-container > span:nth-child(8) {
+  animation-delay: 0.70s;
+}
+.text-container > span:nth-child(9) {
+  animation-delay: 0.80s;
+}
+.text-container > span:nth-child(10) {
+  animation-delay: 0.90s;
+}
+.text-container > span:nth-child(11) {
+  animation-delay: 1s;
+}
+.text-container > span:nth-child(12) {
+  animation-delay: 1.10s;
+}
+.text-container > span:nth-child(13) {
+  animation-delay: 1.20s;
+}
+.text-container > span:nth-child(14) {
+  animation-delay: 1.30s;
+}
+.text-container > span:nth-child(15) {
+  animation-delay: 1.40s;
+}
+.text-container > span:nth-child(16) {
+  animation-delay: 1.50s;
+}
+.text-container > span:nth-child(17) {
+  animation-delay: 1.60s;
+}
+.text-container > span:nth-child(18) {
+  animation-delay: 1.70s;
+}
+.text-container > span:nth-child(19) {
+  animation-delay: 1.80s;
+}
+
+
+.color-gradient {
+    background-image: -webkit-linear-gradient(92deg, #28C76F, #0396FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: hue 10s infinite linear;
+}
+
+@-webkit-keyframes hue {
+    from {
+        -webkit-filter: hue-rotate(0deg);
+    }
+
+    to {
+        -webkit-filter: hue-rotate(-360deg);
+    }
+}
+
+  #app, #app2 {
+  text-align:center;
+  font-family: sans-serif;
+  font-size:14px;
+  background-image: linear-gradient(
+    -225deg,
+    #231557 0%,
+    #44107a 29%,
+    #ff1361 67%,
+    #fff800 100%
+  );
+  background-clip:border-box;
+   text-fill-color: transparent;
+  background-clip:text;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  animation: textclip 0.5s linear infinite;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+
+</style>
+</head>
+<body>
+  
+   <div class="text-container">
+  <span>W</span>
+  <span>e</span>
+  <span>l</span>
+  <span>c</span>
+  <span>o</span>
+  <span>m</span>
+  <span>e</span>
+  <span style="color: transparent"> . </span>
+  <span>C</span>
+  <span>-</span>
+  <span>4</span>
+  <span>G</span>
+  <span>3</span>
+  <span>s</span>
+
+  <span style="color: transparent"> . </span>
+  <span>2</span>
+  <span>0</span>
+     <span>2</span>
+  <span>6</span>
+</div>
+  <div id="app"></div> 
+
+  <b class="color-gradient">5R adalah budaya kerja</b>
+  <div id="app2"></div> 
+
+<script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+<script>
+  var app = document.getElementById('app');
+
+var typewriter = new Typewriter(app, {
+    loop: true
+});
+
+typewriter.typeString(' <b> GT SPIRIT Tugas Kita Bersama </b> ')
+    .pauseFor(2000)
+    .deleteAll()
+    .typeString('<strong> SERVICE (Melayani) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+     .typeString(' <strong> PASSION (Semangat) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+     .typeString(' <strong> INTEGRITY (Integritas) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+    .typeString(' <strong> RESPECT (Menghormati) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+       .typeString(' <strong> INNOVATION (Inovasi) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+    .typeString(' <strong> TEAMWORK (Kerja sama) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+     .typeString(' <i> Mari terus tumbuh bersama </i>')
+    .pauseFor(800)
+    .deleteAll()
+    .typeString('<i> melalui semangat nilai GT SPIRIT </i>')
+    .pauseFor(6000)
+    .start();
+</script>
+
+<script>
+  var app2 = document.getElementById('app2');
+
+var typewriter = new Typewriter(app2, {
+    loop: true
+});
+
+   typewriter.typeString(' Terapkan 5R di tempat kerja ')
+    .pauseFor(2000)
+    .deleteAll()
+
+    .typeString(' <strong> 1. Ringkas (Seiri) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+    
+     .typeString(' <strong> 2. Rapi (Seiton) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+
+     .typeString(' <strong> 3. Resik (Seiso) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+
+     .typeString(' <strong> 4. Rawat (Seiketsu) </strong>')
+    .pauseFor(500)
+    .deleteAll()
+
+    .typeString(' <strong> 5. Rajin (Shitsuke) </strong>')
+    .pauseFor(800)
+    .deleteAll()
+
+    .typeString(' <i> Ciptakan lingkungan kerja </i>')
+    .pauseFor(300)
+    .deleteAll()
+
+    .typeString('<i> yang lebih positif dan teratur. </i>')
+    .pauseFor(6000)
+    .start();
+</script>
+ <script>
+  
+</script>
+</body>
+</html>
