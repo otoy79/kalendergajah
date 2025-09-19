@@ -7,12 +7,13 @@
  <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no" />
+  <link rel="stylesheet" href="https://unpkg.com/splitting@0.9.11/splitting.css">
   
   <style>
     body {
       background: rgb(255, 255, 255, 0.0);
       font-family: serif;
-      font-size: 16px;
+      font-size: 14px;
       color:#000;
       margin: 0;
       padding: 0;
@@ -137,7 +138,7 @@
   -webkit-background-clip:text;
   -webkit-text-fill-color: transparent;
   text-fill-color: transparent;
-  animation: textclip 0.5s linear infinite;
+  animation: textclip 0.01s linear infinite;
 }
 
 @keyframes textclip {
@@ -145,11 +146,161 @@
     background-position: 200% center;
   }
 }
+   .gt-bias {
+    height: 40px;
+    width: 120px;
+    background-image: url(img/gt-bias.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.marquee {
+  overflow: hidden;
+  /* hide the scrolling overflow */
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+.marquee__inner {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.marquee__group {
+  display: flex;
+}
+
+.marquee__group span {
+  margin: 0 5rem;
+  white-space: nowrap;
+  color: white;
+  
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
 
 
+
+  .text-holder{
+  margin:auto;
+  font-size: 18px;
+  color:rgba(214, 32, 32, 0.3);
+}
+.opaque{
+  animation: opacity 0.8s linear;
+}
+@keyframes opacity{
+  0%{
+      color:rgba(214, 32, 32, 0.2);
+  }
+  50%{
+      color: rgba(21, 35, 191, 5);             
+  }
+  100%{
+      color:rgba(214, 32, 32, 0.2);
+  }
+}
+
+
+.typing-container span{
+    color: #076106; 
+}
+.typing-container span::after{
+    content: '  🖍 ';
+    animation-name: blinking; 
+    animation-duration: .91s; 
+    animation-iteration-count: infinite;
+}
+@keyframes blinking{
+    from{
+        color: transparent; 
+    }
+    to{
+        color: lightgrey; 
+    }
+}
 </style>
 </head>
 <body>
+
+<script>
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const dateOfMonth = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    const dayNames = [
+// Minggu
+  "    <span><img src='img/kesker.png' width='170' height='40'></span>    <div class='typing-container'>       &nbsp; <span typing-speed='100' typing-delay='2500'   words=' * Lima langkah keselamatan kerja * ,    1. Berpikir dan Pahami Tugas (Think) ,    2. Identifikasi Bahaya (Identify),   3. Evaluasi dan Kendalikan Risiko (Evaluate & Control),    4. Gunakan Alat Pelindung Diri (APD),     5. Pantau dan Jaga Lingkungan Kerja (Monitor & Maintain) '></span>     </div>  ",
+
+ // Senin
+ " <div class='text-container'>  <span>W</span>  <span>e</span>  <span>l</span>  <span>c</span>  <span>o</span>  <span>m</span>  <span>e</span>  <span style='color: transparent'> . </span>  <span>C</span>  <span>-</span>  <span>4</span>  <span>G</span>  <span>3</span>  <span>s</span>  <span style='color: transparent'> . </span>  <span>2</span>  <span>0</span>     <span>2</span>  <span>6</span></div>  <div id='app'></div>  ",
+
+  // Selasa
+ " Selasa ",
+
+  // Rabu
+ " Rabu ", 
+  
+  // Kamis
+ "  <b class='color-gradient'>5R adalah budaya kerja</b> <div id='app2'></div> ",
+
+  // Jumat
+  " <span><img src='img/corporate_Logo.png' width='220' height='30'></span>  <div class='marquee__inner'>    <div class='marquee__group'>     <span>           </span>  <span>           </span>      <span><img src='img/gt-bias.png' width='140' height='22'></span>       <span><img src='img/irc-tire.png' width='140' height='18'></span>     <span><img src='img/gt-radial.png' width='140' height='22'></span>      <span><img src='img/zeneos.png' width='120' height='22'></span>      <span><img src='img/giti.png' width='120' height='22'></span>      <span>           </span>      <span>             </span>    </div>  </div>   ", 
+
+   // Sabtu
+  " <span><img src='img/zero-accidentt.png' width='125' height='40'></span>   <div id='appSb'></div> "
+
+];
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October", "November", "December"];
+
+    const dayName = dayNames[dayOfWeek];
+    const monthName = monthNames[month];
+
+    document.write("" + dayName + "");
+</script>
+
+   <br>
+  <div style="display: none">
+
+ <span><img src='img/zero-accidentt.png' width='125' height='40'></span>
+  <div class='marquee__inner'>
+    <div class='marquee__group'>
+     <span>           </span>  <span>           </span>
+      <span><img src='img/gt-bias.png' width='140' height='22'></span>
+       <span><img src='img/irc-tire.png' width='140' height='18'></span>
+     <span><img src='img/gt-radial.png' width='140' height='22'></span>
+      <span><img src='img/zeneos.png' width='120' height='22'></span>
+      <span><img src='img/giti.png' width='120' height='22'></span>
+      <span>           </span>
+      <span>             </span>
+    </div>
+  </div>
+
+  
   
    <div class="text-container">
   <span>W</span>
@@ -175,10 +326,55 @@
 </div>
   <div id="app"></div> 
 
+
+
   <b class="color-gradient">5R adalah budaya kerja</b>
   <div id="app2"></div> 
 
+      <span><img src='img/zero-accidentt.png' width='125' height='40'></span>
+   <div id="appS"></div> 
+
+
+  <div class="text-holder"></div>
+
+   <span><img src='img/kesker.png' width='170' height='40'></span>
+    <div class='typing-container'>
+       &nbsp; <span typing-speed='100' typing-delay='2500' 
+  words=' * Lima langkah keselamatan kerja * , 
+   1. Berpikir dan Pahami Tugas (Think) , 
+   2. Identifikasi Bahaya (Identify),
+   3. Evaluasi dan Kendalikan Risiko (Evaluate & Control), 
+   4. Gunakan Alat Pelindung Diri (APD), 
+    5. Pantau dan Jaga Lingkungan Kerja (Monitor & Maintain) '></span> 
+    </div>
+
+  </div>
 <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+
+<script>
+  var appSb = document.getElementById('appSb');
+
+var typewriter = new Typewriter(appSb, {
+    loop: true
+});
+
+typewriter.typeString(' <b>Apa Tujuan Zero Accident</b> ')
+    .pauseFor(2000)
+    .deleteAll()
+    .typeString('<strong>1. Menghilangkan Kecelakaan : </strong><i> (Menciptakan kondisi tempat kerja bebas dari kecelakaan kerja) </i>')
+    .pauseFor(2000)
+    .deleteAll()
+     .typeString(' <strong>2. Mengurangi Risiko : </strong> <i>(Mencegah, mengurangi, dan meminimalkan risiko bahaya di tempat kerja.) </i>')
+    .pauseFor(2000)
+    .deleteAll()
+     .typeString(' <strong>3. Meningkatkan Kesejahteraan:</strong> <i>(Memastikan keselamatan dan kesehatan pekerja sebagai prioritas utama.) </i>')
+    .pauseFor(2000)
+    .deleteAll()
+    .typeString('<b> 4. Meningkatkan Produktivitas: </b> <i> (Menciptakan lingkungan kerja yang aman dan sehat dapat meningkatkan produktivitas.)</i> ')
+    .pauseFor(6000)
+    .start();
+</script>
+
 <script>
   var app = document.getElementById('app');
 
@@ -254,8 +450,81 @@ var typewriter = new Typewriter(app2, {
     .pauseFor(6000)
     .start();
 </script>
+   
  <script>
-  
+  const text= "PT. Gajah Tunggal Tbk";
+
+let letters = text.split("");
+
+let textLength = letters.length -1;
+
+letters.forEach((item,index)=>{
+    const target = document.querySelector(".text-holder");
+    let element = document.createElement("span");
+    element.classList.add("textswipe");
+    element.id = `i${index}`;
+    element.innerText = item;
+    target.appendChild(element);
+});
+
+function animate(){
+    let textList = document.querySelectorAll(".textswipe");
+
+    textList.forEach((element,index)=>{
+        setTimeout(()=>{
+            let id = element.getAttribute('id');
+            document.getElementById(id)?.classList.toggle('opaque');
+            resetAnimation(index);
+        },(index + (textLength/2))*10*(100/textLength))
+    })
+}
+
+function resetAnimation(index){
+    if(index ==textLength){
+        animate();
+    }
+}
+
+animate();
+</script>
+
+ <script>
+  var wordsToType = document.querySelector("span[words]").getAttribute("words").split(','), 
+            typer =  document.querySelector("span[words]"), 
+            typingSpeed = (parseInt(typer.getAttribute('typing-speed')) || 30), 
+            typingDelay = (parseInt(typer.getAttribute('typing-delay')) || 2000);
+    
+var currentWordIndex = 0, currentCharacterIndex = 0; 
+
+function type(){
+
+    var wordToType = wordsToType[currentWordIndex%wordsToType.length];
+
+    if(currentCharacterIndex < wordToType.length){
+        typer.innerHTML += wordToType[currentCharacterIndex++];
+        setTimeout(type, typingSpeed);
+    }else{
+
+        setTimeout(erase, typingDelay);
+    }
+
+}
+function erase(){
+    var wordToType = wordsToType[currentWordIndex%wordsToType.length]; 
+    if(currentCharacterIndex >0){
+        typer.innerHTML = wordToType.substr(0, --currentCharacterIndex -1);
+        setTimeout(erase, typingSpeed);
+    }else{
+
+        currentWordIndex++; 
+        setTimeout(type, typingDelay);
+    }
+
+}
+
+window.onload = function(){
+    type(); 
+}
 </script>
 </body>
 </html>
