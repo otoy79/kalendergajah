@@ -7,7 +7,7 @@
  <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no" />
-  <link rel="stylesheet" href="https://unpkg.com/splitting@0.9.11/splitting.css">
+  <link rel="stylesheet" href="js/typing.css">
   
   <style>
     body {
@@ -19,7 +19,8 @@
       padding: 0;
       text-align: center;
     }
- .body❌ {
+ .body {
+  margin: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,6 +106,7 @@
 
 
 .color-gradient {
+    padding-left: 5px;
     background-image: -webkit-linear-gradient(92deg, #28C76F, #0396FF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -256,7 +258,7 @@
   "    <span><img src='img/kesker.png' width='170' height='40'></span>    <div class='typing-container'>       &nbsp; <span typing-speed='100' typing-delay='2500'   words=' * Lima langkah keselamatan kerja * ,    1. Berpikir dan Pahami Tugas (Think) ,    2. Identifikasi Bahaya (Identify),   3. Evaluasi dan Kendalikan Risiko (Evaluate & Control),    4. Gunakan Alat Pelindung Diri (APD),     5. Pantau dan Jaga Lingkungan Kerja (Monitor & Maintain) '></span>     </div>  ",
 
  // Senin
- " <div class='text-container'>  <span>W</span>  <span>e</span>  <span>l</span>  <span>c</span>  <span>o</span>  <span>m</span>  <span>e</span>  <span style='color: transparent'> . </span>  <span>C</span>  <span>-</span>  <span>4</span>  <span>G</span>  <span>3</span>  <span>s</span>  <span style='color: transparent'> . </span>  <span>2</span>  <span>0</span>     <span>2</span>  <span>6</span></div>  <div id='app'></div>  ",
+ " <div class='text-container'>  <span>W</span>  <span>e</span>  <span>l</span>  <span>c</span>  <span>o</span>  <span>m</span>  <span>e</span>  <span style='color: transparent'> . </span>  <span>C</span>  <span>-</span>  <span>4</span>  <span>G</span>  <span>3</span>  <span>s</span>  <span style='color: transparent'> . </span>  <span>2</span>  <span>0</span>     <span>2</span>  <span>6</span></div>    <div class='container'>   <span class='question2 caret2'></span>  <p class='answer2'></p>   </div>  ",
 
   // Selasa
  " Selasa ",
@@ -265,7 +267,7 @@
  " Rabu ", 
   
   // Kamis
- "  <b class='color-gradient'>5R adalah budaya kerja</b> <div id='app2'></div> ",
+ "   <div class='body'> <img src='img/5R.png' width='25' height='25'> <b class='color-gradient'> 5R adalah budaya kerja</b></div>   <div class='container'>   <span class='question caret'></span>  <p class='answer'></p>   </div> ",
 
   // Jumat
   " <span><img src='img/corporate_Logo.png' width='220' height='30'></span>  <div class='marquee__inner'>    <div class='marquee__group'>     <span>           </span>  <span>           </span>      <span><img src='img/gt-bias.png' width='140' height='22'></span>       <span><img src='img/irc-tire.png' width='140' height='18'></span>     <span><img src='img/gt-radial.png' width='140' height='22'></span>      <span><img src='img/zeneos.png' width='120' height='22'></span>      <span><img src='img/giti.png' width='120' height='22'></span>      <span>           </span>      <span>             </span>    </div>  </div>   ", 
@@ -286,7 +288,7 @@
    <br>
   <div style="display: none">
 
- <span><img src='img/zero-accidentt.png' width='125' height='40'></span>
+ <span><img src='img/corporate_Logo.png' width='220' height='30'></span>
   <div class='marquee__inner'>
     <div class='marquee__group'>
      <span>           </span>  <span>           </span>
@@ -328,7 +330,11 @@
 
 
 
-  <b class="color-gradient">5R adalah budaya kerja</b>
+  <div class='body'> <img src='img/5R.png' width='25' height='25'> <b class='color-gradient'> 5R adalah budaya kerja</b></div>
+   <div class='container'> 
+  <span class='question caret'></span>
+  <p class='answer'></p> 
+  </div>
   <div id="app2"></div> 
 
       <span><img src='img/zero-accidentt.png' width='125' height='40'></span>
@@ -348,8 +354,29 @@
     5. Pantau dan Jaga Lingkungan Kerja (Monitor & Maintain) '></span> 
     </div>
 
+    <div class="container"> 
+  <span class="question caret"></span>
+  <p class="answer"></p> 
+  </div>
+
+     <div class="container"> 
+  <span class="question2 caret2"></span>
+  <p class="answer2"></p> 
+  </div>
+
+       <div class="container"> 
+  <span class="question3 caret3"></span>
+  <p class="answer3"></p> 
+  </div>
+
+
+
+
+
   </div>
 <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+  <script src="js/typing.js"></script>
+<script>
 
 <script>
   var appSb = document.getElementById('appSb');
