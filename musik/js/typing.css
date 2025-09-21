@@ -1,0 +1,130 @@
+  @keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  49% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  text-align: center;
+}
+
+.caret::after {
+  content: " | ";
+  display: inline-block;
+  color: blue;
+  margin-left: 2px;
+  animation: blink 0.3s infinite;
+}
+
+.question {
+  font-family: serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.question.caret::after {
+  height: 15px;
+  width: 2px;
+}
+
+.answer {
+  font-family: "Raleway", sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 200;
+  margin: 0;
+}
+.answer.caret::after {
+  height: 14px;
+  width: 2px;
+}
+  .container p {
+   magin: 0
+}
+.caret2::after {
+  content: " | ";
+  display: inline-block;
+  color: #333;
+  margin-left: 2px;
+  animation: blink 0.3s infinite;
+}
+
+.question2 {
+  font-family: serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.question2.caret2::after {
+  height: 15px;
+  width: 2px;
+}
+
+.answer2 {
+  font-family: "Raleway", sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 200;
+  margin: 0;
+}
+.answer2.caret2::after {
+  height: 14px;
+  width: 2px;
+}
+
+
+
+.caret3::after {
+  content: " | ";
+  display: inline-block;
+  color: red;
+  margin-left: 2px;
+  animation: blink 0.3s infinite;
+}
+
+.question3 {
+  font-family: serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.question3.caret3::after {
+  height: 15px;
+  width: 2px;
+}
+
+.answer3 {
+  font-family: "Raleway", sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 200;
+  margin: 0;
+}
+.answer3.caret3::after {
+  height: 14px;
+  width: 2px;
+}
+
+.answer2.caret2::after {
+  height: 14px;
+  width: 2px;
+}
+
+.answer3.caret3::after {
+  height: 14px;
+  width: 2px;
+}
