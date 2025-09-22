@@ -37,6 +37,7 @@ body {
   font-family: serif;
   font-size: 13px;
   font-weight: 700;
+  text-shadow: 0.5px 0.5px #FF0000;
 }
 .question.caret::after {
   height: 15px;
@@ -69,6 +70,7 @@ body {
   font-family: serif;
   font-size: 13px;
   font-weight: 700;
+  text-shadow: 0.5px 0.5px #FF0000;
 }
 .question2.caret2::after {
   height: 15px;
@@ -81,6 +83,7 @@ body {
   font-size: 12px;
   font-weight: 200;
   margin: 0;
+  color: #06736f;
 }
 .answer2.caret2::after {
   height: 14px;
@@ -101,6 +104,7 @@ body {
   font-family: serif;
   font-size: 13px;
   font-weight: 700;
+  text-shadow: 0.5px 0.5px #FF0000;
 }
 .question3.caret3::after {
   height: 15px;
@@ -119,12 +123,45 @@ body {
   width: 2px;
 }
 
-.answer2.caret2::after {
+
+.caret4::after {
+  content: " | ";
+  display: inline-block;
+  color: red;
+  margin-left: 2px;
+  animation: blink 0.3s infinite;
+}
+
+.question4 {
+  font-family: serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0.5px 0.5px #FF0000;
+}
+.question4.caret3::after {
+  height: 15px;
+  width: 2px;
+}
+
+.answer4 {
+  font-family: "Raleway", sans-serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 200;
+  margin: 0;
+  color: #066925;
+}
+.answer4.caret3::after {
   height: 14px;
   width: 2px;
 }
 
-.answer3.caret3::after {
+.answer4.caret2::after {
+  height: 14px;
+  width: 2px;
+}
+
+.answer4.caret3::after {
   height: 14px;
   width: 2px;
 }

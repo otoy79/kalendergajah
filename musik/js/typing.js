@@ -24,19 +24,22 @@ class TypeWriter {
 
   static get _quotes3() {
     return [
-       ` 🔻1. Have you heard the rumor going around about butter? | Nevermind. I shouldn't spread it`,
-    ` 🔻2. What did the ocean say to the shore? | Nothing. It just waved`,
-    ` 🔻3. Why did the picture go to the jail? | Because it was framed`,
-    ` 🔻4. Why do bananas need sunscreen? | Because they peel`,
-    ` 5. What do you call a man who never toots in public? | A private tooter`,
-    ` 6. What time did the man go to the dentist? | Tooth hurty`,
-    ` 7. What's brown and sticky? | A stick`,
-    ` 8. What did the buffalo say to his son when he left for college? | Bison`,
-    ` 9. Why shouldn't you write with a broken pencil? | Because it's pointless`,
-    ` 10. What do you call a fake noodle? | An Impasta`,
-    ` 11. What kind of shoes do ninjas wear? | Sneakers`,
-    ` 12. Why did the scarecrow get promoted? | He was out standing in his field`,
-    ` 13. What do you call an alligator wearing a vest? | An Investigator`
+       ` 1. Perlindungan tenaga kerja: | Menjaga keselamatan dan kesehatan fisik serta mental karyawan di lingkungan kerja. `,
+    ` 2. Peningkatan produktivitas: | Lingkungan kerja yang tertata baik dan aman akan meningkatkan kinerja dan produktivitas perusahaan. `,
+    ` 3. Pengurangan biaya: | Mencegah kecelakaan dapat mengurangi biaya yang timbul akibat perawatan medis, klaim asuransi, dan kerugian operasional lainnya. `,
+    ` 4. Peningkatan citra perusahaan: | Penerapan K3 yang baik dapat meningkatkan reputasi perusahaan dan menunjukkan tanggung jawab sosialnya. `,
+    ` 5. Kepatuhan terhadap regulasi: | Memastikan perusahaan mematuhi peraturan perundang-undangan terkait keselamatan dan kesehatan kerja yang berlaku. `,
+    ];
+  }
+
+    static get _quotes4() {
+    return [
+       ` 1. Penyediaan APD: | Penggunaan helm, sarung tangan, pelindung mata, pakaian pelindung, dll.  `,
+    ` 2. Pelatihan: | Memberikan edukasi tentang prosedur kerja aman, penanganan bahan kimia, dan penggunaan peralatan. `,
+    ` 3. Pengelolaan Lingkungan Kerja: | Menjaga tempat kerja bersih, bebas dari debu dan asap rokok, serta memiliki ventilasi yang baik. `,
+    ` 4. Pengelolaan Limbah: | Mengelola limbah dengan baik untuk mencegah pencemaran lingkungan. `,
+    ` 5. Pengendalian Kebisingan: | Memastikan tingkat kebisingan tidak membahayakan pendengaran pekerja. `,
+       ` 6. Pemeriksaan Kesehatan: | Melakukan pemeriksaan kesehatan awal, berkala, dan khusus untuk memantau kondisi kesehatan pekerja. `,
     ];
   }
 
@@ -94,10 +97,13 @@ class TypeWriter {
     let answer2 = document.querySelector('.answer2');
     let question3 = document.querySelector('.question3');
     let answer3 = document.querySelector('.answer3');
+    let question4 = document.querySelector('.question4');
+    let answer4 = document.querySelector('.answer4');
 
     setTimeout(() => TypeWriter._write(0, 0, false, false, TypeWriter._quotes, question, answer), 3500);
     setTimeout(() => TypeWriter._write(0, 0, false, false, TypeWriter._quotes2, question2, answer2), 3500);
      setTimeout(() => TypeWriter._write(0, 0, false, false, TypeWriter._quotes3, question3, answer3), 3500);
+     setTimeout(() => TypeWriter._write(0, 0, false, false, TypeWriter._quotes4, question4, answer4), 3800);
   }
 }
 
