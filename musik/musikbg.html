@@ -1,251 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+ <title> Musik Backgroun</title>
 <head>
-  <meta charset="utf-8">
-  <title>ID FITRI 1446 H 2025</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-
-  <!-- Demo styles -->
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no" />
+ <link href="iframe.css" rel="stylesheet" />
   <style>
-    html,
+ html, body {
+   background: rgb(255, 255, 255, 0.0);
+  }
     body {
-      background: rgb(255, 255, 255, 0.0);
-      height: 100%;
-    }
-
-    body {
+      background: #eee;
       font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
       font-size: 14px;
-      color: #000;
+      color:#000;
       margin: 0;
       padding: 0;
+      text-align: center;
     }
-  .playerC {
-  position: fixed;
-  top:15px;
-  right: 15px;
-  z-index: 999;
-  outline: none;
+  th, td {
+  border: 0.1px solid black;
+  padding: 1px 10px;
+  text-align: center;
 }
-.playerBoxS button {
-  padding-top: 4px;
-  background-color: #eee;
-  cursor: pointer;
-  display: inline;
-  height: 22px;
-  width: 22px;
-  border-radius: 50%;
-  display: -webkit-box;
-      display: -ms-flexbox;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      -webkit-justify-content: center;
-      justify-content: center;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      -webkit-align-items: center;
-      align-items: center;
+  table {
+  border: 0.1px solid black;
+  text-align: center;
 }
-.canvas2 {
-   width: 100%;
-   height: 100px;
-  position: fixed;
-  top:0px;
-  left: 0px;
-  z-index: 9999;
-  outline: none;
-  transform: rotate(3.142rad);
+  table {
+  background-color: rgb(192, 252, 238, 0.15);
+  }
+ .gA {
+  background-color: rgb(53, 163, 16, 0.3);
 }
-.canvas1 {
-   width: 100%;
-   height: 150px;
-  position: fixed;
-  bottom:26px;
-  left: 0px;
-  z-index: 99;
-  outline: none;
+  .gB {
+  background-color: rgb(237, 200, 33, 0.3);
 }
-  .ion-pause::before, .ion-play:before {
-    display: inline-block;
-    cursor: pointer;
-  text-indent: -999999px;
-  height:20px;
-  width: 20px;
-  border-radius: 50%;
-  z-index: 2;
-    background-image: url(data:image/webp;base64,UklGRj4CAABXRUJQVlA4WAoAAAAQAAAAGAAAGAAAQUxQSNYAAAANgLtt2/FV+ZNt27Zt27W6tc2abG627ZpsW5tdk13f9/2eiJgAIOYIdtHUANicGhp/B6qsiRFAqG3lLpPd8E2mUQFUlZO5o26IrNOARu+Y4Lt/ihlAs1ZB0CMAYw0g6oXEA4QDasTSJn0CDmNshisg+084YTF56GOBujiamCIaHCuinYtjXazqY621ByE9TcwLKOGMwFdmEspHOkCjpA1GAQB8hOWI0bbYDwBwEtokQstWHBDuReeYUWstBdKjCP04MbK9eDqg+FFeYGhvISB1fLrSfQ/EVlA4IEIBAAAQCACdASoZABkAPpk6mEgloyKhN/VYALATCWwAnTKEdQeMcOfvl3dqjW2AuxjeTiInC3wQJNy9aUrF+Etbqxg7FSmO6wZ8prYAAP7L+vnvzKtZD1vNwzspPBmg6VrMATUlXmu5/lvdiar/2DLc/crHeyVPYdtxl/+XJxu/2ZNf4rQEFBKv4p+GwVD4TqAtdxOwu3/JXKd6ZPHzVQvn7NE7SQmgMxgCDykEQSXZT4MWwMbfNmW8ry4NGH9dt8atw3TBjH4en8bwpmqoFFISFw5xXojttj6P8FNriuuplntNHnzFkCZeyC7cyW/mNvjI/GiDykPPO/usoY1g18d42hrTo7LM9YRvN0wB1ZLt+BfpsyQAX6Xh1x/+aDPPu1Ci2OjZLFx/ROGi7fz/16me01cG8/G/8ETaVn8ur8Tv0N/BBAAA);
-    background-repeat: no-repeat!important;
-    background-position: center;
-    background-size: 20px;
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:20px;
-  background-color: transparent;
+   .gC {
+  background-color: rgb(16, 119, 163, 0.3);
 }
-.ion-play:before {
-   width: 20px;
-   height: 20px;
-    border-radius: 50%;
-  background-color: transparent;
-    content: "";
-  background-image: url(data:image/webp;base64,UklGRj4CAABXRUJQVlA4WAoAAAAQAAAAGAAAGAAAQUxQSNYAAAANgLtt2/FV+ZNt27Zt27W6tc2abG627ZpsW5tdk13f9/2eiJgAIOYIdtHUANicGhp/B6qsiRFAqG3lLpPd8E2mUQFUlZO5o26IrNOARu+Y4Lt/ihlAs1ZB0CMAYw0g6oXEA4QDasTSJn0CDmNshisg+084YTF56GOBujiamCIaHCuinYtjXazqY621ByE9TcwLKOGMwFdmEspHOkCjpA1GAQB8hOWI0bbYDwBwEtokQstWHBDuReeYUWstBdKjCP04MbK9eDqg+FFeYGhvISB1fLrSfQ/EVlA4IEIBAAAQCACdASoZABkAPpk6mEgloyKhN/VYALATCWwAnTKEdQeMcOfvl3dqjW2AuxjeTiInC3wQJNy9aUrF+Etbqxg7FSmO6wZ8prYAAP7L+vnvzKtZD1vNwzspPBmg6VrMATUlXmu5/lvdiar/2DLc/crHeyVPYdtxl/+XJxu/2ZNf4rQEFBKv4p+GwVD4TqAtdxOwu3/JXKd6ZPHzVQvn7NE7SQmgMxgCDykEQSXZT4MWwMbfNmW8ry4NGH9dt8atw3TBjH4en8bwpmqoFFISFw5xXojttj6P8FNriuuplntNHnzFkCZeyC7cyW/mNvjI/GiDykPPO/usoY1g18d42hrTo7LM9YRvN0wB1ZLt+BfpsyQAX6Xh1x/+aDPPu1Ci2OjZLFx/ROGi7fz/16me01cG8/G/8ETaVn8ur8Tv0N/BBAAA);
+    .gD {
+  background-color: rgb(194, 70, 70, 0.3);
 }
 
-.ion-pause:before {
-  width: 20px;
-   height: 20px;
-  border-radius: 50%;
-  background-color: transparent;
-    content: "";
-  background-image: url(data:image/webp;base64,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)!important;
- animation: animName 4s linear infinite;
+  #iframeT {
+    position: fixed;
+    border: none;
+    bottom: 100px; 
+   left: 0px;
+    width: 100%;
+      height: 200px;
+   z-index: 9;
+   background: rgb(255, 255, 255, 0.0);
 }
-@keyframes animName {
- 0%{
-    transform: rotate(0deg);
-   }
-100%{
-    transform: rotate(360deg);
-   }
-}
-
-  </style>
+</style>
 
 </head>
-
 <body>
-<canvas id="canvas" class="canvas1"></canvas>
-<div class="playerBoxS">
-  <center>
-<audio id="player" crossOrigin="anonymous" preload="auto" loop>
  
-   <source src="Dealova-Once.mp3" type="audio/mpeg">
-</audio>
- </center>
-<button id="btnspec1" class="playerC"><i class="icon ion-play"></i></button>
-</div>
-
-
-
-
-<div style="display: none" id="btnspec2"><b class="close">✕</b></div>
-  
-
+    
+   <center>
   <script>
-  var analyzer, canvas, ctx, btn, audio, audioContext
+var now = new Date();
+var dd = now.getDate();
 
-window.onload = function() {
-   audioContext = new AudioContext();
-   canvas = document.getElementById('canvas')
-   canvas.width = window.innerWidth
-   canvas.height = window.innerHeight
-   ctx = canvas.getContext('2d')
-   
-   audio = document.getElementById('player')
-analyzer = audioContext.createAnalyser()
-analyzer.fftSize = 2048
-var source = audioContext.createMediaElementSource(audio)
-source.connect(analyzer)
-analyzer.connect(audioContext.destination)
+if (dd==1)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik10.html"></iframe> ');
+else if (dd==2)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik11.html"></iframe> ');
+else if (dd==3)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik12.html"></iframe> ');
+else if (dd==4)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik13.html"></iframe> ');
+else if (dd==5)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik14.html"></iframe> ');
+else if (dd==6)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik15.html"></iframe> ');
+else if (dd==7)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik1.html"></iframe> ');
+else if (dd==8)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik2.html"></iframe> ');
+else if (dd==9)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik3.html"></iframe> ');
+else if (dd==10)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik4.html"></iframe> ');
+else if (dd==11)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik5.html"></iframe> ');
+else if (dd==12)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik6.html"></iframe> ');
+else if (dd==13)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik7.html"></iframe> ');
+else if (dd==14)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik8.html"></iframe> ');
+else if (dd==15)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik9.html"></iframe> ');
+else if (dd==16)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik10.html"></iframe> ');
+else if (dd==17)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik11.html"></iframe> ');
+else if (dd==18)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik12.html"></iframe> ');
+else if (dd==19)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik13.html"></iframe> ');
+else if (dd==20)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik14.html"></iframe> ');
+else if (dd==21)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik15.html"></iframe> ');
+else if (dd==31)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik16.html"></iframe> ');
+else if (dd==23)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik1.html"></iframe> ');
+else if (dd==24)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik2.html"></iframe> ');
+else if (dd==25)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik3.html"></iframe> ');
+else if (dd==26)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik4.html"></iframe> ');
+else if (dd==27)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik5.html"></iframe> ');
+else if (dd==28)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik6.html"></iframe> ');
+else if (dd==29)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik7.html"></iframe> ');
+else if (dd==30)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik8.html"></iframe> ');
+else if (dd==22)
+document.write(' <iframe id="iframe-bln" src="musik-bg/musik9.html"></iframe> ');
+   </script>
 
-   
-   btn1 = document.getElementById('btnspec1')
-btn2 = document.getElementById('btnspec2')
 
-btn1.addEventListener('click', function(e) {
-  audioContext.resume().then(() => {
-    if(!audio.paused) {
-      btn1.firstChild.classList.add('ion-play')
-      btn1.firstChild.classList.remove('ion-pause')
-      btn2.firstChild.classList.add('play')
-      btn2.firstChild.classList.remove('pause')
-      audio.pause()
-    } else {
-      btn1.firstChild.classList.remove('ion-play')
-      btn1.firstChild.classList.add('ion-pause')
-      btn2.firstChild.classList.remove('play')
-      btn2.firstChild.classList.add('pause')
-      audio.play()
-    }
-  })
-})
 
-btn2.addEventListener('click', function(e) {
-  audioContext.resume().then(() => {
-    if(!audio.paused) {
-      btn1.firstChild.classList.add('ion-play')
-      btn1.firstChild.classList.remove('ion-pause')
-      btn2.firstChild.classList.add('play')
-      btn2.firstChild.classList.remove('pause')
-      audio.pause()
-    } else {
-      btn1.firstChild.classList.remove('ion-play')
-      btn1.firstChild.classList.add('ion-pause')
-      btn2.firstChild.classList.remove('play')
-      btn2.firstChild.classList.add('pause')
-      audio.play()
-    }
-  })
-})
 
-draw()
-}
-
-function draw() {
-   requestAnimationFrame(draw)
-   var spectrum = new Uint8Array(analyzer.frequencyBinCount)
-   analyzer.getByteFrequencyData(spectrum)
-   ctx.clearRect(0,0,canvas.width, canvas.height)
-   
-   var prev = {
-      x: 0,
-      y: 0
-   }
-   
-   var w = 30
-   
-   ctx.beginPath()
-   ctx.moveTo(0, canvas.height)
-   ctx.lineTo(0,canvas.height - spectrum[0])
-   
-   for(var i = 0; i < spectrum.length; i += w) {
-      
-      var curr = {
-         x: i,
-         y: canvas.height - spectrum[i]
-      }
-      
-      var next = {
-         x: i + w,
-         y: canvas.height - spectrum[i + w]
-      }
-      
-      var xc = (curr.x + next.x) / 2;
-      var yc = (curr.y + next.y) / 2;
-      ctx.quadraticCurveTo(curr.x, curr.y, xc, yc)
-      
-      prev = {
-         x: curr.x,
-         y: curr.y
-      }
-      
-   }
-   
-   ctx.quadraticCurveTo(prev.x, prev.y, canvas.width, canvas.height)
-   ctx.fillStyle = 'rgba(237, 114, 38, 0.1)';
-   ctx.closePath();  //draw to first point
-   ctx.shadowColor = 'rgba(45, 237, 38, 0.2)';
-   ctx.shadowBlur = 10;
-   ctx.shadowOffsetX = 1;
-   ctx.shadowOffsetY = -9;
-   ctx.fill();
-}
-</script>
-   
- 
 </body>
 </html>
-
 
