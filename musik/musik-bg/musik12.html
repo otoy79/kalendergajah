@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bg Musik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      background: rgb(255, 255, 255, 0.0);
+      height: 100%;
+    }
+
+    body {
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #000;
+      margin: 0;
+      padding: 0;
+    }
+  .playerC {
+  position: fixed;
+  top:17px;
+  right: 25px;
+  z-index: 999;
+  outline: none;
+}
+  .playerBoxS {
+   font-size: 10px;
+  }
+.playerBoxS button {
+  padding-top: 4px;
+  background-color: #eee;
+  cursor: pointer;
+  display: inline;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  display: -webkit-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      -webkit-justify-content: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+}
+.canvas2 {
+   width: 100%;
+   height: 100px;
+  position: fixed;
+  bottom:0px;
+  left: 0px;
+  z-index: 9999;
+  outline: none;
+  transform: rotate(3.142rad);
+}
+.canvas1 {
+   width: 105%;
+   height: 100px;
+  position: fixed;
+  bottom:20px;
+  left: 0px;
+  z-index: 99;
+  outline: none;
+}
+  .ion-pause::before, .ion-play:before {
+    display: inline-block;
+    cursor: pointer;
+  text-indent: -999999px;
+  height:20px;
+  width: 20px;
+  border-radius: 50%;
+  z-index: 2;
+    background-image: url(playMB.png);
+    background-repeat: no-repeat!important;
+    background-position: center;
+    background-size: 20px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-color: transparent;
+}
+.ion-play:before {
+   width: 20px;
+   height: 20px;
+    border-radius: 50%;
+  background-color: transparent;
+    content: "";
+  background-image: url(playMB.png);
+}
+
+.ion-pause:before {
+  width: 20px;
+   height: 20px;
+  border-radius: 50%;
+  background-color: transparent;
+    content: "";
+  background-image: url(pauseMB.png)!important;
+ animation: animName 4s linear infinite;
+}
+@keyframes animName {
+ 0%{
+    transform: rotate(0deg);
+   }
+100%{
+    transform: rotate(360deg);
+   }
+}
+  .marquee {
+    position: fixed;
+    top: 3px;
+    right: 0px;
+   width: 180px;
+   }
+   .textMarque {
+    color: #073887;  
+    bottom: 0;
+    width: 100%;
+  position: relative;
+  animation: linear infinite;
+  animation-name: run;
+  animation-duration: 20s;
+}
+ @keyframes run {
+  0% {
+    left: 0;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 0;    
+  }
+}
+  </style>
+
+</head>
+
+<body>
+<canvas id="canvas" class="canvas1"> </canvas>
+<div class="playerBoxS">
+   <div class="marquee">
+    <div class="textMarque">Jamrud - Pelangi Di Matamu</div>
+</div>
+  <center>
+<audio id="player" crossOrigin="anonymous" preload="auto" loop>
+ 
+   <source src="https://kalendergajah.pages.dev/musik/musik-bg/mp3/Jamrud_Pelangi_Di_Matamu.mp3" type="audio/mpeg">
+</audio>
+ </center>
+<button id="btnspec1" class="playerC"><i class="icon ion-play"></i></button>
+</div>
+
+
+
+
+<div style="display: none" id="btnspec2"><b class="close">✕</b></div>
+  
+
+  <script>
+  var analyzer, canvas, ctx, btn, audio, audioContext
+
+window.onload = function() {
+   audioContext = new AudioContext();
+   canvas = document.getElementById('canvas')
+   canvas.width = window.innerWidth
+   canvas.height = window.innerHeight
+   ctx = canvas.getContext('2d')
+   
+   audio = document.getElementById('player')
+analyzer = audioContext.createAnalyser()
+analyzer.fftSize = 2048
+var source = audioContext.createMediaElementSource(audio)
+source.connect(analyzer)
+analyzer.connect(audioContext.destination)
+
+   
+   btn1 = document.getElementById('btnspec1')
+btn2 = document.getElementById('btnspec2')
+
+btn1.addEventListener('click', function(e) {
+  audioContext.resume().then(() => {
+    if(!audio.paused) {
+      btn1.firstChild.classList.add('ion-play')
+      btn1.firstChild.classList.remove('ion-pause')
+      btn2.firstChild.classList.add('play')
+      btn2.firstChild.classList.remove('pause')
+      audio.pause()
+    } else {
+      btn1.firstChild.classList.remove('ion-play')
+      btn1.firstChild.classList.add('ion-pause')
+      btn2.firstChild.classList.remove('play')
+      btn2.firstChild.classList.add('pause')
+      audio.play()
+    }
+  })
+})
+
+btn2.addEventListener('click', function(e) {
+  audioContext.resume().then(() => {
+    if(!audio.paused) {
+      btn1.firstChild.classList.add('ion-play')
+      btn1.firstChild.classList.remove('ion-pause')
+      btn2.firstChild.classList.add('play')
+      btn2.firstChild.classList.remove('pause')
+      audio.pause()
+    } else {
+      btn1.firstChild.classList.remove('ion-play')
+      btn1.firstChild.classList.add('ion-pause')
+      btn2.firstChild.classList.remove('play')
+      btn2.firstChild.classList.add('pause')
+      audio.play()
+    }
+  })
+})
+
+draw()
+}
+
+function draw() {
+   requestAnimationFrame(draw)
+   var spectrum = new Uint8Array(analyzer.frequencyBinCount)
+   analyzer.getByteFrequencyData(spectrum)
+   ctx.clearRect(0,0,canvas.width, canvas.height)
+   
+   var prev = {
+      x: 0,
+      y: 0
+   }
+   
+   var w = 30
+   
+   ctx.beginPath()
+   ctx.moveTo(0, canvas.height)
+   ctx.lineTo(0,canvas.height - spectrum[0])
+   
+   for(var i = 0; i < spectrum.length; i += w) {
+      
+      var curr = {
+         x: i,
+         y: canvas.height - spectrum[i]
+      }
+      
+      var next = {
+         x: i + w,
+         y: canvas.height - spectrum[i + w]
+      }
+      
+      var xc = (curr.x + next.x) / 2;
+      var yc = (curr.y + next.y) / 2;
+      ctx.quadraticCurveTo(curr.x, curr.y, xc, yc)
+      
+      prev = {
+         x: curr.x,
+         y: curr.y
+      }
+      
+   }
+   
+   ctx.quadraticCurveTo(prev.x, prev.y, canvas.width, canvas.height)
+   ctx.fillStyle = 'rgba(204, 16, 26, 0.1)';
+   ctx.closePath();  //draw to first point
+   ctx.shadowColor = 'rgba(45, 237, 38, 0.1)';
+   ctx.shadowBlur = 3;
+   ctx.shadowOffsetX = 1;
+   ctx.shadowOffsetY = -9;
+   ctx.fill();
+}
+</script>
+   
+ 
+</body>
+</html>
+
+
