@@ -15,7 +15,7 @@
    background: rgb(255, 255, 255, 0.0);
    height: 105px;
    width: 90%;
-   z-index: 98;
+   z-index: 8;
 }
   .iframe {
     border-radius: 50%;
