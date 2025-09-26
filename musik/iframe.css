@@ -13,7 +13,7 @@
     position: relative;
     border: none;
    background: rgb(255, 255, 255, 0.0);
-   height: 200px;
+   height: 108px;
    width: 90%;
    overflow: visible;
     overflow-x: hidden;
@@ -28,7 +28,7 @@
     top: 0px; 
    right: 0px;
     width: 100%;
-    height: 150px;
+    
    z-index: 0;
    background: rgb(255, 255, 255, 0.0);
 }
