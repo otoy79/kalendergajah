@@ -13,7 +13,7 @@
     body {
       background: rgb(255, 255, 255, 0.0);
       font-family: serif;
-      font-size: 14px;
+      font-size: 12px;
       color:#000;
       margin: 0;
       padding: 0;
@@ -126,10 +126,12 @@
     }
 }
 
-  #app, #app2 {
+
+  
+  #app, #app2, #appSb {
   text-align:center;
   font-family: sans-serif;
-  font-size:14px;
+  font-size:12px;
   background-image: linear-gradient(
     -225deg,
     #231557 0%,
@@ -341,7 +343,7 @@
   <div id="app2"></div> 
 
       <span><img src='img/zero-accidentt.png' width='125' height='40'></span>
-   <div id="appS"></div> 
+   <div id="appSb"></div> 
 
 
   <div class='body'> <img src='img/logoGT.png' width='30' height='30'><div class="text-holder"></div></div>
@@ -395,15 +397,19 @@ var typewriter = new Typewriter(appSb, {
 typewriter.typeString(' <b>Apa Tujuan Zero Accident</b> ')
     .pauseFor(2000)
     .deleteAll()
-    .typeString('<strong>1. Menghilangkan Kecelakaan : </strong><i> (Menciptakan kondisi tempat kerja bebas dari kecelakaan kerja) </i>')
+
+    .typeString('<strong>1. Menghilangkan Kecelakaan : </strong><i> (Menciptakan kondisi tempat kerja bebas dari kecelakaan kerja) </i> ')
     .pauseFor(2000)
     .deleteAll()
+
      .typeString(' <strong>2. Mengurangi Risiko : </strong> <i>(Mencegah, mengurangi, dan meminimalkan risiko bahaya di tempat kerja.) </i>')
     .pauseFor(2000)
     .deleteAll()
+
      .typeString(' <strong>3. Meningkatkan Kesejahteraan:</strong> <i>(Memastikan keselamatan dan kesehatan pekerja sebagai prioritas utama.) </i>')
     .pauseFor(2000)
     .deleteAll()
+
     .typeString('<b> 4. Meningkatkan Produktivitas: </b> <i> (Menciptakan lingkungan kerja yang aman dan sehat dapat meningkatkan produktivitas.)</i> ')
     .pauseFor(6000)
     .start();
