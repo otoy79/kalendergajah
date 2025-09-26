@@ -16,6 +16,7 @@
    height: 200px;
    width: 90%;
    overflow: visible;
+    overflow-x: hidden;
    z-index: 1;
 }
   .iframe {
