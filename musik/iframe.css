@@ -13,9 +13,9 @@
     position: relative;
     border: none;
    background: rgb(255, 255, 255, 0.0);
-   height: 150px;
+   height: 200px;
    width: 90%;
-    overflow: hidden;
+   overflow: visible;
    z-index: 1;
 }
   .iframe {
