@@ -18,7 +18,7 @@
    overflow: visible;
     overflow-x: hidden;
    z-index: 9;
-    display: none;
+    
 }
   .iframe {
     border-radius: 50%;
