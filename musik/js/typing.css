@@ -83,7 +83,7 @@ body {
   font-size: 12px;
   font-weight: 200;
   margin: 0;
-  color: #06736f;
+  color: #000;
 }
 .answer2.caret2::after {
   height: 14px;
