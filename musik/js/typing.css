@@ -149,7 +149,7 @@ body {
   font-size: 12px;
   font-weight: 200;
   margin: 0;
-  color: #066925;
+  color: #000;
 }
 .answer4.caret3::after {
   height: 14px;
