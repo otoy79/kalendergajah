@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+ <title>Kalender Gajah Tunggal 4G3S</title>
+<head>
+   
+    <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial;}
+div.scrollmenu {
+  border: 0px solid #ccc;
+  background-color: #f1f1f1;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+div.scrollmenu button {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 6px 14px;
+  text-decoration: none;
+   font-size: 16px;
+  color: #000;
+}
+.tab {
+  width: 100%;
+  overflow: auto;
+  white-space: nowrap;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+div.scrollmenu button:hover {
+  background-color: #ddd;
+}
+div.scrollmenu button.active {
+  background-color: #e68910;
+  color: #fff;
+}
+.tabcontent {
+  margin-top: 10px;
+  display: none;
+  padding: 0px 2px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+  iframe {
+  width: 100%;
+  height: 570px;
+   border: none;
+
+}
+</style>
+</head>
+<body>
+
+<center>
+
+<h3> 𝕋𝕒𝕓𝕝𝕖 𝕂𝕒𝕝𝕖𝕟𝕕𝕖𝕣 4𝔾3𝕊 𝔾𝕋 </h3>
+</center>
+
+<div class="scrollmenu">
+  <button class="tablinks" onclick="openCity(event, '2024')">2024</button>
+  <button class="tablinks" onclick="openCity(event, '2025')" id="defaultOpen">2025</button>
+  <button class="tablinks" onclick="openCity(event, '2026')">2026</button>
+  <button class="tablinks" onclick="openCity(event, '2027')">2027</button>
+  <button class="tablinks" onclick="openCity(event, '2028')">2028</button>
+  <button class="tablinks" onclick="openCity(event, '2029')">2029</button>
+   <button class="tablinks" onclick="openCity(event, '2030')">2030</button>
+</div>
+
+
+
+<div id="2024" class="tabcontent">
+<center><iframe src="2024.html">
+ </center>
+</iframe>
+</div>
+
+<div id="2025" class="tabcontent">
+  <center><iframe src="2025.html">
+ </center></iframe>
+</div>
+
+<div id="2026" class="tabcontent">
+  <center><iframe src="2026.html">
+ </center></iframe>
+</div>
+
+<div id="2027" class="tabcontent">
+  <center><iframe src="2027.html">
+ </center></iframe>
+</div>
+
+<div id="2028" class="tabcontent">
+  <center><iframe src="2028.html">
+ </center></iframe>
+</div>
+
+<div id="2029" class="tabcontent">
+  <center><iframe src="2029.html">
+ </center></iframe>
+</div>
+
+<div id="2030" class="tabcontent">
+  <div style="height: 570px;">
+  <center><br><br><br>In process...!! <br><br><br>
+ <img alt="" border="0" height="60" data-original-height="80" data-original-width="75" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj0kfw2cTXLh43XxGMxOXV2Q-yT-G42Kj_sggjFTqnaBKPeJRfnKJcZp0rokDZ9lckxr86QLlqwFXzX2nHitsHnwn3vP7OJXZQ3lqYFGNXpR64knv0oKHycqfj-WhrsBvAvpSt80K85zfBoZUDFO87-9C8rJWYAXVganRd91gGRMZzblMU_HHwrRnFnCwI/s320/34338d26023e5515f6cc8969aa027bca.gif"/>
+ </center>
+   </div>
+
+</div>
+</div>
+
+
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
+   
+</body>
+</html> 
