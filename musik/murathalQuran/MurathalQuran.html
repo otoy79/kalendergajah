@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Murathal Al-Qur'an Mp3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+   <link href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" rel="stylesheet" />
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      background: rgb(255, 255, 255, 0.0);
+      height: 100%;
+    }
+
+   /* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&family=EB+Garamond:ital@1&display=swap');
+
+* {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+}
+ #container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+  z-index: 999;
+   margin: 30px auto;
+  background-image: url(icon-quran.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+  #container2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width:90%;
+  z-index: 999;
+   margin: 140px auto;
+  text-align: center;
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+  font-family: cursive;
+}
+  #container2 p {
+  margin: -10px;
+  text-shadow: 2px 2px #FF0000;
+   }
+*:focus {
+  outline: none;
+}
+#player-container {
+  position: absolute;
+  top: 55%;
+  right: 0;
+  left: 0;
+  width: 320px;
+  height: 95px;
+  margin: -2px auto;
+}
+
+#player-bg-artwork {
+  position: fixed;
+  top: -20px;
+  right: -20px;
+  bottom: -20px;
+  left: -20px;
+  background-image: url("bg-quran.png");
+  background-repeat: repeat;
+  background-size: cover;
+  background-position: 50%;
+  filter: blur(50px);
+  -webkit-filter: blur(6px);
+  z-index: 1;
+}
+
+#player-bg-layer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgb(10, 87, 47, 0.2);
+  opacity: 0.5;
+  z-index: 2;
+}
+
+#player {
+  position: relative;
+  height: 100%;
+  z-index: 3;
+}
+
+#player-track {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  left: 8px;
+  padding: 16px 10px 10px 112px;
+  background: rgb(255, 255, 255, 0.9);
+  border-radius: 15px 15px 0 0;
+  transition: 0.3s ease top;
+  z-index: 1;
+}
+
+#player-track.active {
+  top: -92px;
+}
+
+/* Font Adjustments */
+#album-name {
+  color: #54576f;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: cursive;
+  text-align: right;
+}
+
+#track-name {
+  color: #aaa;
+  font-size: 14px;
+  margin: 2px 0 10px 0;
+  font-family: 'EB Garamond', serif; /* Classic Italic for Song Title */
+  font-style: italic;
+   text-align: right;
+}
+
+#track-time {
+  height: 12px;
+  margin-bottom: 3px;
+  overflow: hidden;
+  
+}
+
+#current-time {
+  float: left;
+}
+
+#track-length {
+  float: right;
+}
+
+#current-time,
+#track-length {
+  color: transparent;
+  font-size: 11px;
+  background-color: #ffe8ee;
+  border-radius: 10px;
+  transition: 0.3s ease all;
+}
+
+#track-time.active #current-time,
+#track-time.active #track-length {
+  color: #f86d92;
+  background-color: transparent;
+}
+
+#seek-bar-container,
+#seek-bar {
+  position: relative;
+  height: 4px;
+  border-radius: 4px;
+}
+
+#seek-bar-container {
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+#seek-time {
+  position: absolute;
+  top: -20px;
+  color: #fff;
+  font-size: 12px;
+  white-space: pre;
+  padding: 5px 6px;
+  border-radius: 4px;
+  display: none;
+}
+
+#s-hover {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.2;
+  z-index: 2;
+}
+
+#seek-time,
+#s-hover {
+  background-color: #3b3d50;
+}
+
+#seek-bar {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background-color: #fd6d94;
+  transition: 0.2s ease width;
+  z-index: 1;
+}
+
+#player-content {
+  position: relative;
+  height: 100%;
+  background: rgb(255, 255, 255, 0.9);
+  box-shadow: 0 30px 80px #656565;
+  border-radius: 15px;
+  z-index: 2;
+}
+
+#album-art {
+  position: absolute;
+  top: -38px;
+  width: 90px;
+  height: 90px;
+  margin-left: 15px;
+  transform: rotateZ(0);
+  transition: 0.5s ease all;
+  box-shadow: 0 0 0 6px #fff;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+#album-art.active {
+  top: -60px;
+  box-shadow: 0 0 0 4px #fff7f7, 0 30px 50px -15px #afb7c1;
+}
+
+#album-art:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  margin: -10px auto 0 auto;
+  background-color: #d6dee7;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px #fff;
+  z-index: 2;
+}
+
+#album-art img {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: -1;
+}
+
+#album-art img.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+#album-art.active img.active {
+  z-index: 1;
+  animation: rotateAlbumArt 7s linear 0s infinite forwards;
+}
+
+@keyframes rotateAlbumArt {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+
+#buffer-box {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 13px;
+  color: #1f1f1f;
+  font-size: 13px;
+  font-family: Helvetica;
+  text-align: center;
+  font-weight: bold;
+  line-height: 1;
+  padding: 6px;
+  margin: -12px auto 0 auto;
+  background-color: rgba(255, 255, 255, 0.19);
+  opacity: 0;
+  z-index: 2;
+}
+
+#album-art img,
+#buffer-box {
+  transition: 0.1s linear all;
+}
+
+#album-art.buffering img {
+  opacity: 0.25;
+}
+
+#album-art.buffering img.active {
+  opacity: 0.8;
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+}
+
+#album-art.buffering #buffer-box {
+  opacity: 1;
+}
+
+#player-controls {
+  width: 190px;
+  height: 100%;
+  margin: 0 5px 0 141px;
+  float: right;
+  overflow: hidden;
+}
+
+.control {
+  width: 33.333%;
+  float: left;
+  padding: 12px 0;
+}
+
+.button {
+  width: 22px;
+  height: 22px;
+  padding: 14px;
+  background: rgb(10, 87, 47, 0.9);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button i {
+  display: block;
+  color: #d6dee7;
+  font-size: 22px;
+  text-align: center;
+  line-height: 1;
+}
+
+.button,
+.button i {
+  transition: 0.2s ease all;
+}
+
+.button:hover {
+  background-color: #ccc;
+}
+
+.button:hover i {
+  color: #fff;
+}
+  </style>
+
+</head>
+
+<body>
+ 
+  <div id="container"></div>
+   <div id="container2"> 
+  <p> 𝕸𝖚𝖗𝖆𝖙𝖍𝖆𝖑 </p>
+  <p> 𝕬𝖑-𝕼𝖚𝖗'𝖆𝖓 𝕸𝖕3 </p>
+  </div>
+
+ 
+
+
+<div id="player-bg-artwork"></div>
+<div id="player-bg-layer"></div>
+<div id="player-container">
+  <div id="player">
+    <div id="player-track">
+      <div id="album-name"></div>
+      <div id="track-name"></div>
+      <div id="track-time">
+        <div id="current-time"></div>
+        <div id="track-length"></div>
+      </div>
+      <div id="seek-bar-container">
+        <div id="seek-time"></div>
+        <div id="s-hover"></div>
+        <div id="seek-bar"></div>
+      </div>
+    </div>
+    <div id="player-content">
+      <div id="album-art">
+        <img 
+src="bg-quran.png" class="active" id="_1" 
+/>
+        
+        <div id="buffer-box">Buffering ...</div>
+      </div>
+      <div id="player-controls">
+        <div class="control">
+          <div class="button" id="play-previous">
+            <i class="fas fa-backward"></i>
+          </div>
+        </div>
+        <div class="control">
+          <div class="button" id="play-pause-button">
+            <i class="fas fa-play"></i>
+          </div>
+        </div>
+        <div class="control">
+          <div class="button" id="play-next">
+            <i class="fas fa-forward"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="js/alquran.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+$(function () {
+  const playerTrack = $("#player-track");
+  const bgArtwork = $("#player-bg-artwork");
+  const albumName = $("#album-name");
+  const trackName = $("#track-name");
+  const albumArt = $("#album-art");
+  const sArea = $("#seek-bar-container");
+  const seekBar = $("#seek-bar");
+  const trackTime = $("#track-time");
+  const seekTime = $("#seek-time");
+  const sHover = $("#s-hover");
+  const playPauseButton = $("#play-pause-button");
+  const tProgress = $("#current-time");
+  const tTime = $("#track-length");
+  const playPreviousTrackButton = $("#play-previous");
+  
+  const playNextTrackButton = $("#play-next");
+  const albums = [
+    "Full Mp3 Al-Qur'an",
+  ];
+  const trackNames = [
+    "001 Surah Al-Fatihah",
+    "002 Surah Al-Baqarah",
+    "003 Surah Ali-Imran",
+    "004 Surah An-Nisa'",
+    "005 Surah Al-Maidah",
+    "006 Surah Al-An'am",
+    "007 Surah Al-Araf",
+    "008 Surah Al-Anfal",
+    "009 Surah At-Taubah",
+    "010 Surah Yunus",
+    "011 Surah Hud",
+    "012 Surah Yusuf",
+    "013 Surah Ar-Rad",
+    "014 Surah Ibrahim",
+    "015 Surah Al-Hijr",
+    "016 Surah An-Nahl",
+    "017 Surah Al-Isra'",
+    "018 Surah Al-Kahf",
+    "019 Surah Maryam",
+    "020 Surah Taha",
+    "021 Surah Al-Anbiya'",
+    "022 Surah Al-Hajj",
+    "023 Surah Al-Mukminun",
+    "024 Surah An-Nur",
+    "025 Surah Al-Furqan",
+    "026 Surah Asy-Syuara",
+    "027 Surah An-Naml",
+    "028 Surah Al-Qasas",
+    "029 Surah Al-Ankabut",
+    "030 Surah Ar-Rum",
+    "031 Surah Luqman",
+    "032 Surah As-Sajdah",
+    "033 Surah Al-Ahzab",
+    "034 Surah Saba'",
+    "035 Surah Fatir",
+    "036 Surah Yasin",
+    "037 Surah As-Saffat",
+    "038 Surah Sad",
+    "039 Surah Az-Zumar",
+    "040 Surah Al-Mu'min",
+    "041 Surah Al-Fussilat",
+    "042 Surah Asy-Syura",
+    "043 Surah Az-Zukhruf",
+    "044 Surah Ad-Dukhan",
+    "045 Surah Al-Jathiya",
+    "046 Surah Al-Ahqaf",
+    "047 Surah Muhammad",
+    "048 Surah Al-Fath",
+    "049 Surah Al-Hujurat",
+    "050 Surah Qaf",
+    "051 Surah Az-Dhariyat",
+    "052 Surah At-Tur",
+    "053 Surah An-Najm",
+    "054 Surah Al-Qamar",
+    "055 Surah Ar-Rahman",
+    "056 Surah Al-Waqiah",
+    "057 Surah Al-Hadid",
+    "058 Surah Al-Mujadilah",
+    "059 Surah Al-Hashr",
+    "060 Surah Al-Mumtahina",
+    "061 Surah As-Saff",
+    "062 Surah Al-Jumuah",
+    "063 Surah Al-Munafiqun",
+    "064 Surah At-Taghabun",
+    "065 Surah At-Talaq",
+    "066 Surah At-Tahrim",
+    "067 Surah Al-Mulk",
+    "068 Surah Al-Qalam",
+    "069 Surah Al-Haqqah",
+    "070 Surah Al-Maarij",
+    "071 Surah Nuh",
+    "072 Surah Jin",
+    "073 Surah Al-Muzammil",
+    "074 Surah Al-Mudathir",
+    "075 Surah Al-Qiyamah",
+    "076 Surah Al-Insan",
+    "077 Surah Al-Mursalat",
+    "078 Surah An-Naba'",
+    "079 Surah An-Naziat",
+    "080 Surah 'Abasa",
+    "081 Surah At-Takwir",
+    "082 Surah Al-Infitar",
+    "083 Surah Al-Mutaffifin",
+    "084 Surah Al-Insyiqaq",
+    "085 Surah Al-Buruj",
+    "086 Surah At-Tariq",
+    "087 Surah Al-'Ala",
+    "088 Surah Al-Ghasyiyah",
+    "089 Surah Al-Fajr",
+    "090 Surah Al-Balad",
+    "091 Surah Asy-Syams",
+    "092 Surah Al-Lail",
+    "093 Surah Ad-Dhuha",
+    "094 Surah Al-Inshirah",
+    "095 Surah At-Tin",
+    "096 Surah Al-Alaq",
+    "097 Surah Al-Qadr",
+    "098 Surah Al-Bayyinah",
+    "099 Surah Al-Zalzalah",
+    "100 Surah Al-Adiyat",
+    "101 Surah Al-Qariah",
+    "102 Surah At-Takathur",
+    "103 Surah Al-Asr",
+    "104 Surah Al-Humazah",
+    "105 Surah Al-Fil",
+    "106 Surah Quraisy",
+    "107 Surah Al-Maun",
+    "108 Surah Al-Kauthar",
+    "109 Surah Al-Kafirun",
+    "110 Surah An-Nasr",
+    "111 Surah Al-Lahab",
+    "112 Surah Al-Ikhlas",
+    "113 Surah Al-Falaq",
+    "114 Surah An-Nas"
+  ];
+  const albumArtworks = ["_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1","_1"];
+  const trackUrl = [
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/001%20%20%20Surah%20Al%20Fatiha%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/002%20Surah%20Al%20Baqara%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/003%20Surah%20Al%20Imran%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/004%20Surah%20An%20Nisa%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/005%20Surah%20Al%20Maida%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/006%20Surah%20Al%20Anam%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/007%20Surah%20Al%20Araf%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5B_JFNbs6IUgU%5D%20(1).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/008%20Surah%20Al%20Anfal%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/009%20Surah%20At%20Taubah%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/010%20Surah%20Yunus%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/011%20Surah%20Hud%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",   
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/012%20Surah%20Yusuf%20by%20Mishary%20Al%20Afasy%20iRecite%20(1).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/013%20Surah%20Ar%20Rad%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/013%20Surah%20Ar%20Rad%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/015%20Surah%20Al%20Hijr%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/016%20%20%20Surah%20An%20Nahl%20by%20Mishary%20Al%20Afasy%20(iRecite)%20-%20M%20Asif.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/017%20%20%20Surah%20Al%20Isra%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/018%20%20%20Surah%20Al%20Kahf%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/019%20%20%20Surah%20Maryam%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/020%20Surah%20Ta%20Ha%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/021%20Surah%20Al%20Anbiya%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BNUIKzCabZfA%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/022%20Surah%20Al%20Hajj%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/023%20%20%20Surah%20Al%20Mumenoon%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/024%20Surah%20An%20Noor%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/025%20%20%20Surah%20Al%20Furqan%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/026%20Surah%20Ash%20Shuara%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5B4ZaPUeVM0tM%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/027%20%20%20Surah%20An%20Naml%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/028%20%20%20Surah%20Al%20Qasas%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/029_Surah_Al_Ankabut_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/030%20Surah%20Ar%20Rum%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BpXhar6aJmaY%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/031%20%20%20Surah%20Luqman%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/032%20Surah%20As%20Sajda%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/033%20%20%20Surah%20Al%20Ahzab%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/034%20%20%20Surah%20Saba%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/035%20%20%20Surah%20Fatir%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/036%20Surah%20Ya%20Seen%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/037%20Surah%20As%20Saaffat%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/038%20Surah%20Sad%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/039%20Surah%20Az%20Zumar%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/040%20%20%20Surah%20Al%20Mumin%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/041%20Surah%20Fussilat%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BVx7EKm90hSA%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/042%20%20%20Surah%20Ash%20Shura%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/043_Surah_Az_Zukhruf_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/044%20%20%20Surah%20Ad%20Dukhan%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/045%20Surah%20Al%20Jathiya%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/046%20Surah%20Al%20Ahqaf%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/047%20Surah%20Muhammad%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5ByD7gNwi4esQ%5D%20(1).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/048%20%20%20Surah%20Al%20Fath%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/049%20%20%20Surah%20Al%20Hujurat%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/050%20%20%20Surah%20Qaf%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+     "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/051%20Surah%20Az%20Dhariyat%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/052%20%20%20Surah%20At%20Tur%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/053%20Surah%20An%20Najm%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/054%20Surah%20Al%20Qamar%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/055%20Surah%20Ar%20Rahman%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/056%20%20%20Surah%20Al%20Waqia%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/057%20%20%20Surah%20Al%20Hadid%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/058%20Surah%20Al%20Mujadila%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BGaDJ8-BKqr0%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/059%20Surah%20Al%20Hashr%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/060%20Surah%20Al%20Mumtahina%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/061%20%20%20Surah%20As%20Saff%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",   
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/062%20%20%20Surah%20Al%20Jumua%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/063%20Surah%20Al%20Munafiqoon%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/064%20Surah%20At%20Taghabun%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/065%20%20%20Surah%20At%20Talaq%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/066%20Surah%20At%20Tahrim%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/067%20%20%20Surah%20Al%20Mulk%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/068%20Surah%20Al%20Qalam%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/069%20%20%20Surah%20Al%20Haqqa%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/070%20Surah%20Al%20Maarij%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5Bai30YF3AGb4%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/071%20Surah%20Nooh%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/072%20Surah%20Al%20Jinn%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BVhFW2th-iIo%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/073%20%20%20Surah%20Al%20Muzammil%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/074%20%20%20Surah%20Al%20Mudathir%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/075%20Surah%20Al%20Qiyama%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/076%20%20%20Surah%20Ad%20Dahr%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/077%20Surah%20Al%20Mursalat%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/078%20Surah%20An%20Naba%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/079%20Surah%20An%20Naziat%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/080%20Surah%20Abasa%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/081%20Surah%20At%20Takwir%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5B2l5gZctbgcE%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/082%20Surah%20Al%20Infitar%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BY2NEO3LDec8%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/083%20%20%20Surah%20Al%20Mutaffifin%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/084%20%20%20Surah%20Al%20Inshiqaq%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/085%20Surah%20Al%20Burooj%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BUZvJebrIQfk%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/086%20%20%20Surah%20At%20Tariq%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/087%20%20%20Surah%20Al%20Ala%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/088%20%20%20Surah%20Al%20Ghashiya%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/089%20%20%20Surah%20Al%20Fajr%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/090%20Surah%20Al%20Balad%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BPlXaz9onniw%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/091%20%20%20Surah%20Ash%20Shams%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/092%20%20%20Surah%20Al%20Lail%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/093%20%20%20Surah%20Ad%20Dhuha%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/094%20Surah%20Al%20Inshira%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/095%20%20%20Surah%20At%20Tin%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/096%20Surah%20Al%20Alaq%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/097%20%20%20Surah%20Al%20Qadr%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/098%20%20%20Surah%20Al%20Baiyina%20by%20Mishary%20Al%20Afasy%20(iRecite)-yt.savetube.me.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/099%20%20%20Surah%20Az%20Zilzal%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/100%20Surah%20Al%20Adiyat%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BYaOZS4ZoRY8%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/101%20%20%20Surah%20Al%20Qaria%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/102%20%20%20Surah%20At%20Takathur%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/103_Surah_Al_Asr_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/104%20Surah%20Al%20Humaza%20by%20Mishary%20Al%20Afasy%20(iRecite)%20%5BrnST2MaCjrY%5D.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/105%20%20%20Surah%20Al%20Fil%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/106_Surah_Quraysh_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/107_Surah_Al_Maun_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/youtube_gguAmbBNhJQ_audio.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/109%20%20%20Surah%20Al%20Kafirun%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/110_Surah_An_Nasr_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/111_Surah_Al_Lahab_by_Mishary_Al_Afasy_iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/112%20Surah%20Al%20Ikhlas%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/113%20Surah%20Al%20Falaq%20by%20Mishary%20Al%20Afasy%20iRecite.mp3",
+    
+    "https://file.garden/Z-a1C4tJlx8uXKO5/hmmmm/114%20%20%20Surah%20An%20Nas%20by%20Mishary%20Al%20Afasy%20(iRecite).mp3",
+  ];
+
+  let bgArtworkUrl,
+    i = playPauseButton.find("i"),
+    seekT,
+    seekLoc,
+    seekBarPos,
+    cM,
+    ctMinutes,
+    ctSeconds,
+    curMinutes,
+    curSeconds,
+    durMinutes,
+    durSeconds,
+    playProgress,
+    bTime,
+    nTime = 0,
+    buffInterval = null,
+    tFlag = false,
+    currIndex = -1;
+
+  function playPause() {
+    setTimeout(function () {
+      if (audio.paused) {
+        playerTrack.addClass("active");
+        albumArt.addClass("active");
+        checkBuffering();
+        i.attr("class", "fas fa-pause");
+        audio.play();
+      } else {
+        playerTrack.removeClass("active");
+        albumArt.removeClass("active");
+        clearInterval(buffInterval);
+        albumArt.removeClass("buffering");
+        i.attr("class", "fas fa-play");
+        audio.pause();
+      }
+    }, 300);
+  }
+
+  function showHover(event) {
+    seekBarPos = sArea.offset();
+    seekT = event.clientX - seekBarPos.left;
+    seekLoc = audio.duration * (seekT / sArea.outerWidth());
+
+    sHover.width(seekT);
+
+    cM = seekLoc / 60;
+
+    ctMinutes = Math.floor(cM);
+    ctSeconds = Math.floor(seekLoc - ctMinutes * 60);
+
+    if (ctMinutes < 0 || ctSeconds < 0) return;
+
+    if (ctMinutes < 0 || ctSeconds < 0) return;
+
+    if (ctMinutes < 10) ctMinutes = "0" + ctMinutes;
+    if (ctSeconds < 10) ctSeconds = "0" + ctSeconds;
+
+    if (isNaN(ctMinutes) || isNaN(ctSeconds)) seekTime.text("--:--");
+    else seekTime.text(ctMinutes + ":" + ctSeconds);
+
+    seekTime.css({ left: seekT, "margin-left": "-21px" }).fadeIn(0);
+  }
+
+  function hideHover() {
+    sHover.width(0);
+    seekTime
+      .text("00:00")
+      .css({ left: "0px", "margin-left": "0px" })
+      .fadeOut(0);
+  }
+
+  function playFromClickedPos() {
+    audio.currentTime = seekLoc;
+    seekBar.width(seekT);
+    hideHover();
+  }
+
+  function updateCurrTime() {
+    nTime = new Date();
+    nTime = nTime.getTime();
+
+    if (!tFlag) {
+      tFlag = true;
+      trackTime.addClass("active");
+    }
+
+    curMinutes = Math.floor(audio.currentTime / 60);
+    curSeconds = Math.floor(audio.currentTime - curMinutes * 60);
+
+    durMinutes = Math.floor(audio.duration / 60);
+    durSeconds = Math.floor(audio.duration - durMinutes * 60);
+
+    playProgress = (audio.currentTime / audio.duration) * 100;
+
+    if (curMinutes < 10) curMinutes = "0" + curMinutes;
+    if (curSeconds < 10) curSeconds = "0" + curSeconds;
+
+    if (durMinutes < 10) durMinutes = "0" + durMinutes;
+    if (durSeconds < 10) durSeconds = "0" + durSeconds;
+
+    if (isNaN(curMinutes) || isNaN(curSeconds)) tProgress.text("00:00");
+    else tProgress.text(curMinutes + ":" + curSeconds);
+
+    if (isNaN(durMinutes) || isNaN(durSeconds)) tTime.text("00:00");
+    else tTime.text(durMinutes + ":" + durSeconds);
+
+    if (
+      isNaN(curMinutes) ||
+      isNaN(curSeconds) ||
+      isNaN(durMinutes) ||
+      isNaN(durSeconds)
+    )
+      trackTime.removeClass("active");
+    else trackTime.addClass("active");
+
+    seekBar.width(playProgress + "%");
+
+    if (playProgress == 100) {
+      i.attr("class", "fa fa-play");
+      seekBar.width(0);
+      tProgress.text("00:00");
+      albumArt.removeClass("buffering").removeClass("active");
+      clearInterval(buffInterval);
+    }
+  }
+
+  function checkBuffering() {
+    clearInterval(buffInterval);
+    buffInterval = setInterval(function () {
+      if (nTime == 0 || bTime - nTime > 1000) albumArt.addClass("buffering");
+      else albumArt.removeClass("buffering");
+
+      bTime = new Date();
+      bTime = bTime.getTime();
+    }, 100);
+  }
+
+  function selectTrack(flag) {
+    if (flag == 0 || flag == 1) ++currIndex;
+    else --currIndex;
+
+    if (currIndex > -1 && currIndex < albumArtworks.length) {
+      if (flag == 0) i.attr("class", "fa fa-play");
+      else {
+        albumArt.removeClass("buffering");
+        i.attr("class", "fa fa-pause");
+      }
+
+      seekBar.width(0);
+      trackTime.removeClass("active");
+      tProgress.text("00:00");
+      tTime.text("00:00");
+
+      currAlbum = albums[currIndex];
+      currTrackName = trackNames[currIndex];
+      currArtwork = albumArtworks[currIndex];
+
+      audio.src = trackUrl[currIndex];
+
+      nTime = 0;
+      bTime = new Date();
+      bTime = bTime.getTime();
+
+      if (flag != 0) {
+        audio.play();
+        playerTrack.addClass("active");
+        albumArt.addClass("active");
+
+        clearInterval(buffInterval);
+        checkBuffering();
+      }
+
+      albumName.text(currAlbum);
+      trackName.text(currTrackName);
+      albumArt.find("img.active").removeClass("active");
+      $("#" + currArtwork).addClass("active");
+
+      bgArtworkUrl = $("#" + currArtwork).attr("src");
+
+      bgArtwork.css({ "background-image": "url(" + bgArtworkUrl + ")" });
+    } else {
+      if (flag == 0 || flag == 1) --currIndex;
+      else ++currIndex;
+    }
+  }
+
+  function initPlayer() {
+    audio = new Audio();
+
+    selectTrack(0);
+
+    audio.loop = false;
+
+    playPauseButton.on("click", playPause);
+
+    sArea.mousemove(function (event) {
+      showHover(event);
+    });
+
+    sArea.mouseout(hideHover);
+
+    sArea.on("click", playFromClickedPos);
+
+    $(audio).on("timeupdate", updateCurrTime);
+
+    playPreviousTrackButton.on("click", function () {
+      selectTrack(-1);
+    });
+    playNextTrackButton.on("click", function () {
+    selectTrack(1);
+});
+
+// **Auto-play next song when the current one ends**
+$(audio).on("ended", function () {
+    selectTrack(1); // Moves to the next song automatically
+});
+  }
+
+  initPlayer();
+});
+
+</script>
+   
+ 
+</body>
+</html>
+
+
