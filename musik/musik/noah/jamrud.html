@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Noah Musik</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+  <!-- Demo styles -->
+  <style>
+    html,
+    body {
+      background: rgb(255, 255, 255, 0.0);
+      
+    }
+
+    @import url("https://fonts.googleapis.com/css2?family=Alkatra&display=swap");
+/* --------------------------- Colors ------------------------- */
+/* ---------------------- Width & Heights --------------------- */
+/* --------------------------- Mixins -------------------------- */
+/* ------------------------ Reset CSS ----------------------- */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.material-symbols-rounded {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 200, "opsz" 48;
+  font-size: 18px;
+  color: #0066b2;
+}
+
+.player-controls__play .material-symbols-rounded {
+  font-size: 25px;
+}
+
+/* --------------------------- CSS -------------------------- */
+body {
+  
+}
+
+.card {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 7px;
+  width: 100%;
+  max-width: 280px;
+  height: 82px;
+  border: 1px solid #0066b2;
+  border-radius: 10px;
+  background: linear-gradient(132deg, #1d1f1d, #f21111, #212335);
+  background-size: 300% 300%;
+  animation: Gradient 10s ease infinite;
+  z-index: 0;
+
+}
+.cube {
+  position: absolute;
+  top: 20px;
+  left: 80%;
+  width: 6.5px;
+  height: 5px;
+  border: solid 0.0px #D7D4E4;
+  transform-origin: top left;
+  transform: scale(0) rotate(0deg) translate(-50%, -50%);
+  animation: cube 12s ease-in forwards infinite;
+  z-index: 0;
+  background-image: url(noah.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.cube:nth-child(2n) {
+  border-color: #ddd ;
+}
+.cube:nth-child(2) {
+  animation-delay: 2s;
+  left: 60%;
+  top: 30px;
+}
+.cube:nth-child(3) {
+  animation-delay: 4s;
+  left: 30%;
+  top: 50px;
+}
+.cube:nth-child(4) {
+  animation-delay: 6s;
+  left: 15%;
+  top: 60px;
+}
+.cube:nth-child(5) {
+  animation-delay: 8s;
+  left: 95%;
+  top: 20px;
+}
+.cube:nth-child(6) {
+  animation-delay: 10s;
+  left: 99%;
+  top:40px;
+}
+  /* Animate Background*/
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes cube {
+  from {
+    transform: scale(0) rotate(0deg) translate(-50%, -50%);
+    opacity: 1;
+  }
+  to {
+    transform: scale(12) rotate(960deg) translate(-50%, -50%);
+    opacity: 0;
+  }
+}
+
+
+
+
+.song {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+}
+  .album {
+  position: absolute;
+  background: rgb(120, 8, 8, 0.9);
+  top: -28px;
+  right: 10px;
+   font-size: 16px;
+  color: #fff;
+  letter-spacing: 1.5px;
+   z-index: -9;
+  text-shadow: 0.1px 0.1px 0.2px yellow;
+  border: 0.9px solid #aaa;
+  padding: 4px 17px;
+  border-radius: 4px;
+ }
+.song__title {
+  font-family: sans-serif;
+  color: #fff;
+  letter-spacing: 0.7px;
+   z-index: 9;
+  text-shadow: 0.1px 0.1px 0.2px pink;
+  padding:1px;
+ }
+  .song__title {
+  left: 40%;
+   font-size: 12px;
+  text-align: left;
+  animation: blinker 1.8s linear infinite;
+ }
+  
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+
+
+.song__artist {
+   font-family: system-ui;
+  font-size: 12px;
+  color: #fff;
+  
+}
+
+.song-duration {
+  position: absolute;
+  bottom: 15px;
+   right: 15px;
+  display: flex;
+  gap: 2px;
+  font-family: "Alkatra", cursive;
+  font-size: 10px;
+  color: #fff;
+}
+.song-duration__lapsed, .song-duration__total {
+  display: inline-block;
+}
+
+.disc❌ {
+  position: absolute;
+  top: -30px;
+   left: 8px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, white 0px, white 10px, #28282b 10px, #28282b 12px, transparent 12px, transparent 20px, #cf1020 20px, #cf1020 24px, transparent 24px, transparent 44px, #28282b 44px, #28282b 54px, #353935 54px, #353935 64px, rgba(0, 0, 0, 0.3) 64px, rgba(0, 0, 0, 0.3) 94px, #71797e 94px, #71797e 95px, #28282b 95px), repeating-linear-gradient(45deg, #e41c38 0px, #e41c38 2px, #ff3800 2px, #ff3800 4px);
+}
+  .disc {
+  position: absolute;
+  top: -30px;
+   left: 8px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-image: url(disc.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.disc_play {
+  animation: rotate-disc 5s linear 0s infinite forwards;
+}
+
+.disc-arm {
+  position: absolute;
+  top: -28px;
+  left: 64px;
+  height: 45px;
+  width: 6px;
+  background: yellow;
+  border-radius: 0 0 50% 50%;
+  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.5);
+  transform-origin: top left;
+  transition: all 0.4s ease-in-out;
+}
+.disc-arm::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -100%;
+  width: 18px;
+  height: 25px;
+  border-radius: 35%;
+  background-image: linear-gradient(120deg, #71797e 20%, #4d4d4d 60%);
+}
+.disc-arm_play {
+  transform: rotate(25deg);
+  animation: wiggle 500ms infinite linear;
+}
+
+.speakers {
+  position: absolute;
+  top: 45%;
+}
+.speakers_right {
+  right: 10%;
+}
+.speakers_left {
+  left: 10%;
+}
+  .play {
+  border-top: 10px solid white;
+  border-bottom: 10px solid white;
+  border-left: 10px solid black;
+  height: 0px;
+}
+.player-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 50%;
+  padding-left: 20px;
+  padding-bottom: 1px;
+}
+.player-controls .audio {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.player-controls__prev, .player-controls__next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.3) 50%, #bce5f7 51%);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.4px #0066b2;
+  transition: all 0.2s ease-in-out;
+}
+ .player-controls__play {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  padding-left: 2px;
+  border-radius: 4px;
+  border: none;
+  background-image: linear-gradient(120deg, rgba(255, 255, 255, 0.3) 50%, #bce5f7 51%);
+  box-shadow: 0 0 0 0.5px #0066b2;
+  transition: all 0.2s ease-in-out;
+}
+.player-controls__prev:hover, .player-controls__play:hover, .player-controls__next:hover {
+  box-shadow: 0 0 0 0.5px #0066b2;
+  cursor: pointer;
+  opacity: 0.8;
+}
+.player-controls__play {
+  position: relative;
+  width: 35px;
+  height: 25px;
+}
+.player-controls__play .wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  content: "";
+  background: #0066b2;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: animate-wave 0.6s linear infinite;
+  pointer-events: none;
+}
+  .material {
+  position: absolute;
+  bottom: -12px;
+  right: -0px;
+  font-family: "Alkatra", cursive;
+  font-size: 35px;
+  color: #fff;
+}
+.music-notes {
+  position: absolute;
+  font-size: 30px;
+  color: rgb(69, 4, 4, 0.8);
+  opacity: 0;
+}
+.music-notes_one {
+  top: -20%;
+  animation-delay: 0.4s;
+}
+.music-notes_two {
+  bottom: -15%;
+  left: 5%;
+  animation-delay: 1s;
+}
+.music-notes_three {
+  top: 30%;
+  left: -5%;
+  animation-delay: 1.5s;
+}
+.music-notes_four {
+  bottom: -50%;
+  left: 60%;
+  animation-delay: 0.8s;
+}
+.music-notes_five {
+  bottom: -10%;
+  right: 2%;
+  animation-delay: 1.2s;
+}
+.music-notes_six {
+  top: 10%;
+  right: -1%;
+  animation-delay: 0.2s;
+}
+.music-notes_play {
+  opacity: 1;
+  animation: musical-notes-playing 4s infinite linear;
+}
+
+@keyframes animate-wave {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.3;
+  }
+  100% {
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+@keyframes rotate-disc {
+  0% {
+    transform: rotateZ(0);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+@keyframes musical-notes-playing {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) translate(50%, -50%);
+  }
+  80% {
+    opacity: 0;
+    transform: scale(1.5) translate(100%, -100%);
+  }
+  100% {
+    transform: scale(1.5) translate(100%, -100%);
+    opacity: 0;
+  }
+}
+@keyframes wiggle {
+  0% {
+    transform: translateY(-1px) rotate(25deg);
+  }
+  50% {
+    transform: translateY(0px) rotate(26deg);
+  }
+  100% {
+    transform: translateY(-1px) rotate(25deg);
+  }
+}
+
+  </style>
+
+</head>
+
+<body>
+  <center>
+ 
+<div class="card">
+  <div class="song">
+
+  <div class="cube"></div>
+       <div class="cube"></div>
+       <div class="cube"></div>
+       <div class="cube"></div>
+      <div class="cube"></div>
+
+    <h1 class="album">45 𝔏𝔞𝔤𝔲 𝕹𝖔𝖆𝖍</h1>
+    <h1 class="song__title"></h1>
+    <p class="song__artist"></p>
+    <p class="song-duration"><span class="song-duration__lapsed">0:00</span><span>|</span><span class="song-duration__total">5:00</span></p>
+  </div>
+  <div class="disc"></div>
+  <div class="disc-arm"></div>
+  <div class="speakers speakers_right"><span class="material">&#9835;</span></div>
+  <div class="speakers speakers_left"><span class="material"></span></div>
+  <div class="player-controls">
+    <audio class="audio"></audio>
+    <button class="player-controls__prev"><span class="material-symbols-rounded">&#10094;</span></button>
+    <button class="player-controls__play"><span class="material-symbols-rounded">&#9654;</span><span class="js-wave"></span></button>
+    <button class="player-controls__next"><span class="material-symbols-rounded">&#10095;</span></button>
+  </div>
+  <div class="music-notes music-notes_one">&#9835; &#9833;</div>
+  <div class="music-notes music-notes_two">&#9839; &#9834;</div>
+  <div class="music-notes music-notes_three">&#9834;</div>
+  <div class="music-notes music-notes_four">&#9833;</div>
+  <div class="music-notes music-notes_five">&#9835;</div>
+  <div class="music-notes music-notes_six">&#9834;</div>
+
+</div>
+  </center>
+
+  <script src="js/jquery-1.7.1.min.js"></script>
+  <script>
+   /* ------------------------- Helper Functions ------------------------- */
+const getDomElement = (baseElement = document, cssSelector = "") =>
+baseElement.querySelector(cssSelector);
+
+const convertSecsToMins = secs => {
+  return (secs / 60).toFixed(2);
+};
+
+/* ------------------------------ Songs Data ---------------------------- */
+const songs = [
+{
+  title: "  1. Bintang_Di_Surga",
+  artist: "Noah",
+  url:
+  "mp3/1_Bintang_Di_Surga.mp3" },
+
+{
+  title: "2. Mimpi_Yang_Sempurna ",
+  artist: "Noah",
+  url:
+  "mp3/2_Mimpi_Yang_Sempurna.mp3" },
+
+ {
+  title: "3. Hidup_Untukmu_Mati..",
+  artist: "Noah",
+  url:
+  "mp3/3_Hidup_Untukmu_Mati_Tanpamu.mp3" },
+
+  {
+  title: "4. Separuh_Aku",
+  artist: "Noah",
+  url:
+  "mp3/4_Separuh_Aku.mp3" },
+
+{
+  title: "5. Menunggumu",
+  artist: "Noah",
+  url:
+  "mp3/5_Menunggumu.mp3" },
+
+{
+  title: "6. Topeng",
+  artist: "Noah",
+  url:
+  "mp3/6-Topeng.mp3" },
+ {
+  title: "7 Kita_Tertawa",
+  artist: "Noah",
+  url:
+  "mp3/Kita_Tertawa.mp3" },
+ {
+  title: "8. Mungkin_Nanti",
+  artist: "Noah",
+  url:
+  "mp3/Mungkin_Nanti.mp3" },
+ {
+  title: "9. 2_DSD",
+  artist: "Noah",
+  url:
+  "mp3/2_DSD(Dua_Dalam_Satu_Dunia).mp3" },
+ {
+  title: " 10. Kukatakan_Dgn_Indah ",
+  artist: "Noah",
+  url:
+  "mp3/Kukatakan_Dengan_Indah.mp3" },
+{
+  title: "11. Ada_Apa_Denganmu",
+  artist: "Noah",
+  url:
+  "mp3/Ada_Apa_Denganmu.mp3" },
+{
+  title: "12 Membebaniku",
+  artist: "Noah",
+  url:
+  "mp3/Membebaniku.mp3" },
+ {
+  title: "13. Satu_Hati",
+  artist: "Noah",
+  url:
+  "mp3/Satu_Hati.mp3" },
+ {
+  title: "14.  Sahabat ~",
+  artist: "Noah",
+  url:
+  "mp3/Sahabat.mp3" },
+ {
+  title: "15. Cobalah_Mengerti ",
+  artist: "Noah",
+  url:
+  "mp3/Cobalah_Mengerti.mp3" },
+ {
+  title: "16. Sally_Sendiri",
+  artist: "Noah",
+  url:
+  "mp3/Sally_Sendiri.mp3" },
+ {
+  title: " 17. Hari_Yang_Cerah... ",
+  artist: "Noah",
+  url:
+  "mp3/Hari_Yang_Cerah_Untuk_Jiwa_Yang_Sepi.mp3" },
+ {
+  title: "18. Dan_Hilang",
+  artist: "Noah",
+  url:
+  "mp3/Dan_Hilang.mp3" },
+ {
+  title: " 19. Dibalik_Awan ",
+  artist: "Noah",
+  url:
+  "mp3/Dibalik_Awan.mp3" },
+  {
+  title: "20. Tak_Bisakah",
+  artist: "Noah",
+  url:
+  "mp3/Tak_Bisakah.mp3" },
+ {
+  title: "21. Di_Belakangku.",
+  artist: "Noah",
+  url:
+  "mp3/Di_Belakangku.mp3" },
+ {
+  title: "22. Walau_Habis_Terang *",
+  artist: "Noah",
+  url:
+  "mp3/Walau_Habis_Terang.mp3" },
+ {
+  title: "23. Aku_Dan_ Bintang",
+  artist: "Noah",
+  url:
+  "mp3/Aku_Dan_ Bintang.mp3" },
+{
+  title: "24. Dunia_Yang_Terlupa",
+  artist: "Noah",
+  url:
+  "mp3/Dunia_Yang_Terlupa.mp3" },
+ {
+  title: "25. Taman_Langit",
+  artist: "Peterpen",
+  url:
+  "mp3/Taman_Langit.mp3" },
+ {
+  title: "26. Khayalan_Tingkat_Tinggi *",
+  artist: "Noah",
+  url:
+  "mp3/Khayalan_Tingkat_Tinggi.mp3" },
+   {
+  title: "27. Jauh_Mimpiku",
+  artist: "Noah",
+  url:
+  "mp3/Jauh_Mimpiku.mp3" },
+   {
+  title: "28. Yang_Terdalam",
+  artist: "Noah",
+  url:
+  "mp3/Yang_Terdalam.mp3" },
+  {
+  title: "29. Menghapus_Jejakmu",
+  artist: "Noah",
+  url:
+  "mp3/Menghapus_Jejakmu.mp3" },
+  {
+  title: "30. Tak_Lagi_Sama.",
+  artist: "Noah",
+  url:
+  "mp3/Tak_Lagi_Sama.mp3" },
+  {
+  title: "31. Demi_Kita.",
+  artist: "Noah",
+  url:
+  "mp3/Demi_Kita.mp3" },
+  {
+  title: "32. Ini_Cinta",
+  artist: "Noah",
+  url:
+  "mp3/Ini_Cinta.mp3" },
+  {
+  title: "33. Jika_Engkau",
+  artist: "Noah",
+  url:
+  "mp3/Jika_Engkau.mp3" },
+  {
+  title: "34. Raja_Negeriku",
+  artist: "Noah",
+  url:
+  "mp3/Raja_Negeriku.mp3" },
+  {
+  title: " 35. Tinggallah_Kusendiri",
+  artist: "Noah",
+  url:
+  "mp3/Tinggallah_Kusendiri.mp3" },
+  {
+  title: "36. Sendiri_Lagi",
+  artist: "Noah",
+  url:
+  "mp3/Sendiri_Lagi.mp3" },
+  {
+  title: "37. Sajadah_Panjang",
+  artist: "Noah",
+  url:
+  "mp3/Sajadah_Panjang.mp3" },
+  {
+  title: "38. Kupu_Kupu_Malam",
+  artist: "Noah",
+  url:
+  "mp3/Kupu_Kupu_Malam.mp3" },
+  {
+  title: "39. Cinta_Bukan_Dusta",
+  artist: "Noah",
+  url:
+  "mp3/Cinta_Bukan_Dusta.mp3" },
+  {
+  title: "40. Biar_Ku_Sendiri",
+  artist: "Noah",
+  url:
+  "mp3/Biar_Ku_Sendiri.mp3" },
+  {
+  title: "41. Langit_Tak_Mendengar",
+  artist: "Noah",
+  url:
+  "mp3/Langit_Tak_Mendengar.mp3" },
+  {
+  title: "42. Kirana_Cover_Dewa19",
+  artist: "Noah",
+  url:
+  "mp3/Kirana_Cover_Dewa19.mp3" },
+  {
+  title: "43. Hero.",
+  artist: "Noah",
+  url:
+  "mp3/Hero.mp3" },
+  {
+  title: "44. Dilema_Besar",
+  artist: "Noah",
+  url:
+  "mp3/Dilema_Besar.mp3" },
+  {
+  title: "45. Dara.",
+  artist: "Noah",
+  url:
+  "mp3/Dara.mp3" },
+];
+
+
+
+/* ------------------------- Select DOM Elements ------------------------- */
+const musicPlayer = getDomElement(document, ".card");
+const musicalNotes = musicPlayer.querySelectorAll(".music-notes");
+const playerDisc = getDomElement(musicPlayer, ".disc");
+const playerDiscArm = getDomElement(musicPlayer, ".disc-arm");
+const playBtn = getDomElement(musicPlayer, ".player-controls__play");
+const playBtnIcon = getDomElement(playBtn, ".material-symbols-rounded");
+const playBtnWaveAnimation = getDomElement(playBtn, ".js-wave");
+const previousBtn = getDomElement(musicPlayer, ".player-controls__prev");
+const nextBtn = getDomElement(musicPlayer, ".player-controls__next");
+const audioElement = getDomElement(musicPlayer, ".audio");
+const songTitle = getDomElement(musicPlayer, ".song__title");
+const songArtist = getDomElement(musicPlayer, ".song__artist");
+const songDurationLapsed = getDomElement(musicPlayer, ".song-duration__lapsed");
+const songDurationTotal = getDomElement(musicPlayer, ".song-duration__total");
+
+// Current song index
+let currentSongIndex = 0;
+
+// Load song once the music player is loaded
+const loadSong = song => {
+  songTitle.textContent = song.title;
+  songArtist.textContent = song.artist;
+  audioElement.src = song.url;
+};
+
+// Play a song
+const playSong = (playBtn, audioElement) => {
+  playBtn.classList.add("js-play");
+  playBtnWaveAnimation.classList.add("wave");
+  playerDisc.classList.add("disc_play");
+  playerDiscArm.classList.add("disc-arm_play");
+  musicalNotes.forEach(note => note.classList.add("music-notes_play"));
+  playBtnIcon.textContent = "◾ ";
+  setTimeout("audioElement.play()", 500);
+};
+
+// Pause a song
+const pauseSong = (playBtn, audioElement) => {
+  playBtn.classList.remove("js-play");
+  playBtnWaveAnimation.classList.remove("wave");
+  playerDisc.classList.remove("disc_play");
+  playerDiscArm.classList.remove("disc-arm_play");
+  musicalNotes.forEach(note => note.classList.remove("music-notes_play"));
+  playBtnIcon.textContent = " ▶ ";
+  audioElement.pause();
+};
+
+// Get song's total duration after the it's metadata is loaded
+const handleLoadedAudioMetadata = (event, songTotalDurationElement) => {
+  const songDurationInSecs = event.target.duration;
+  songTotalDurationElement.textContent = convertSecsToMins(songDurationInSecs);
+};
+
+// Play or pause the song whenever the play button is clicked
+const handlePlayButton = (playBtn, audioElement) => {
+  const isSongPlaying = playBtn.classList.contains("js-play");
+  isSongPlaying ?
+  pauseSong(playBtn, audioElement) :
+  playSong(playBtn, audioElement);
+};
+
+// Go to the previous song whenever the previous button is clicked
+const handlePreviousBtn = () => {
+  currentSongIndex--;
+  if (currentSongIndex < 0) {
+    currentSongIndex = songs.length - 1;
+  }
+  loadSong(songs[currentSongIndex]);
+  playSong(playBtn, audioElement);
+};
+
+// Go to the next song whenever the previous button is clicked
+const handleNextBtn = () => {
+  currentSongIndex++;
+  if (currentSongIndex == songs.length) {
+    currentSongIndex = 0;
+  }
+  loadSong(songs[currentSongIndex]);
+  playSong(playBtn, audioElement);
+};
+
+// Play the next song when the current song has ended
+const handleCurrentSongEnded = () => handleNextBtn();
+
+// Update the current song duration when the song is playing
+const handleUpdateProgress = (event, songLapsedDurationElement) => {
+  const { currentTime, duration } = event.target;
+  songLapsedDurationElement.textContent = convertSecsToMins(currentTime);
+};
+
+// Add Event Listeners
+playBtn.addEventListener("click", () =>
+handlePlayButton(playBtn, audioElement));
+
+previousBtn.addEventListener("click", handlePreviousBtn);
+nextBtn.addEventListener("click", handleNextBtn);
+audioElement.addEventListener("timeupdate", event => {
+  handleUpdateProgress(event, songDurationLapsed);
+});
+audioElement.addEventListener("ended", handleCurrentSongEnded);
+audioElement.onloadedmetadata = (event) =>
+handleLoadedAudioMetadata(event, songDurationTotal);
+
+// Load song
+loadSong(songs[currentSongIndex]);
+
+</script>
+   
+ 
+</body>
+</html>
+
+
