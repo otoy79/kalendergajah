@@ -15,7 +15,7 @@
    background: rgb(255, 255, 255, 0.0);
    height: 125px;
    width: 90%;
-   overflow: visible;
+   overflow-y: hidden;
     overflow: hidden;
    z-index: 9;
     
