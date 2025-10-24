@@ -16,7 +16,7 @@
    height: 125px;
    width: 90%;
    overflow: visible;
-    overflow-x: hidden;
+    overflow: hidden;
    z-index: 9;
     
 }
