@@ -36,40 +36,52 @@
    z-index: 9;
     
 }
-   .marquee {
-    position: fixed;
-    font-size: 10px;
-    top: 1px;
-    right: 0px;
-   width: 680%;
-   z-index: 999;
-   }
-   .textMarque {
-    color: #777;
-    bottom: 0;
-    width: 100%;
-  position: relative;
-  animation: linear infinite;
-  animation-name: run;
-  animation-duration: 130s;
+    .marquee {
+  position: fixed;
+  top: px;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 0.1em 0;
+  transform: rotate(-0deg) scale(1.1);
+  background: rgb(247, 243, 240, 0.5);
+  z-index: 0;
 }
- @keyframes run {
+.marquee__text {
+  display: inline-block;
+  padding-left: 100%;
+  font-size: 9px;
+  color: #777;
+  animation: marquee-direction 35s linear infinite;
+}
+.marquee__text[data-direction=rtl] {
+  /* DON'T CHANGE */
+  --_right: 0%;
+  --_left: -100%;
+}
+.marquee__text[data-direction=ltr] {
+  /* DON'T CHANGE */
+  --_right: -100%;
+  --_left: 0%;
+}
+
+@keyframes marquee-direction {
   0% {
-    left: 0;
-  }
-  50% {
-    left: 100%;
+    transform: translateX(var(--_right));
   }
   100% {
-    left: 0;    
+    transform: translateX(var(--_left));
   }
 }
+
 </style>
 </head>
 <body>
    <div class="marquee">
-    <div class="textMarque">🎶 Happy Day Playing Music 🎤............   Sunday (Padi)........... Monday (Dewa19).......... Tuesday (Jamrud)..........  Wednesday (Ungu)......... Thursday (Noah)........... Friday (Denny Caknan).......... Saturday (Wali) </div>
-</div>
+    <div class="marquee__text" data-direction="rtl"> 🎶 Happy Day Playing Music 🎤............   Sunday (Padi)........... Monday (Dewa19).......... Tuesday (Jamrud)..........  Wednesday (Ungu)......... Thursday (Noah)........... Friday (Denny Caknan).......... Saturday (Wali) 
+     </div>
+  </div>
+
 <script>
     const today = new Date();
     const dayOfWeek = today.getDay();
