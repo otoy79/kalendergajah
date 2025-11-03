@@ -1,0 +1,450 @@
+  <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Kritik dan Saran Anda</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
+
+ <style>
+  html, body {
+   background: rgb(255, 255, 255, 0.8);
+  }
+ body {
+  font-size: 12px;
+  padding: 10px;
+}
+  .com2{
+  display: flex;
+}
+ fieldset {
+  border: 0.01px solid #fff;
+  margin: 0px;
+  color: #111;
+}
+.comment-wrapper {
+  background:rgba(166, 104, 12, 0.2);
+  margin-top: 2px;
+  max-width: 99%;
+  border: 0.5px solid #0c4559;
+  color: #0c4559;
+  padding-top: 10px;
+  
+  border-radius: 8px;
+}
+.comments-counter {
+  display:flex;
+  justify-content: flex-start;
+  align-items:center;
+}
+ .comments-counter p {margin:0;}
+.comments-counter p{
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 33px;
+color: #4f3207;
+}
+.counter-coment {
+  font-family: 'Aeroport';
+  margin-left: 5px;
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 22px;
+color: #4f3207;
+  background: #EEEDED;
+border-radius: 7px;
+  padding: 2px 7px 2px 7px;
+}
+.comments-counter {
+  margin-top:20px;
+  margin-bottom:20px;
+}
+ input  {
+  font-family: 'Aeroport';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 10px;
+  color:#000;
+  background: #F2F3F4;
+border-radius: 5px;
+  outline:none!important;
+  border:none!important;
+  padding: 4px 8px;
+  margin: 0px;
+  width:90%;
+}
+.name-com:placeholder {
+  color: #8C8989;
+}
+
+ .comment-com{
+  width:90%;
+  font-family: 'Aeroport';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 22px;
+  color:#000;
+  background: #F2F3F4;
+border-radius: 5px;
+  outline:none!important;
+  border:none!important;
+  padding: 6px 10px;
+  margin: 0px;
+  resize:none;
+}
+.comment:focus {
+  resize:auto;
+}
+.submit-comment {
+  width: 75px;
+  font-family: 'Aeroport';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 16px;
+text-transform: uppercase;
+color: #FFFFFF;
+  background: #6e4209;
+border-radius: 4px;
+  border:none!important;
+  padding: 8px 16px;
+  cursor:pointer;
+  transition: .3s;
+  margin: 10px;
+}
+.submit-comment:hover {
+  transform:translateY(-2px);
+}
+.field-comments {
+  margin:0px;
+}
+.comment-name {
+font-style: normal;
+font-weight: 700;
+font-size: 13px;
+ color: #444;
+}
+.comment-name::before {
+  width:12px;
+  height:12px;
+  margin-right: 10px;
+  content: ' ';
+  color: #555;
+  border: 0.1px solid #555;
+  padding: 0px 7px;
+  border-radius: 50%;
+  background: linear-gradient(rgba(242, 242, 242, 0.3), rgba(168, 168, 158, 0.5)), url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIj48IS0tIUZvbnQgQXdlc29tZSBGcmVlIDYuNy4yIGJ5IEBmb250YXdlc29tZSAtIGh0dHBzOi8vZm9udGF3ZXNvbWUuY29tIExpY2Vuc2UgLSBodHRwczovL2ZvbnRhd2Vzb21lLmNvbS9saWNlbnNlL2ZyZWUgQ29weXJpZ2h0IDIwMjUgRm9udGljb25zLCBJbmMuLS0+PHBhdGggZD0iTTIyNCAyNTZBMTI4IDEyOCAwIDEgMCAyMjQgMGExMjggMTI4IDAgMSAwIDAgMjU2em0tNDUuNyA0OEM3OS44IDMwNCAwIDM4My44IDAgNDgyLjNDMCA0OTguNyAxMy4zIDUxMiAyOS43IDUxMmwzODguNiAwYzE2LjQgMCAyOS43LTEzLjMgMjkuNy0yOS43QzQ0OCAzODMuOCAzNjguMiAzMDQgMjY5LjcgMzA0bC05MS40IDB6Ii8+PC9zdmc+);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+ }
+  
+.comment {
+  background:rgba(166, 104, 12, 0.1);
+ .font-family: Baguile;
+  max-width:99%;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content: space-between;
+  margin-bottom:13px;
+  padding: 10px;
+  -webkit-box-shadow: 2px 2px 1px 0px rgba(64, 44, 3, 0.55);
+-moz-box-shadow: 2px 2px 1px 0px rgba(64, 44, 3, 0.55);
+box-shadow: 2px 2px 1px 0px rgba(64, 44, 3, 0.55);
+}
+  .comment p {margin: 0px}
+    .comment p {padding: 6px}
+.comment-text  {
+  flex-basis:100%;
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+margin-top: 9px;
+color: #402c03;
+  background:rgba(245, 231, 211, 0.1);
+   padding: 4px 10px;
+}
+
+ .comment span {
+  font-family: 'Aeroport';
+font-style: normal;
+font-weight: 400;
+font-size: 11.5px;
+position:relative;
+color: #555;
+  padding-left: 2px;
+}
+.comment i {
+  font-family: 'Aeroport';
+font-style: normal;
+font-weight: 400;
+font-size: 11px;
+position:relative;
+color: #666;
+}
+  .comment i::before {
+  left:-20px;
+  top:-1px;
+  position:absolute;
+  content: '🕒';
+  width:12px;
+  height:12px;
+  color: #555;
+  background-image: url(" ");
+  background-size:cover!important;
+}
+.new-comment {
+animation: new-comment 2s linear forwards;
+}
+@keyframes new-comment {
+  0% {background: rgba(138, 6, 34, 0.1);}
+  100%{background:rgba(138, 6, 34, 0.2);}
+}
+.comment-body {
+  width:100%;
+}
+
+
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+}
+
+/* Hide preloader when the content is fully loaded */
+body.loaded .preloader {
+    display: none;
+}
+
+.loader {
+    width: 65px;
+    height: 65px;
+    background: rgb(224, 129, 13, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: animate 1s infinite;
+    border: 0.4px solid red;
+}
+@keyframes animate{
+    from{
+        height: 75px;
+        width: 75px;
+    }
+    to{
+        height: 99px;
+        width: 99px;
+    }
+}
+.innercircle{
+    width: 65px;
+    height: 65px;
+    background: pink;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(222, 130, 18, 0.2), rgba(222, 130, 18, 0.01)), url(data:image/png;base64,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);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border: 6px solid #fff;
+ 
+}
+
+ </style>
+
+</head>
+<body style="padding:10px">
+
+   <div class="preloader">
+        <div class="loader">
+  <div class="innercircle">
+                </div>
+</div>
+    </div>
+
+  <p>Kritik & Saran K 4G3S GT </p>
+<form class="comment-wrapper" id="bootstrapForm">
+  <div class="com2">
+    <fieldset>
+      <legend for="1942226804">Name</legend>
+      <input id="688131320" type="text" name="entry.688131320" placeholder="Tulis nama" class="com-name" required>
+  </fieldset>
+    <fieldset>
+      <legend for="1942226804">Plant/Bagian</legend>
+  <input id="25932315" type="text" name="entry.25932315" placeholder="Tulis Plant/Bagian" class="com-name" required>
+        </div>
+  </fieldset>
+
+
+  <div class="com">
+    <fieldset>
+      <legend for="1593812691">Kritik &  Saran </legend>
+      <textarea id="1778477211" name="entry.1778477211" placeholder="Tulis kritik dan saran anda..." class="comment-com"></textarea>
+    </div>
+  </fieldset>
+  <input type="hidden" name="fvv" value="1">
+  <input type="hidden" name="fbzx" value="-95251584423634707">
+  <input type="hidden" name="pageHistory" value="0">
+  <input class="submit-comment" type="submit" value="Kirim">
+</form>
+
+<div class="comments-counter">
+  <p>Komentar</p>
+  <span class="counter-coment"></span>
+</div>
+
+<div class="comment-body">
+  <section class="field-comments"></section>
+</div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha256-2Pjr1OlpZMY6qesJM68t2v39t+lMLvxwpa8QlRjJroA=" crossorigin="anonymous"></script>
+
+<script>
+  $(document).ready(function() {
+    $('#bootstrapForm').submit(function(event) {
+      event.preventDefault();
+      var name = $('#688131320').val();
+      var plant = $('#25932315').val();
+      var comment = $('#1778477211').val();
+      
+      if (name.length > 4 && plant.length > 4 && comment.length > 4) {
+        // Kirim data ke Google Forms
+        $.ajax({
+          type: 'POST',
+          url: 'https://docs.google.com/forms/d/e/1FAIpQLSf7AxQW1Bq9YTxO6Imb2Av96cO8nBlwP4CyZsyp-vI4J3PHpg/formResponse',
+          data: {
+            'entry.688131320': name,
+            'entry.25932315': plant,
+            'entry.1778477211': comment
+          },
+          success: function() {
+            // Tambahkan komentar baru ke dalam elemen .field-comments
+            $('.field-comments').append('<div class="comment"><p class="comment-name">' + name + '</p><p class="comment-text">' + plant + '</p><p class="comment-text">' + comment + '</p></div>');
+            // Update counter komentar
+            var counter = parseInt($('.counter-coment').text()) + 1;
+            $('.counter-coment').text(counter);
+            // Reset form
+            $('#bootstrapForm')[0].reset();
+          },
+          error: function() {
+            alert('Komentar Tersimpan!');
+          }
+        });
+      } else {
+        alert('Nama dan komentar harus diisi!');
+      }
+    });
+  });
+
+
+function filterArray(array) {
+    return $.grep(array, function(element) {
+        return element !== null && element !== undefined && element.length !== 0;
+    });
+}
+$('.submit-comment').click(function(e) {
+    let name = $('#688131320').val()
+    let plant = $('#25932315').val()
+let comment = $('#1778477211').val()
+if (name.length>4&&plant.length>4&&comment.length>4) {
+  $('.field-comments').prepend(`<div class="comment new-comment"><p class="comment-name">${name} <span>${plant}</span></p><i>Just Now</i><p class="comment-text">${comment}</p></div>`)
+
+  $('form').hide()
+  $('.com').hide()
+  $('.com2').hide()
+  $('.submit-comment').hide()
+  alert("Komentar anda akan dikirim... pastikan akun anda sudah login di browser anda..!! Terima Kasih..!"); 
+}
+})
+fetch('https://script.google.com/macros/s/AKfycbxxqJPSu29HzWeZQMhtN30OgCXeNOhWZvuhMJ2PQ1gRHpkc566UHBeA_ilrCGmMhJeE/exec').then(function (response) {
+ return response.json();
+}).then(function (json) {
+
+let comments = json
+delete comments[0]
+jQuery.each( comments, function( i, val ) {
+if(val!==undefined) {
+val = filterArray(val)
+}
+  if(val!==undefined&&val.length===4) {
+  
+    $('.counter-coment').text(comments.length - 1)
+    const digitMonths = {
+  1: 'Jan',
+2: 'Feb',
+      3: 'Mar',
+      4: 'Apr',
+      5: 'Mei',
+      6: 'Jun',
+      7: 'Jul',
+      8: 'Ags',
+      9: 'Sep',
+      10: 'Okt',
+      11: 'Nov',
+      12: 'Des',
+};
+  let hh = new Date(val[0]).getHours()*1
+  if(hh<10) {hh='0'+hh}
+  let mm = new Date(val[0]).getMinutes()*1
+  if(mm<10) {mm='0'+mm}
+  let dd = new Date(val[0]).getDate()*1
+  if(dd<10) {dd='0'+dd}
+    let time = hh+':'+mm+', '+ dd+' '+digitMonths[new Date(val[0]).getMonth()+1]+' ' + new Date(val[0]).getFullYear(),
+        name = val[1],
+        plant = val[2],
+        comment = val[3]
+    $('.field-comments').prepend(`<div class="comment"><p class="comment-name">${name} <span> - ${plant}</span></p><i>${time}</i><p class="comment-text">${comment}</p></div>`)}
+
+});
+hideComments()
+}).catch(function (err) {
+ console.warn('Something went wrong.', err);
+});
+
+function hideComments() {
+  let hiddenNumber = 5
+if ($('.comment').length>(hiddenNumber-1)) {
+let comments = $('.comment')
+for (i=0;i<comments.length;i++) {let index = [i];if(index>(hiddenNumber-1)) {comments[i].classList.add('hidden')}}
+  $('.field-comments').append('<a class="show-more" onclick="showMore()"> Semua Komentar</a>')
+}
+  }
+
+function showMore() {
+  $('.comment').removeClass('hidden')
+  $('.show-more').hide()
+}
+
+</script>
+
+<script>
+  window.addEventListener('load', () => {
+    const preloader = document.querySelector('.preloader');
+    const body = document.querySelector('body');
+
+    // Hide the preloader and add a class to the body when the page is fully loaded
+    preloader.style.opacity = '0';
+    body.classList.add('loaded');
+});
+</script>
+</body>
+</html>
+

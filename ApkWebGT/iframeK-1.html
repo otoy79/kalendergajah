@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender GT load</title>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://kalendergajah.pages.dev/musik/iframe.css">
+   <link rel="preload" href="https://kalendergajah.pages.dev/musik/iframe.css" as="style">
+<style>
+ html, body {
+   background: rgb(255, 255, 255, 0.9);
+  }
+    body {
+      background: rgb(255, 255, 255, 0.9);
+      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color:#000;
+      padding: 14px;
+      margin: 0;
+      text-align: center;
+    
+    }
+   
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.90);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99;
+}
+
+/* Hide preloader when the content is fully loaded */
+body.loaded .preloader {
+    display: none;
+}
+
+.loader {
+    width: 65px;
+    height: 65px;
+    background: rgb(224, 129, 13, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: animate 1s infinite;
+    border: 0.4px solid red;
+}
+@keyframes animate{
+    from{
+        height: 75px;
+        width: 75px;
+    }
+    to{
+        height: 99px;
+        width: 99px;
+    }
+}
+.innercircle{
+    width: 65px;
+    height: 65px;
+    background: pink;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(222, 130, 18, 0.2), rgba(222, 130, 18, 0.01)), url(data:image/png;base64,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);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border: 6px solid #fff;
+ 
+}
+
+#iframe {
+    position: fixed;
+    border: none;
+    top: 0px; right: 0;
+    bottom: 0; left: 0;
+    width: 99%;
+      height: 100%;
+   z-index: 0;
+}
+
+.popup {
+  background: rgb(255, 255, 255, 0.9);
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
+  transition: width 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), height 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: fixed;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0%;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  border: none;
+}
+
+.popup .content {
+  padding: 0;
+  color: #555;
+  text-align: center;
+  margin-top: 8px;
+  
+}
+
+.popup .buttons {
+  margin-top: auto;
+}
+
+.popup .buttons  {
+   position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  padding-top: 0px;
+  padding-bottom: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  background: rgb(230, 43, 30, 0.2);
+}
+
+.popup.show {
+  position: fixed;
+  width: 100%;
+  height: 180px;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+}
+ .tab {
+  background: rgba(255, 0, 0, 0.0);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  
+}
+ .marquee {
+  position: fixed;
+  top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0 auto;
+  padding: 0.1em 0;
+  transform: rotate(-0deg) scale(1.1);
+  background: rgb(247, 243, 240, 0.5);
+  z-index: 0;
+}
+.marquee__text {
+  display: inline-block;
+  padding-left: 100%;
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #222;
+  animation: marquee-direction 35s linear infinite;
+}
+.marquee__text[data-direction=rtl] {
+  /* DON'T CHANGE */
+  --_right: 0%;
+  --_left: -100%;
+}
+.marquee__text[data-direction=ltr] {
+  /* DON'T CHANGE */
+  --_right: -100%;
+  --_left: 0%;
+}
+
+@keyframes marquee-direction {
+  0% {
+    transform: translateX(var(--_right));
+  }
+  100% {
+    transform: translateX(var(--_left));
+  }
+}
+
+ .btn {
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            padding: 8px 14px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+ .btn2 {     
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            padding: 4px 14px;
+            font-size: 13px;
+            font-weight: bold;
+            border: none;
+            border-radius: 0 0 10px 10px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid #fff;
+        }
+ /* Button 1: Pulse Effect */
+        .btn-pulse {
+            background: linear-gradient(45deg, #a33c08, #f53838);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 10px 30px rgba(255,107,107,0.7);
+            }
+        }
+</style>
+
+</head>
+<body>
+   <iframe id="iframe" src="../2024/2025"></iframe>
+
+ <div class="marquee">
+    <div class="marquee__text" data-direction="rtl"> 🎶 Happy Day Playing Music 🎤............   Sunday (Padi)........... Monday (Dewa19).......... Tuesday (Jamrud)..........  Wednesday (Ungu)......... Thursday (Noah)........... Friday (Denny Caknan).......... Saturday (Wali) </div>
+  </div>
+
+ <div class="tab">
+  <button class="btn2 btn-pulse" onclick="toggle()">show</button>
+</div>
+  <div class="popup">
+  <div class="content">
+     <iframe id="iframeS" src="https://kalendergajah.pages.dev/musik/ifreme1.html"></iframe>
+  </div>
+  <div class="buttons">
+    <button class="btn2 btn-pulse" onclick="hide()">close</button>
+  </div>
+</div>
+  
+ 
+   <div class="preloader">
+        <div class="loader">
+  <div class="innercircle">
+                </div>
+</div>
+    </div>
+
+    
+
+
+     
+
+ 
+  <script>
+ function toggle () {
+  console.log('test');
+  console.log(document.getElementsByClassName('popup'))
+  let element = document.getElementsByClassName('popup')[0]
+  let classes = element.className;
+  if (classes.indexOf('show') !== -1) {
+    element.className = element.className.replace('show', '').replace(' ', '')
+  } else {
+    element.className += ' show'
+  }
+}
+
+function hide() {
+  toggle();
+}
+ </script>
+  <script>
+  window.addEventListener('load', () => {
+    const preloader = document.querySelector('.preloader');
+    const body = document.querySelector('body');
+
+    // Hide the preloader and add a class to the body when the page is fully loaded
+    preloader.style.opacity = '0';
+    body.classList.add('loaded');
+});
+</script>
+</body>
+</html>
+
