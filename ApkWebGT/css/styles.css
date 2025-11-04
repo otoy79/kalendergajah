@@ -120,7 +120,7 @@ body {
   display: none;
 }
  
-  .home, .quran {
+  .home, .quran, .fa-home, .komen {
    position: absolute;
     top: -40px;
 }
@@ -152,6 +152,38 @@ body {
     background-repeat: no-repeat!important;
     background-position: center;
     background-size: 32px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-color: transparent;
+  margin-top: -3px;
+}
+ .fa-home:before {
+   content: " ";
+  display: inline-block;
+    cursor: pointer;
+  text-indent: -999999px;
+  height:28px;
+  width: 25px;
+    background-image: url(home.png);
+    background-repeat: no-repeat!important;
+    background-position: center;
+    background-size: 25px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-color: transparent;
+  margin-top: -3px;
+}
+ .komen:before {
+   content: " ";
+  display: inline-block;
+    cursor: pointer;
+  text-indent: -999999px;
+  height:28px;
+  width: 25px;
+    background-image: url(komen.png);
+    background-repeat: no-repeat!important;
+    background-position: center;
+    background-size: 25px;
   background-repeat:no-repeat;
   background-position:center;
   background-color: transparent;
