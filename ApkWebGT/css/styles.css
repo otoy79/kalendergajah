@@ -1,6 +1,6 @@
 body {
   background-color: #eee;
-  font-size: 3.1vw;
+  font-size: 14px;
 }
 
 .bottom-nav {
@@ -26,7 +26,7 @@ body {
   height: 33px;
   color: #eee;
   text-align: center;
-  font-size: 6.1vw;
+  font-size: 22px;
   display: block;
   transition: 1s;
   position: relative;
@@ -42,7 +42,7 @@ body {
 }
 .bottom-nav li a span {
   display: block;
-  font-size: 3.1vw;
+  font-size: 12px;
   width: 100%;
   position: absolute;
   bottom: -15px;
