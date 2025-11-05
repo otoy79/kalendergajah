@@ -1,308 +1,299 @@
-<!DOCTYPE html>
-<html>
- <title>Kalender Gajah Tunggal 4G3S</title>
-<head>
-  
-  
-    <meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
- <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
-   
-<style>
-body {
- margin: 0;
-font-family: Arial;
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Web apps Kalender Gajah Tnggal</title>
+     <link href="css/styles.css" rel="stylesheet" />
+   <link href="css/styles.css" rel="stylesheet" />
+      
+    <head>
+       
+        <style type="text/css">
+.content-tab {
+ position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+   background: rgb(245, 244, 242, 0.99);
+  padding: 9px;
+    display: none;
+  border: 1px solid #965909;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: underline;
 }
-div.scrollmenu {
-  border: 0px solid #ccc;
-  background-color: #f1f1f1;
-  overflow: auto;
-  white-space: nowrap;
-}
-
-div.scrollmenu button {
+   .content-tab  a {
   display: inline-block;
-  color: white;
-  text-align: center;
-  padding: 6px 14px;
-  text-decoration: none;
-   font-size: 16px;
+  margin: 2px;
   color: #000;
-}
-.tab {
-  width: 100%;
-  overflow: auto;
-  white-space: nowrap;
-  border: 1px solid #ccc;
-  background-color: #f1f1f1;
-}
-div.scrollmenu button:hover {
-  background-color: #ddd;
-}
-div.scrollmenu button.active {
-  background-color: #e68910;
-  color: #fff;
+  text-decoration: none;
+  border: 1px solid #965909;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background: rgb(252, 144, 3, 0.2);
 }
 
-.contain {
-  width: 100%;
-  position: relative;
-  left: 0;
-  padding-top:30px;
-  padding-bottom:30px;
-  border-top: none;
+  .tab-menus {
+ position: fixed;
+  bottom: 10%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+   background: rgb(245, 244, 242, 0.99);
+  padding: 9px;
+    display: none;
+  border: 1px solid #965909;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: underline;
+  
+}
+  .tab-menus  a {
+  display: inline-block;
+  margin: 2px;
+  color: #000;
+  text-decoration: none;
+  border: 1px solid #965909;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background: rgb(252, 144, 3, 0.2);
+}
+   .fa-home, .fa-calendar-day, .fa-book-reader, .fa-pencil-alt {
+  padding-right: 8px;
+}
+
+.fa,.fab,.fad,.fal,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;line-height:1}
+
+  nav.bottom_tab {
+  position: fixed;
+  max-width: 500px;
+  height: 48px;
+  left: 18px;
+  right: 18px;
+  bottom: 25px;
+  margin: auto;
+  display: flex;
+  background-color: rgba(249, 249, 249, 0.95);
+  border: 1px solid #c6c6c6;
+  border-radius: 6px;
+  backdrop-filter: blur(3px);
+  
+}
+@media screen and (min-width: 640px) {
+  nav.bottom_tab {
+    height: 80px;
+  }
+}
+nav.bottom_tab ul {
+  flex: 1;
   margin: 0;
+  padding: 0 12px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+nav.bottom_tab ul li {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
- 
+  transition: 0.3s ease-in-out all;
 }
-.tabcontent {
-  width: 50vw;
-  height: 50vh;
-  position: relative;
-  border: 1px solid #ccc;
-  border-top: none;
-  padding: 10px;
-
-  background-image: url(https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhK6WdYu9GKSAnghI_MLxe9yCJN5zPYcHeMLWPCOsQUawReujU-tgwhoZWOafuYFKy12mG4N1wwqR0qmVJjoGNdm0f9gR0FBFS8ByqfO4NQeEaGew4glHz5RVu6G93VMME-l02Xvfkcyu_-rtk0qkEyqmkn-n3SKMf4Xy-dmvrhQRsMlBrzd3ZlQK7pLRP5/s1960/hp.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
- . z-index: 99;
+nav.bottom_tab ul li a {
+  flex: 1;
+  display: flex;
+  height: 48px;
+  color: #fff;
+  text-decoration: none;
+  padding: 0 5px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
 }
-  #iframe❌ {
-  position: relative;
-    border: none;
-    top: 0px; right: 0;
-    bottom: 0; left: 0;
-    width: %;
-      height: 99%;
-   z-index: 0;
-}
- #div {
-  width: 100%;
-   height: 100%;
-  margin: 0;
-}
-
-  #iframe {
-    position: absolute;
-    border: none;
-    margin-top: 5px; right: 0;
-    bottom: 0; left: 0;
-    width: 46vw;
-    height: 47vh;
-   z-index: 0;
-   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 50px;
-}
- h2❌{
-   font-size: 3.5em;
-}
-
-
-
-button {
-  display: inline-block;
-  border-radius: 3px;
-  border: none;
-  font-size: 0.9rem;
-  padding: 0.4rem 0.8em;
-  background: #69c773;
-  border-bottom: 1px solid #498b50;
-  color: white;
-  -webkit-font-smoothing: antialiased;
-  font-weight: bold;
-  margin: 0.5em 0.25rem 0;
-  text-align: center;
-}
-
-button:hover, button:focus {
-  opacity: 0.75;
-  cursor: pointer;
-}
-
-button:active {
-  opacity: 1;
-  box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1) inset;
-}
-
-
-img {
-  max-width: 640px;
-}
-
-img:-webkit-full-screen {
-  max-width: none;
-}
-
-img:-moz-full-screen {
-  max-width: none;
-}
-
-img:-ms-fullscreen {
-  max-width: none;
-}
-
-img:full-screen {
-  max-width: none;
-}
-
-img:fullscreen {
-  max-width: none;
-}
- section nav {
- padding: 10px;
-background-color: #eee;}
-
-  .table {
-  width: 100%;
-  font-size: 1rem;
- border:0.1px solid transparent ;
-  font-weight: bold;
-}
- table {
-  width: 100%;
-  font-size: 0.8rem;
-  
-}
-  table,td {
-  border:0.1px solid #aaa;
-  margin: 0; padding:0;
-}
- .bgg {
-  background: #e6faeb;
-  font-weight: bold;
+@media screen and (min-width: 640px) {
+  nav.bottom_tab ul li a {
+    padding: 0 5px;
   }
-  td {background: #fce3e3;}
+}
+nav.bottom_tab ul li.active a p {
+  color: #fff;
+}
+   nav.bottom_tab .underlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -5px;
+  width: var(--underlay-width);
+  height: 60px;
+  border-radius: 6px;
+  background-color: #ed9945;
+  background: linear-gradient(180deg, rgba(255, 255, 255 0.1) 0%, rgba(255, 255, 255 0.1) 100%), #000;
+  z-index: 0;
+  transform: translateX(var(--offset));
+  transition: 0.6s ease all;
+  transform-origin: 50% 0%;
+}
+  nav.bottom_tab a p {
+   font-size: 10px;
+  position: absolute;
+  bottom: -10px;
+  color: #000;
+  }
+  ion-icon {
+  display: inline-block;
+  font-size: 28px;
+  color: #000;
+}
 
+.demo_section {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  width: 500px;
+  max-width: 93%;
+  padding: 20px 20px;
+  margin-bottom: 100px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+}
+
+ 
 </style>
+
 </head>
 <body>
- 
-  <div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUIojaFLTEO58EfanD6WofAROsKuOGw__O4pBRDeOWsTY57A-10O8-MwEjlhXWaQa7Qoyzrf8JmuWk9IaxzyZ5ZO9cq8FdjDKi1opBiwD1LdcwkAzcexOYs7XdnWTg4hSBDOKGdztAXPwPRIJLnNh5Pyq3-8IN3k8oesz8Wf8f2JGmCZ9P4aVCcF3WmuM/s516/coollogo_com-24721783.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="320" data-original-height="448" data-original-width="216" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiUIojaFLTEO58EfanD6WofAROsKuOGw__O4pBRDeOWsTY57A-10O8-MwEjlhXWaQa7Qoyzrf8JmuWk9IaxzyZ5ZO9cq8FdjDKi1opBiwD1LdcwkAzcexOYs7XdnWTg4hSBDOKGdztAXPwPRIJLnNh5Pyq3-8IN3k8oesz8Wf8f2JGmCZ9P4aVCcF3WmuM/s320/coollogo_com-24721783.png"/></a></div>
 
-
-<center>
- <h2>
-App Kalender 4G3SGT </h2>
-
-
- 
-
-<div id="page-wrapper">
-  <section style="display:none">
-    <button id="fs-doc-button">Go Fullscreen</button>
-    <button id="fs-exit-doc-button">Exit Fullscreen</button>
-  </section>
-
-  <section style="display:none">
-    <button id="fs-vid-button">Go Fullscreen</button>
-  </section>
-
-  <section>
-    <button id="fs-img-button">Go  Fullscreen</button>
-  </section>
+   <div class="preloader">
+        <div class="loader">
+  <div class="innercircle">
+                </div>
+</div>
+    </div>
+  <div id="div">
+  <iframe name="myFrame" id="iframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" src="iframeK-1.html" name="name"></iframe>
 </div>
 
-</center>
+   
+   
+  <nav class="bottom_tab">
+  <div class="underlay"></div>
+  <ul>
+    <li>
+      <a target="myFrame" href="home.html" title="Home">
+       <i class="fa-home"></i>
+       <p>Home</p>
+      </a>
+    </li>
+    <li>
+      <a href="#" class="menu-menus" title="Menu">
+        <i class="menu"></i>
+       <p> Menu </p>
+      </a>
+    </li>
+    <li class="active">
+      <a href="#" title="4G3S" class="active-icon">
+        <i class="home"></i>
+        <p>4G3S GT</p>
+      </a>
+    </li>
+    <li>
+      <a target="myFrame" href="iframequran.html" title="Wishlist">
+        <i class="quran"></i>
+       <p>Qur'an</p>
+      </a>
+    </li>
+    <li>
+      <a target="myFrame" href="KritikSaran.html" title="Settings">
+        <i class="komen"></i>
+       <p>Comment</p>
+      </a>
+    </li>
+  </ul>
+</nav>
+   
 
-  <section>
-   <nav id="nav">
-    
-
-
-
-  <div class="contain">
-<div class="tabcontent">
-<center><iframe id="iframe" src="https://kalendergajah.pages.dev/ApkWebGT/">
- </iframe>
-</center>
-</div>
-</div>
-</div>
-  
-  </nav></section>
-
-
-  
-<div class="separator" style="clear: both; display: none;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEji-KlbGUi5Z4IKUCWd5HU81MebzxdSwTQjQ9quF8Sg5g_EOUC3Mh7CF_dM1RJHxQCvnGwD_pCnZOqcuP-4msDMlmbiUiveK3agMYCVBYXU5Kea4ISlvszwFud2GZS8tIBLtvEZa1qtno0MFassq9GXJ6Ea89zM5zlVqCiOp18y4cREWsNxxpfVDbzHikm4/s254/ios.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" width="320" data-original-height="147" data-original-width="254" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEji-KlbGUi5Z4IKUCWd5HU81MebzxdSwTQjQ9quF8Sg5g_EOUC3Mh7CF_dM1RJHxQCvnGwD_pCnZOqcuP-4msDMlmbiUiveK3agMYCVBYXU5Kea4ISlvszwFud2GZS8tIBLtvEZa1qtno0MFassq9GXJ6Ea89zM5zlVqCiOp18y4cREWsNxxpfVDbzHikm4/s320/ios.png"/></a></div>
-
-
-
-
-
-<div class="separator" style="clear: both; display: none;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhK6WdYu9GKSAnghI_MLxe9yCJN5zPYcHeMLWPCOsQUawReujU-tgwhoZWOafuYFKy12mG4N1wwqR0qmVJjoGNdm0f9gR0FBFS8ByqfO4NQeEaGew4glHz5RVu6G93VMME-l02Xvfkcyu_-rtk0qkEyqmkn-n3SKMf4Xy-dmvrhQRsMlBrzd3ZlQK7pLRP5/s1960/hp.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" height="320" data-original-height="1960" data-original-width="978" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhK6WdYu9GKSAnghI_MLxe9yCJN5zPYcHeMLWPCOsQUawReujU-tgwhoZWOafuYFKy12mG4N1wwqR0qmVJjoGNdm0f9gR0FBFS8ByqfO4NQeEaGew4glHz5RVu6G93VMME-l02Xvfkcyu_-rtk0qkEyqmkn-n3SKMf4Xy-dmvrhQRsMlBrzd3ZlQK7pLRP5/s320/hp.png"/></a></div>
-
-   <script>
-var requestFullscreen = function (ele) {
-  if (ele.requestFullscreen) {
-    ele.requestFullscreen();
-  } else if (ele.webkitRequestFullscreen) {
-    ele.webkitRequestFullscreen();
-  } else if (ele.mozRequestFullScreen) {
-    ele.mozRequestFullScreen();
-  } else if (ele.msRequestFullscreen) {
-    ele.msRequestFullscreen();
-  } else {
-    console.log('Fullscreen API is not supported.');
-  }
-};
-
-var exitFullscreen = function () {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  } else {
-    console.log('Fullscreen API is not supported.');
-  }
-};
+<div class="tab-kal">
+    <div class="content-tab">
+   <a onclick="return noHistory(this);" target="myFrame" href="iframeK-1.html"> <i class="fas fa-calendar-day">📆</i> Kal 2025
+                </a><br>
+   <a onclick="return noHistory(this);" target="myFrame" href="iframeK-2.html"> <i class="fas fa-calendar-day">📆</i> Kal 2026
+                </a>
+   </div>
+     </div>
+      <div class="tab-kal">
+  <div class="tab-menus">
+   <a onclick="return noHistory(this);" target="myFrame" href="iframePKB.html"> <i class="fas fa-book-reader">📔</i> PKB 22-24
+                </a><br>
+   <a onclick="return noHistory(this);" target="myFrame" href="iframeKal-notes.html"> <i class="fas fa-pencil-alt">📝</i>  Kal Notes
+                </a>
+   </div>
+     </div>
 
 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ <script>
+  let root = document.documentElement;
+let tabs = document.querySelectorAll(".bottom_tab li");
+let active = document.querySelector(".bottom_tab .active");
+let underlay = document.getElementsByClassName("underlay")[0];
 
+// Reset on first time
+moveUnderlay();
 
-var fsDocButton = document.getElementById('fs-doc-button');
-var fsExitDocButton = document.getElementById('fs-exit-doc-button');
+Array.from(tabs).forEach((tab, i) => {
+  tab.addEventListener("click", () => {
+    active = document.querySelector(".bottom_tab .active");
+    if (active) {
+      active.classList.remove("active");
+    }
+    tab.classList.add("active");
 
-fsDocButton.addEventListener('click', function(e) {
-  e.preventDefault();
-  requestFullscreen(document.documentElement);
+    moveUnderlay();
+  });
 });
 
-fsExitDocButton.addEventListener('click', function(e) {
-  e.preventDefault();
-  exitFullscreen();
-});
+function moveUnderlay() {
+  active = document.querySelector(".bottom_tab .active");
+  setTimeout(() => {
+    let x = active.offsetLeft;
+    let w = active.offsetWidth;
+    root.style.setProperty("--offset", `${x}px`);
+    root.style.setProperty("--underlay-width", `${w}px`);
+  }, 0);
+}
+</script>
+<script>
+  window.addEventListener('load', () => {
+    const preloader = document.querySelector('.preloader');
+    const body = document.querySelector('body');
 
-
-
-
-var fsVidButton = document.getElementById('fs-vid-button');
-var video = document.getElementById('video');
-
-fsVidButton.addEventListener('click', function(e) {
-  e.preventDefault();
-  requestFullscreen(video);
-});
-
-
-
-var fsImgButton = document.getElementById('fs-img-button');
-var nav = document.getElementById('nav');
-
-fsImgButton.addEventListener('click', function(e) {
-  e.preventDefault();
-  requestFullscreen(nav);
+    // Hide the preloader and add a class to the body when the page is fully loaded
+    preloader.style.opacity = '0';
+    body.classList.add('loaded');
 });
 </script>
+  <script>
+$(document).ready(function(){
+  $("a").click(function(){
+    $(".content-tab").slideUp(600);
+  });
+  $(".active-icon").click(function(){
+    $(".content-tab").slideDown(600);
+  });
+});
+  $(document).ready(function(){
+  $("a").click(function(){
+    $(".tab-menus").slideUp(600);
+  });
+  $(".menu-menus").click(function(){
+    $(".tab-menus").slideDown(600);
+  });
+});
+</script>
+
 </body>
-</html> 
+</html>
+
+
+
+
