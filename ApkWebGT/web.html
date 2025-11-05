@@ -64,19 +64,19 @@
 .fa,.fab,.fad,.fal,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;line-height:1}
 
   nav.bottom_tab {
-  position: fixed;
-  max-width: 500px;
+  position: absolute;
+  max-width: 87.9%;
   height: 48px;
-  left: 18px;
-  right: 18px;
-  bottom: 25px;
+  left: 0;
+  right: 0;
+  bottom: 4%;
   margin: auto;
   display: flex;
-  background-color: rgba(249, 249, 249, 0.95);
-  border: 1px solid #c6c6c6;
-  border-radius: 6px;
+  background-color: rgba(249, 249, 249, 0.0);
+  border-top: 1px solid #c6c6c6;
+  border-radius: 0 0 30% 30%;
   backdrop-filter: blur(3px);
-  
+  z-index: 999;
 }
 @media screen and (min-width: 640px) {
   nav.bottom_tab {
@@ -124,8 +124,8 @@ nav.bottom_tab ul li.active a p {
   right: 0;
   top: -5px;
   width: var(--underlay-width);
-  height: 60px;
-  border-radius: 6px;
+  height: 55px;
+  border-radius: 10px;
   background-color: #ed9945;
   background: linear-gradient(180deg, rgba(255, 255, 255 0.1) 0%, rgba(255, 255, 255 0.1) 100%), #000;
   z-index: 0;
@@ -157,7 +157,7 @@ nav.bottom_tab ul li.active a p {
   border-radius: 20px;
 }
 
- 
+
 </style>
 
 </head>
@@ -169,12 +169,13 @@ nav.bottom_tab ul li.active a p {
                 </div>
 </div>
     </div>
+ 
+   
+   <div class="contain">
+<div class="tabcontent">
   <div id="div">
   <iframe name="myFrame" id="iframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" src="iframeK-1.html" name="name"></iframe>
 </div>
-
-   
-   
   <nav class="bottom_tab">
   <div class="underlay"></div>
   <ul>
@@ -210,7 +211,7 @@ nav.bottom_tab ul li.active a p {
     </li>
   </ul>
 </nav>
-   
+   </div></div>
 
 <div class="tab-kal">
     <div class="content-tab">
