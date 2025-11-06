@@ -28,7 +28,6 @@ body {
    position: absolute;
     top: 10px;
 }
-
   .home:before {
    content: " ";
   display: inline-block;
