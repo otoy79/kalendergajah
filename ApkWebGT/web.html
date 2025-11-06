@@ -4,8 +4,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Web apps Kalender Gajah Tnggal</title>
      <link href="css/styles.css" rel="stylesheet" />
-   <link href="css/styles.css" rel="stylesheet" />
-      
+  
     <head>
        
         <style type="text/css">
@@ -63,6 +62,8 @@
 
 .fa,.fab,.fad,.fal,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;line-height:1}
 
+
+ 
   nav.bottom_tab {
   position: absolute;
   max-width: 87.9%;
@@ -122,9 +123,9 @@ nav.bottom_tab ul li.active a p {
   position: absolute;
   left: 0;
   right: 0;
-  top: -5px;
+  top: -1px;
   width: var(--underlay-width);
-  height: 55px;
+  height: 54px;
   border-radius: 10px;
   background-color: #ed9945;
   background: linear-gradient(180deg, rgba(255, 255, 255 0.1) 0%, rgba(255, 255, 255 0.1) 100%), #000;
@@ -134,11 +135,23 @@ nav.bottom_tab ul li.active a p {
   transform-origin: 50% 0%;
 }
   nav.bottom_tab a p {
-   font-size: 10px;
+   font-size: 9px;
   position: absolute;
-  bottom: -10px;
+  bottom: -6px;
   color: #000;
   }
+ .underlay {
+  background: #B00;
+  border-radius: 10px;
+  box-shadow: 
+    8px 8px 16px rgba(0,0,0, 0.2),
+    inset -8px -8px 12px rgba(0,0,0, 0.2),
+    inset 8px 8px 12px rgba(255, 255, 255, 0.4);
+}
+.underlay:hover {
+  background: #b10000;
+}
+
   ion-icon {
   display: inline-block;
   font-size: 28px;
