@@ -3,352 +3,286 @@
 <meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Web apps Kalender Gajah Tnggal</title>
-     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.7.6/tailwind.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&amp;display=swap" rel="stylesheet" />
-  
+     <link href="❌https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css" rel="stylesheet" />
+    <link href="css/bulma.css" rel="stylesheet" />
+
     <head>
        
-        <style type="text/css">
-.content-tab {
- position: fixed;
-  bottom: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-   background: rgb(245, 244, 242, 0.99);
-  padding: 9px;
-    display: none;
-  border: 1px solid #965909;
-  border-radius: 8px;
-  font-size: 14px;
-  text-decoration: underline;
-}
-   .content-tab  a {
-  display: inline-block;
-  margin: 2px;
-  color: #000;
-  text-decoration: none;
-  border: 1px solid #965909;
-  border-radius: 4px;
-  padding: 5px 10px;
-  background: rgb(252, 144, 3, 0.2);
-}
-
-  .tab-menus {
- position: fixed;
-  bottom: 10%;
-  left: 30%;
-  transform: translate(-50%, -50%);
-   background: rgb(245, 244, 242, 0.99);
-  padding: 9px;
-    display: none;
-  border: 1px solid #965909;
-  border-radius: 8px;
-  font-size: 14px;
-  text-decoration: underline;
-  
-}
-  .tab-menus  a {
-  display: inline-block;
-  margin: 2px;
-  color: #000;
-  text-decoration: none;
-  border: 1px solid #965909;
-  border-radius: 4px;
-  padding: 5px 10px;
-  background: rgb(252, 144, 3, 0.2);
-}
-   .fa-home, .fa-calendar-day, .fa-book-reader, .fa-pencil-alt {
-  padding-right: 8px;
-}
-
-.fa,.fab,.fad,.fal,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:inline-block;font-style:normal;font-variant:normal;text-rendering:auto;line-height:1}
-
-
- 
-  nav.bottom_tab {
-  position: absolute;
-  max-width: 87.9%;
-  height: 48px;
-  left: 0;
-  right: 0;
-  bottom: 4%;
-  margin: auto;
-  display: flex;
-  background-color: rgba(249, 249, 249, 0.0);
-  border-top: 1px solid #c6c6c6;
-  border-radius: 0 0 30% 30%;
-  backdrop-filter: blur(3px);
-  z-index: 999;
-}
-@media screen and (min-width: 640px) {
-  nav.bottom_tab {
-    height: 80px;
-  }
-}
-nav.bottom_tab ul {
-  flex: 1;
-  margin: 0;
-  padding: 0 12px;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-}
-nav.bottom_tab ul li {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0.3s ease-in-out all;
-}
-nav.bottom_tab ul li a {
-  flex: 1;
-  display: flex;
-  height: 48px;
-  color: #fff;
-  text-decoration: none;
-  padding: 0 5px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 16px;
-}
-@media screen and (min-width: 640px) {
-  nav.bottom_tab ul li a {
-    padding: 0 5px;
-  }
-}
-nav.bottom_tab ul li.active a p {
-  color: #fff;
-}
-   nav.bottom_tab .underlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -1px;
-  width: var(--underlay-width);
-  height: 54px;
-  border-radius: 10px;
-  background-color: #ed9945;
-  background: linear-gradient(180deg, rgba(255, 255, 255 0.1) 0%, rgba(255, 255, 255 0.1) 100%), #000;
-  z-index: 0;
-  transform: translateX(var(--offset));
-  transition: 0.6s ease all;
-  transform-origin: 50% 0%;
-}
-  nav.bottom_tab a p {
-   height: 54px;
-   font-size: 9px;
-  position: absolute;
-  bottom: -100%;
-  color: #000;
-  }
- .underlay {
-  background: #B00;
-  border-radius: 10px;
-  box-shadow: 
-    8px 8px 16px rgba(0,0,0, 0.2),
-    inset -8px -8px 12px rgba(0,0,0, 0.2),
-    inset 8px 8px 12px rgba(255, 255, 255, 0.4);
-}
-.underlay:hover {
-  background: #b10000;
-}
-
-  ion-icon {
-  display: inline-block;
-  font-size: 28px;
-  color: #000;
-}
-
-.demo_section {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  width: 500px;
-  max-width: 93%;
-  padding: 20px 20px;
-  margin-bottom: 100px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-}
-
-   #jam {
-  position: absolute;
-  max-width: 100%;
-  left: 12.5%;
-  right: 0;
-  top: 3.9%;
-  margin: auto;
-  display: flex;
-  color: #111;
-  z-index: 999;
-  font-size: 2.5vw;
-}
-
-</style>
-
-b<style>
+<style>
   html, body, main, section{
     height: 100%;
     width: 100%;
+   background: rgba(255, 255, 255, 0.2);
   }
   
   html{
     position: fixed;
   }
   
-  body{
-    font-family: 'Lato', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
+  body {
+  display: flex;
+  justify-content: center;
+}
+body {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+.web-camera-container {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 0px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+.web-camera-container .camera-button {
+  margin-bottom: -0rem;
+  font-size: 8px;
+}
+.web-camera-container .camera-box .camera-shutter {
+  opacity: 0;
+  width: 90%;
+  height: 90%;
+  background-color: #fff;
+  position: absolute;
+}
+.web-camera-container .camera-box .camera-shutter.flash {
+  opacity: 1;
+}
+.web-camera-container .camera-shoot {
+  margin: 0.1rem 0;
+}
+.web-camera-container .camera-shoot button {
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+}
+.web-camera-container .camera-shoot button img {
+  height: 25px;
+  object-fit: cover;
+  margin: 0;
+}
+.web-camera-container .camera-loading {
+  overflow: hidden;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  min-height: 150px;
+  margin: 3rem 0 0 -1.2rem;
+}
+.web-camera-container .camera-loading ul {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 999999;
+  margin: 0;
+}
+.web-camera-container .camera-loading .loader-circle {
+  display: block;
+  height: 14px;
+  margin: 0 auto;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  transform: translateX(-50%);
+  position: absolute;
+  width: 100%;
+  padding: 0;
+}
+.web-camera-container .camera-loading .loader-circle li {
+  display: block;
+  float: left;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  padding: 0;
+  position: relative;
+  margin: 0 0 0 4px;
+  background: #999;
+  animation: preload 1s infinite;
+  top: -50%;
+  border-radius: 100%;
+}
+.web-camera-container .camera-loading .loader-circle li:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.web-camera-container .camera-loading .loader-circle li:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes preload {
+  0% {
+    opacity: 1;
   }
-  
-  button.capture:disabled{
-    opacity: 0.25;
+  50% {
+    opacity: 0.4;
   }
-  
-  button.capture:active{
-    opacity: 0.9;
+  100% {
+    opacity: 1;
   }
+}
+
+  #cont-poto }
+  height: 80%;
+  width: 90%;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+   background: rgb(245, 244, 242, 0.99);
+  border: 1px solid #965909;
+  border-radius: 8px;
+  text-decoration: underline;
+    z-index: 99999;
 </style>
 
 
 </head>
 <body>
 
+
+  <div id="app" class="web-camera-container">
+  <div class="camera-button">
+      <button type="button" class="button is-rounded" :class="{ 'is-primary' : !isCameraOpen, 'is-danger' : isCameraOpen}" @click="toggleCamera">
+        <span v-if="!isCameraOpen">Open Camera</span>
+        <span v-else>Close Camera</span>
+    </button>
+  </div>
+  
+  <div v-show="isCameraOpen && isLoading" class="camera-loading">
+    <ul class="loader-circle">
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  
+  <div v-if="isCameraOpen" v-show="!isLoading" class="camera-box" :class="{ 'flash' : isShotPhoto }">
+    
+    <div class="camera-shutter" :class="{'flash' : isShotPhoto}"></div>
+      
+    <video v-show="!isPhotoTaken" ref="camera" :width="410" :height="357.5" autoplay></video>
    
- <!--
+    <canvas v-show="isPhotoTaken" id="photoTaken" ref="canvas" :width="410" :height="357.5"></canvas>
+  </div>
+   
+      <div id="cont-poto">
+  <div v-if="isPhotoTaken && isCameraOpen" class="camera-download">
+    <a id="downloadPhoto" download="my-photo.jpg" class="button" role="button" @click="downloadImage">
+      Wow..Keren..! 😀
+    </a>
+  </div></div>
+  
+  <div v-if="isCameraOpen && !isLoading" class="camera-shoot">
+    <button type="button" class="button" @click="takePhoto">
+      <img src="img/camera.png">
+    </button>
+  </div>
+  
 
-CodePen Camera
-==========
 
-A Progressive Web App Camera built using Vue, Tailwind, and WebRTC. Try adding the Debug view to your home screen and read the companion blog to learn more:
-
-[Blog](https://medium.com/@leemartin/how-to-build-a-simple-ios-home-screen-pwa-camera-using-vue-tailwind-and-webrtc-on-codepen-2d61a9754d47?source=friends_link&sk=2ed90bf1e4f52db8491636cebb4b582b)
-
--->
-
-<template>
-  <main ontouchstart="" class="md:text-xl lg:text-2xl">
-    <!-- Intro -->
-    <!-- ---------- -->
-    <!-- Inform the user of the camera's purpose and prepare them for camera permissions. -->
-    <section id="intro"  v-if="!stream" class="absolute flex flex-col inset-0 px-4 py-8 z-20">
-      <article class="flex flex-1 flex-col items-center justify-center">
-        <img src="https://assets.codepen.io/141041/Button-Fill-Black-Large.png" alt="CodePen" class="h-32 md:h-40 lg:h-64 mb-4 w-32 md:w-40 lg:w-64">
-        <h1 class="font-bold mb-4 text-2xl md:text-3xl lg:text-5xl text-center">CodePen Camera</h1>
-        <p class="leading-relaxed md:max-w-screen-sm lg:max-w-screen-md text-center">This is a Progressive Web App Camera built on CodePen using <a href="https://vuejs.org/" target="_blank" class="underline">Vue</a>, <a href="https://tailwindcss.com/" target="_blank" class="underline">Tailwind</a>, and <a href="http://webrtc.org/" target="_blank" class="underline">WebRTC</a>. Try adding the Debug view to your home screen and read the companion <a href="https://medium.com/@leemartin/how-to-build-a-simple-ios-home-screen-pwa-camera-using-vue-tailwind-and-webrtc-on-codepen-2d61a9754d47?source=friends_link&sk=2ed90bf1e4f52db8491636cebb4b582b" target="_blank" class="underline">blog</a> to learn more.</p>
-      </article>
-      
-      <footer class="text-center">
-        <button @click="startCamera" class="bg-black font-bold px-4 py-2 rounded-md text-white">Allow Access</button>
-      </footer>
-    </section>
-      
-    <!-- Camera -->
-    <!-- ---------- -->
-    <!-- Allow the user to capture photos and take other camera actions. -->
-    <section id="camera" v-if="stream" class="absolute flex flex-col inset-0 items-center justify-end px-4 py-8 z-20">
-      <footer>
-        <button class="capture" @click="capturePhoto">
-          <img src="https://assets.codepen.io/141041/Button-Fill-White-Large.png" alt="CodePen" class="h-24 w-24" :disabled="!ready">
-        </button>
-      </footer>
-    </section>
-    
-    <!-- Download -->
-    <!-- ---------- -->
-    <!-- Allow the user to preview and download the captured photo or return to camera. -->
-    <section id="download" v-if="photo" class="absolute bg-white flex flex-col inset-0 items-center justify-between px-4 py-8 z-30">
-      <header>
-        <button @click="photo = null">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" class="h-10 md:h-12 lg:h-16 w-10 lg:w-12 md:w-16"><path d="M0 0h24v24H0z" fill="none"/><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </button>
-      </header>
-      
-      <article>
-        <img :src="photo.toDataURL('image/jpeg')" alt="Photo" class="h-64 w-64">
-      </article>
-      
-      <footer>
-        <button @click="downloadPhoto">
-          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" class="h-10 md:h-12 lg:h-16 w-10 lg:w-12 md:w-16"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z"/></svg>
-        </button>
-      </footer>
-    </section>
-    
-    <!-- Video -->
-    <!-- ---------- -->
-    <video ref="video" class="absolute h-full inset-0 object-cover w-full z-10" autoplay muted playsinline></video>
-  </main>
-</template>
+  </div>
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/5.14.0/load-image.min.js"></script>
+
+<script src="❌https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/5.14.0/load-image-scale.min.js"></script>
+<script src="css/veu.js"></script>
 
  <script>
-export default {
+new Vue({
+  el: '#app',
+  
   data() {
     return {
-      stream: null,
-      ready: false,
-      photo: null
+      isCameraOpen: false,
+      isPhotoTaken: false,
+      isShotPhoto: false,
+      isLoading: false,
+      link: '#'
     }
   },
+  
   methods: {
-    async startCamera() {
-      this.stream = await navigator.mediaDevices.getUserMedia({
+    toggleCamera() {
+      if(this.isCameraOpen) {
+        this.isCameraOpen = false;
+        this.isPhotoTaken = false;
+        this.isShotPhoto = false;
+        this.stopCameraStream();
+      } else {
+        this.isCameraOpen = true;
+        this.createCameraElement();
+      }
+    },
+    
+    createCameraElement() {
+      this.isLoading = true;
+      
+      const constraints = (window.constraints = {
         audio: false,
-        video: {
-          facingMode: 'environment'
-        }
-      })
-      
-      this.$refs.video.srcObject = this.stream
-      
-      this.$refs.video.onloadedmetadata = (e) => {
-        this.ready = true
-      }
-      
-      this.$refs.video.onended = (e) => {
-        this.ready = false
-        this.stream = null
-      }
-    },
-    capturePhoto() {
-      let video = this.$refs.video
-      
-      let videoCanvas = document.createElement('canvas')      
-      videoCanvas.height = video.videoHeight
-      videoCanvas.width = video.videoWidth      
-      let videoContext = videoCanvas.getContext('2d')
-      
-      videoContext.drawImage(video, 0, 0)
-      
-      this.photo = loadImage.scale(videoCanvas, {
-        maxHeight: 1080,
-        maxWidth: 1080,
-        cover: true,
-        crop: true,
-        canvas: true
-      })
-    },
-    downloadPhoto() {
-      this.photo.toBlob(blob => {
-        let data = window.URL.createObjectURL(blob)
-        let link = document.createElement('a')
+        video: true
+      });
 
-        link.href = data
-        link.download = "photo.jpg"
-        link.click()
-      }, 'image/jpeg')
+
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(stream => {
+          this.isLoading = false;
+          this.$refs.camera.srcObject = stream;
+        })
+        .catch(error => {
+          this.isLoading = false;
+          alert("May the browser didn't support or there is some errors.");
+        });
+    },
+    
+    stopCameraStream() {
+      let tracks = this.$refs.camera.srcObject.getTracks();
+
+      tracks.forEach(track => {
+        track.stop();
+      });
+    },
+    
+    takePhoto() {
+      if(!this.isPhotoTaken) {
+        this.isShotPhoto = true;
+
+        const FLASH_TIMEOUT = 50;
+
+        setTimeout(() => {
+          this.isShotPhoto = false;
+        }, FLASH_TIMEOUT);
+      }
+      
+      this.isPhotoTaken = !this.isPhotoTaken;
+      
+      const context = this.$refs.canvas.getContext('2d');
+      context.drawImage(this.$refs.camera, 0, 0, 450, 337.5);
+    },
+    
+    downloadImage() {
+      const download = document.getElementById("downloadPhoto");
+      const canvas = document.getElementById("photoTaken").toDataURL("image/jpeg")
+    .replace("image/jpeg", "image/octet-stream");
+      download.setAttribute("href", canvas);
     }
   }
-}
+});
+
 </script>
 
 

@@ -1,0 +1,577 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Web apps Kalender Gajah Tnggal</title>
+     <link href="css/styles.css" rel="stylesheet" />
+   <link href="css/music.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <head>
+       
+        <style type="text/css">
+.themes {
+ position: fixed;
+  bottom: 10%;
+  left: 5%;
+  background: rgb(245, 244, 242, 0.99);
+  padding: 9px;
+  display: none;
+  border: 1px solid #965909;
+  border-radius: 8px;
+  font-size: 14px;
+  text-decoration: underline;
+}
+  nav.bottom_tab {
+  position: absolute;
+  max-width: 85.9%;
+  height: 7.5vh;
+  left: 0;
+  right: 0;
+  bottom: 8.5%;
+  margin: auto;
+  display: flex;
+  background-color: rgba(249, 249, 249, 0.0);
+  border-top: 0.1px solid rgba(249, 249, 249, 0.2);
+  border-radius: 0 0 50% 50%;
+  backdrop-filter: blur(1px);
+  z-index: 999;
+}
+@media screen and (min-width: 640px) {
+  nav.bottom_tab {
+    height: 8px;
+  }
+}
+nav.bottom_tab ul {
+  flex: 1;
+  margin: 0;
+  padding: 0 0px;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+nav.bottom_tab ul li {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s ease-in-out all;
+}
+nav.bottom_tab ul li a {
+  flex: 1;
+  display: flex;
+  height: 0px;
+  color: #fff;
+  text-decoration: none;
+  padding: 0px 0 ;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+}
+@media screen and (min-width: 640px) {
+  nav.bottom_tab ul li a {
+    padding: 1px;
+  }
+}
+nav.bottom_tab ul li.active a p {
+  color: #fff;
+}
+   nav.bottom_tab .underlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -1px;
+  width: var(--underlay-width);
+  height: 0px;
+  border-radius: 10px;
+  background-color: #ed9945;
+  background: linear-gradient(180deg, rgba(255, 255, 255 0.1) 0%, rgba(255, 255, 255 0.9) 100%), #000;
+  z-index: 0;
+  transform: translateX(var(--offset));
+  transition: 0.6s ease all;
+  transform-origin: 50% 0%;
+}
+  nav.bottom_tab a p {
+   height: 54px;
+   font-size: 32px;
+   padding: 12;
+  position: absolute;
+  bottom: -100%;
+  color: #ddd;
+  }
+ .underlay {
+  background: #B00;
+  border-radius: 10px;
+  box-shadow: 
+    8px 8px 16px rgba(0,0,0, 0.2),
+    inset -8px -8px 12px rgba(0,0,0, 0.2),
+    inset 8px 8px 12px rgba(255, 255, 255, 0.4);
+}
+
+
+   .menu_apps {
+  position: absolute;
+  width: 100%;
+  height: 7vh;
+   left:-1%; 
+  bottom: 14%;
+ }
+    .bottom_apps {
+  position: absolute;
+  width: 100%;
+  height: 7vh;
+   left:-1%; 
+  bottom: 14%;
+  display: flex;
+    align-items: center;
+    justify-content: center;
+   text-align: center;
+   font-weight: normal;
+ }
+   
+  .bottom_menu {
+  width: 82%;
+  height: 7vh;
+  margin-left: 0;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+    align-items: center;
+    justify-content: center;
+   text-align: center;
+   font-weight: normal;
+   border-radius: 10%/80%;
+   border: 0.8px solid #eee;
+ }
+   
+  .bottom_menu div {
+  margin: 1vh 3.4vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+ }
+ .Theme-phone {
+  padding-top: 1vw;
+	width: 7.5vw;
+  height: 3vh;
+   background: linear-gradient(rgba(168, 168, 158, 0.0), rgba(168, 168, 158, 0.0)), url(img/phone.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+}
+ .Theme-Wa {
+  padding-top: 1vw;
+	width: 8vw;
+  height: 4.5vh;
+   background: linear-gradient(rgba(168, 168, 158, 0.0), rgba(168, 168, 158, 0.0)), url(img/wa.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+}
+.Theme-Cam {
+  padding-top: 1vw;
+	width: 9vw;
+  height: 5vh;
+   background: linear-gradient(rgba(168, 168, 158, 0.0), rgba(168, 168, 158, 0.0)), url(img/camera.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+}
+   #jam {
+  position: absolute;
+  width: 11vw;
+  padding: 0.5vw 1.5vw;
+  left: 8%;
+  top: 0;
+  top: 2vh;
+  margin: auto;
+  display: flex;
+  z-index: 999;
+  font-size: 1.7vh;
+  color: #fff;
+   background: rgba(0, 0, 0, 0.2);
+  float: left;
+   border-radius: 2vw;
+   text-align: center;
+}
+ h4 {
+  display: none;
+}
+  
+
+     .menu_music {
+  position:  fixed;
+     right: 6.4%; 
+      top: 39%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   text-align: center;
+ }
+  .slide-toggle {
+   position:  relative;
+   left:0; 
+    background: red;
+    float: left;
+    background: url("img/play.png");
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+   text-align: center;
+   color: #fff;
+   border-radius: 50%;
+   height: 10vw;
+    width: 10vw;
+   -webkit-transition: -webkit-transform .8s ease-in-out;
+    -ms-transition: -ms-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;  
+}
+.slide-toggle:hover {
+    transform:rotate(360deg);
+    -ms-transform:rotate(360deg);
+    -webkit-transform:rotate(360deg);
+}
+   
+  
+.boxTab {
+        float:right;
+        overflow: hidden;
+    }
+    .boxTab-inner{
+        width: 60vw;
+        border: 1px solid #a29415;
+        max-height: 30vh;
+         right: 0%; 
+        background: rgba(255, 255, 255, 0.9);
+       color: #fff;
+        align-items: center;
+    justify-content: center;
+   text-align: center;
+  padding: 15px;
+  border-radius: 4vw;
+    }
+ 
+</style>
+
+</head>
+<body onload="startTime()" id="gradient">
+
+   <div class="preloader">
+        <div class="loader">
+  <div class="innercircle">
+                </div>
+</div>
+    </div>
+
+ 
+   <div class="contain">
+<div  class="tabcontent">
+  <div class="bghome">
+   <div  class="bg-color" style="display:none">
+  <div>
+   <input class="color1" type="color" name="color1" value="#00ff00">
+ <input class="color2" type="color" name="color2" value="#ff0000">
+   <p>Ganti Background Color</p>
+    <button class="back-btn" onclick="goBack()">⬅ Back</button>
+  <h4></h4>
+  </div>
+   </div>
+
+
+   <p id="jam"> </p>
+  <div id="div" class="fade-in three">
+  <iframe class="fade-in two" name="myFrame" id="iframe" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" src="menu.html" name="name"></iframe>
+</div>
+  </div></div>
+
+    <!-- Add Nav Bottom❌ -->    
+   <div class="bottom_apps" style="display:none">
+    <div class="bottom_menu">
+    <div>
+   <a target="myFrame" href="whatsapp://send?abid=phonenumber&text=Hello">
+    <p class="Theme-Wa"></p>
+    </a>
+    </div>
+  
+    <div>
+   <a target="myFrame" href="Camera.html">
+    <p class="Theme-Cam"></p>
+    </a>
+  </div>
+ 
+    <div>
+  <a target="myFrame" href="tel:+62">
+    <p class="Theme-phone"></p>
+    </a>
+  </div>
+
+    <div>
+    <p class="Theme-phone"></p>
+  </div>
+ 
+  </div></div>
+
+    <nav class="bottom_tab">
+  <div class="underlay"></div>
+  <ul>
+    <li>
+      <a href="#" class="menu-menus" title="Menu">
+       <p id="showColor" style="font-size: 18px;"> &#x2630; </p>
+      </a>
+    </li>
+    <li class="active">
+      <a target="myFrame" href="menu.html" title="Home" class="active-icon">
+        <p> &#x2B20; </p>
+      </a>
+    </li>
+    <li>
+      <a target="myFrame" href="index.html" id="back-link">
+   <p> &#x21A9; </p>
+      </a>
+    </li>
+  </ul>
+</nav>
+    
+    
+    <!-- Menu slider -->
+ <div class="menu_music">
+<div class="slide-toggle"></div>
+       <div class="boxTab">
+        <div class="boxTab-inner">
+       <!-- player Music▶️ -->
+   <div class="flex">
+              <marquee scrollamount="4" class="songtitle"></marquee>
+            </div>
+  <div class="player">
+    <div class="window">
+   <div class="seeking">
+              <div class="current-time">00:00</div>
+              <input type="range" min="1" max="200" value="0" class="seek_slider" onchange="seekTo()">
+              <div class="total-duration">0:00</div>
+            </div>
+
+      <div class="window-body">
+        <div class="flex">
+          <div class="wheel" style="height:100px;width:100px;">
+            <div class="wheelcontrols">
+              <button class="fas fa-plus" onclick="volumeUp()" style="padding-top:4px; padding-bottom:-5px;"></button>
+            </div>
+            <table class="wheelcontrols">
+  <th>
+    <button class="fas fa-backward" onclick="prevTrack()"></button>
+  </th>
+  <th class="innerwheel">
+    <button class="playpause-track fas fa-play" onclick="playpauseTrack()"></button>
+  </th>
+  <th>
+    <button class="fas fa-forward" onclick="nextTrack()"></button>
+  </th>
+</table>
+            <div class="wheelcontrols" style="padding:0;">
+              <button class="fas fa-minus" onclick="volumeDown()"></button>
+            </div>
+      </div>
+          </div>
+            <audio id="music" src=""></audio>
+          </div>
+         </div>
+        </div>
+       
+  
+    </div></div></div>
+   
+  
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script src="css/music.js"></script>
+
+ <script>
+$(document).ready(function(){
+  $("#showColor").click(function(){
+    $(".bg-color").show();
+  });
+  $(".back-btn").click(function(){
+    $("#div").hide();
+  });
+  $(".back-btn").click(function(){
+    $(".bg-color").hide();
+  });
+});
+  $(document).ready(function(){
+  $("#showColor").click(function(){
+    $("#div").hide();
+  });
+  $(".back-btn").click(function(){
+    $("#div").show();
+  });
+  $("#back-link").click(function(){
+  $("#div").show(5000);
+});
+  $("#back-link").click(function(){
+  $(".bg-color").hide();
+});
+});
+</script>
+ <script>
+$(document).ready(function(){
+        $(".boxTab").hide();
+        $(".slide-toggle").click(function(){
+            $(".boxTab").animate({
+                width: "toggle"
+            });
+        });
+    });
+</script>
+ 
+
+  <script>
+  // Bg Color
+var css = document.querySelector("h4");
+var color1 = document.querySelector(".color1");
+var color2 = document.querySelector(".color2");
+var body = document.getElementById("gradient");
+// Create a function to show the currently selected gradient
+function setGradient() {
+  colorCode =  "linear-gradient(to right, " 
+ + color1.value 
+ + ", " 
+ + color2.value 
+ + ")";
+ css.textContent = body.style.background + ";";
+ body.style.background = colorCode;
+  // var samCode = "body.style.background = colorCode"
+ localStorage.setItem('colorValue', colorCode);
+  body.style.backgroundColor = localStorage.getItem('csValue');
+ body.style.backgroundColor = localStorage.getItem('csValue');
+ console.log(localStorage.getItem('colorValue'));
+}
+// Add Event listener to set gradient for both inputs
+color1.addEventListener("input", setGradient);
+color2.addEventListener("input", setGradient);
+
+
+ document.body.style.background = localStorage.getItem('colorValue');
+ document.body.style.background = localStorage.getItem('colorValue');
+ console.log(localStorage.getItem('colorValue'));
+
+ </script>
+
+
+
+<script>
+   let listItems = document.querySelectorAll(".list li");
+let backDiv = document.querySelector(".the-back");
+
+if (window.localStorage.getItem("color")) {
+    // Add Background onclick To The Div
+    backDiv.style.backgroundColor = window.localStorage.getItem("color");
+
+    // Remove Active Class From All
+    listItems.forEach((li) => {
+        li.classList.remove("active");
+    });
+    
+    // Get and Set Active Class onclick
+    document.querySelector(`[data-color="${window.localStorage.getItem("color")}"]`).classList.add("active")
+}
+
+listItems.forEach(function (li) {
+
+    li.addEventListener("click", function (e) {
+
+        // Remove Active Class From All
+        listItems.forEach((li) => {
+            li.classList.remove("active");
+        });
+
+        // Add Active Class On Click
+        li.classList.add("active")
+
+        // Add Color Onclick To LocalStorage
+        window.localStorage.setItem("color", e.target.dataset.color);
+
+        // Add Background onclick To The Div
+        backDiv.style.backgroundColor = window.localStorage.getItem("color");
+    });
+})
+</script>
+ <script>
+  let root = document.documentElement;
+let tabs = document.querySelectorAll(".bottom_tab li");
+let active = document.querySelector(".bottom_tab .active");
+let underlay = document.getElementsByClassName("underlay")[0];
+
+// Reset on first time
+moveUnderlay();
+
+Array.from(tabs).forEach((tab, i) => {
+  tab.addEventListener("click", () => {
+    active = document.querySelector(".bottom_tab .active");
+    if (active) {
+      active.classList.remove("active");
+    }
+    tab.classList.add("active");
+
+    moveUnderlay();
+  });
+});
+
+function moveUnderlay() {
+  active = document.querySelector(".bottom_tab .active");
+  setTimeout(() => {
+    let x = active.offsetLeft;
+    let w = active.offsetWidth;
+    root.style.setProperty("--offset", `${x}px`);
+    root.style.setProperty("--underlay-width", `${w}px`);
+  }, 0);
+}
+</script>
+<script>
+  window.addEventListener('load', () => {
+    const preloader = document.querySelector('.preloader');
+    const body = document.querySelector('body');
+
+    // Hide the preloader and add a class to the body when the page is fully loaded
+    preloader.style.opacity = '0';
+    body.classList.add('loaded');
+});
+</script>
+
+<script>
+setInterval(myTimer, 1000);
+function myTimer() {
+  const d = new Date();
+document.getElementById("jam").innerHTML = d.toLocaleTimeString();
+}
+</script>
+  ,<script>
+   var element = document.getElementById('back-link');
+
+// Provide a standard href to facilitate standard browser features such as 
+//  - Hover to see link
+//  - Right click and copy link
+//  - Right click and open in new tab
+element.setAttribute('href', document.referrer);
+
+// We can't let the browser use the above href for navigation. If it does, 
+// the browser will think that it is a regular link, and place the current 
+// page on the browser history, so that if the user clicks "back" again,
+// it'll actually return to this page. We need to perform a native back to
+// integrate properly into the browser's history behavior
+element.onclick = function() {
+  history.back();
+  return false;
+}
+  </script>
+
+</body>
+</html>
+
+
+
+

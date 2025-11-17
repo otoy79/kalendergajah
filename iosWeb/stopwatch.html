@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stop Wach</title>
+<style>
+body {
+  background: rgba(52, 232, 235, 0.5);
+  min-height: 100%;
+  margin: 20px;;
+  font-family: "Arial", sans-serif;
+}
+ body {
+            opacity: 0;
+            animation: fadeIn 2.5s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+  .container {
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+    text-align: center;
+    background: rgba(255,255,255,0.6);
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    width: 93%;
+  position: fixed;
+  bottom: -33%;
+  left: 50%;
+   border-top: 2px solid #0ff;
+  transform: translate(-50%, -50%);
+   backdrop-filter: blur(5%);
+   background: rgba(52, 232, 235, 0.2);
+    background: linear-gradient(rgba(0,0,0, 0.7), rgba(0,0,0, 0.4)), url(img/bgapple.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+
+.circle {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid rgba(0, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 20px #0ff inset;
+}
+
+.progress {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 5px solid #0ff;
+  clip-path: polygon(50% 50%, 100% 0, 100% 100%, 0 100%, 0 0);
+  transform: rotate(0deg);
+  box-shadow: 0 0 20px #0ff;
+}
+
+.timer {
+  position: relative;
+  font-size: 2rem;
+  color: #0ff; /* kleur 2 neon cyaan */
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+  z-index: 2;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap; /* maakt dat knoppen naar nieuwe regel gaan */
+  justify-content: center;
+  gap: 0.5rem; /* ruimte tussen knoppen */
+  margin-bottom: 1rem;
+}
+
+.buttons button {
+  flex: 1 1 100px; /* knoppen groeien minimaal tot 100px, flexibel */
+  max-width: 5.5em;
+  background: transparent;
+  border: 2px solid #0ff;
+  color: #0ff;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 50rem;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+  text-shadow: 0 0 5px #0ff;
+  box-shadow: 0 0 5px #0ff, inset 0 0 5px #0ff;
+}
+
+.buttons button:hover {
+  background: #0ff;
+  color: #000;
+  box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+}
+
+.laps {
+  margin-top: 0rem;
+  width: 130px;
+  max-height: 130px;
+  overflow-y: auto;
+  color: #0ff;
+  text-shadow: 0 0 5px #0ff;
+  border: 1px solid #0ff;
+  padding: 0.5rem;
+  border-radius: 0.1rem;
+  background: rgba(0, 0, 0, 0.9);
+  text-align: left;
+}
+
+.laps div {
+  margin: 0.2rem 0;
+}
+  .cont-laps {
+  position: fixed;
+  right: 4px;
+  top: 0px;
+  text-align: center;
+  }
+</style>
+</head>
+<body>
+
+   <div class="container">
+<div class="circle">
+  <div class="progress" id="progress"></div>
+  <div class="timer" id="display">00:00.00</div>
+</div>
+
+<div class="buttons">
+  <button onclick="start()">Start</button>
+  <button onclick="stop()">Stop</button>
+  <button onclick="reset()">Reset</button>
+  <button onclick="lap()">Lap</button>
+</div>
+  </div>
+ <div class="cont-laps">
+  Lap : 
+<div class="laps" id="laps"></div>
+  </div>
+<script>
+let startTime;
+let elapsed = 0;
+let isRunning = false;
+let lapsArray = [];
+
+function formatTime(ms) {
+  const totalCentis = Math.floor(ms / 10);
+  const mins = String(Math.floor(totalCentis / 6000)).padStart(2, "0");
+  const secs = String(Math.floor((totalCentis % 6000) / 100)).padStart(2, "0");
+  const centis = String(totalCentis % 100).padStart(2, "0");
+  return `${mins}:${secs}.${centis}`;
+}
+
+function updateDisplay() {
+  const now = Date.now();
+  const diff = isRunning ? elapsed + (now - startTime) : elapsed;
+
+  document.getElementById("display").textContent = formatTime(diff);
+
+  // progress cirkel vloeiend per minuut
+  const deg = ((diff % 60000) / 60000) * 360;
+  document.getElementById("progress").style.transform = `rotate(${deg}deg)`;
+
+  if (isRunning) requestAnimationFrame(updateDisplay);
+}
+
+function start() {
+  if (!isRunning) {
+    isRunning = true;
+    startTime = Date.now();
+    requestAnimationFrame(updateDisplay);
+  }
+}
+
+function stop() {
+  if (isRunning) {
+    elapsed += Date.now() - startTime;
+    isRunning = false;
+  }
+}
+
+function reset() {
+  isRunning = false;
+  elapsed = 0;
+  lapsArray = [];
+  document.getElementById("display").textContent = "00:00.00";
+  document.getElementById("progress").style.transform = "rotate(0deg)";
+  document.getElementById("laps").innerHTML = "";
+}
+
+function lap() {
+  const now = isRunning ? elapsed + (Date.now() - startTime) : elapsed;
+  const timeStr = formatTime(now);
+  lapsArray.push(timeStr);
+  const lapDiv = document.createElement("div");
+  lapDiv.textContent = `Lap ${lapsArray.length}: ${timeStr}`;
+  document.getElementById("laps").prepend(lapDiv);
+}
+
+</script>
+</body>
+</html>
