@@ -1,0 +1,22 @@
+ [
+          {
+   eventName: ' G-A S-1 ',
+   calendar: ' G-A', 
+   color: 'blue',
+    date: '2025-12-25'},
+   {
+   eventName: ' G-B S-2',
+   calendar: 'Home', 
+   color: 'orange',
+    date: '2025-12-25'},
+   {
+   eventName: ' G-C S-3 ',
+   calendar: 'Home', 
+   color: 'yellow',
+    date: '2025-12-25'},
+   {
+   eventName: ' G-D S-X ',
+   calendar: 'Home', 
+   color: 'green',
+    date: '2025-12-25'},
+        ]
