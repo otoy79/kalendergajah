@@ -1,5 +1,4 @@
- [
-          {
+   {
    eventName: ' G-A S-1 ',
    calendar: ' G-A', 
    color: 'blue',
@@ -19,4 +18,4 @@
    calendar: 'Home', 
    color: 'green',
     date: '2025-12-25'},
-        ]
+        
