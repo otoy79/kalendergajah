@@ -1,4 +1,5 @@
-   {
+data=[
+{
    eventName: ' G-A S-1 ',
    calendar: ' G-A', 
    color: 'blue',
@@ -19,3 +20,4 @@
    color: 'green',
     date: '2025-12-25'}
         
+]
