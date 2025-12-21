@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar 4G3S GAJAH TUNGGAL</title>
+   <link rel="stylesheet" href="css/style.css">
+    <style>
+       /* Styling Popup Kanan Atas */
+ /* Badge Grup Shift */
+.shift-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    margin: 2px;
+    display: inline-block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.bg-shift-1 { background: #3498db; } /* Biru */
+.bg-shift-2 { background: #1abc9c; } /* Hijau Toska */
+.bg-shift-3 { background: #f1c40f; color: #000; } /* Kuning */
+.bg-shift-off { background: #e74c3c; } /* Merah/Libur */
+
+/* Teks Greeting */
+#greetingText {
+    display: block;
+    margin-top: 8px;
+    font-style: italic;
+    font-size: 11px;
+    color: #ffd700; /* Warna emas agar menonjol */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 5px;
+}
+
+.sync-popup {
+    position: fixed;
+    top: 20px; /* Posisi di atas */
+    right: 20px; /* Posisi di kanan */
+    background: linear-gradient(135deg, #1e1e2f 0%, #434082 100%);
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    z-index: 10000;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border-left: 5px solid #2ecc71; /* Aksen hijau sebagai indikator sukses */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 250px;
+    animation: slideInRight 0.5s ease-out, fadeOut 1s 59s forwards;
+}
+
+.sync-popup .dot {
+    height: 12px;
+    width: 12px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #2ecc71;
+    animation: blink 1.2s infinite;
+}
+
+/* Animasi Muncul dari Kanan */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Animasi Menghilang */
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(20px); visibility: hidden; }
+}
+
+@keyframes blink {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+  .sync-popup {
+    /* ... kode yang sudah ada ... */
+    min-width: 200px; /* Lebarkan sedikit */
+    line-height: 1.4;
+}
+
+#shiftInfo b {
+    color: #fff; /* Biar huruf grup A,B,C,D lebih menonjol */
+    background: rgba(255,255,255,0.1);
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+  /* Animasi Slide Masuk */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Class untuk memicu animasi */
+.animate-calendar {
+    animation: slideIn 0.4s ease-out;
+}
+
+/* Tambahan agar tombol prev/next terasa mantap saat ditekan */
+.btn-prev:active, .btn-next:active {
+    transform: scale(0.9);
+    transition: 0.1s;
+}
+.holiday-popup {
+    position: fixed;
+    bottom: 50%; /* Di bawah popup sinkronisasi */
+    right: 20px;
+    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    z-index: 9998;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-left: 5px solid #ffeb3b;
+    animation: slideInRight 0.5s ease-out;
+}
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-calendar {
+    animation: slideIn 0.4s ease-out;
+}
+
+    </style>
+</head>
+<body>
+
+<div id="legendModal" class="legend-overlay">
+    <div class="legend-content">
+        <div class="legend-header">
+            <span style="font-weight: bold;">KETERANGAN WARNA</span>
+            <button onclick="toggleLegend()" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+        </div>
+        <div class="legend-item"><div class="legend-color shift-1"></div><span>Shift 1 (Biru)</span></div>
+        <div class="legend-item"><div class="legend-color shift-2"></div><span>Shift 2 (Hijau Toska)</span></div>
+        <div class="legend-item"><div class="legend-color shift-3"></div><span>Shift 3 (Kuning)</span></div>
+        <div class="legend-item"><div class="legend-color is-ramadhan"></div><span>Bulan Ramadhan (Hijau Muda)</span></div>
+        <div class="legend-item"><div class="legend-color libur-bersama"></div><span>Hari Libur Nasional (Merah)</span></div>
+        <div class="legend-item"><div class="legend-color today-highlight"></div><span>Hari Ini (Kuning Terang)</span></div>
+        <div class="legend-item"><div class="legend-color has-cuti-info"></div><span>Cuti Lebaran (#)</span></div>
+   <p>Note:<br>
+    * Uji Coba Menggabungkan Kalender Aktif fullYears dengan Database Kal-4G3S GT dengan auto Update dari Database.<br>
+    * Hari Libur Nas sifatnya Tentatif (dapat berubah sewaktu-waktu) <br>
+     * Kalender ini hanya bisa di buka dengan koneksi Internet untuk sinkronisasi dengan Database. <br>
+   * Kami berencana akan update sampai 5 tahun Kal-Kerja 4G3S. <br>
+    * Pastikan Koneksi Internal anda Kuat sekuat Gajah 😀 😎. <br>
+    *  Salam semangat! "Maju Terus Gajah Tunggal..! 🙏
+  </p>
+        <button class="btn-nav" style="width:100%; margin-top:10px;" onclick="toggleLegend()">TUTUP</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="nav-header">
+        <div class="search-box">
+            <button class="btn-nav" style="background:#434082;" onclick="goToToday()">TODAY</button>
+            <button class="btn-info-toggle" onclick="toggleLegend()">?</button>
+        </div>
+        <div class="thn-tag" id="yearLabel">2025</div>
+    </div>
+    <table id="mainTable">
+        <thead>
+            <tr class="monthLabel">
+                <th style="text-align:left" colspan="2"><button class="btn-prev" onclick="changeMonth(-1)">&#10094;</button></th>
+                <th style="padding-right: 28px; position: relative;" colspan="9"> 
+                    <input type="number" id="inputYear" class="input-year" value="2025">
+                    <button class="btn-nav" style="background:#2ecc71;" onclick="searchYear()">GO</button>
+                </th>
+                <th colspan="2" style="text-align:right"><button class="btn-next" onclick="changeMonth(1)">&#10095;</button></th>
+            </tr>
+            <tr class="bln"><th colspan="13" id="monthLabel" style="text-align:center; padding: 10px 0;">LOADING...</th></tr>
+            <tr class="header-group">
+                <th colspan="2">4G3S SYSTEM</th><th colspan="4">SHIFT GROUP</th>
+                <th class="batas" style="width: 1px;"></th>
+                <th colspan="2">4G3S SYSTEM</th><th colspan="4">SHIFT GROUP</th>
+            </tr>
+            <tr class="header-sub">
+                <th>TG</th><th style="text-align:left">HAR</th><th>A</th><th>B</th><th>C</th><th>D</th>
+                <th class="batas" style="width: 1px;"></th>
+                <th>TG</th><th style="text-align:left">HAR</th><th>A</th><th>B</th><th>C</th><th>D</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+    </table>
+    <div id="loader" class="loading-text">Menyambungkan ke Database Kal 4G3S Gajah Tunggal...</div>
+</div>
+  <div id="syncToast" class="sync-popup">
+    <div class="dot"></div>
+    <div id="syncContent">
+        <span style="display:block; font-size: 8px; color: #ccc; margin-bottom: 2px;">SYSTEM STATUS</span>
+        <div id="statusText">Menghubungkan ke Database...</div>
+        <div id="shiftInfo" style="font-size: 11px; margin-top: 5px; color: #2ecc71; display: none;">
+            </div>
+    </div>
+</div>
+
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxwWXVqkpBDtbhLj-xktfR-7-n4w6ft6AD9edtHTyWCl9l4zbS_GFwmOWcVKv8OpwSBpA/exec';
+    let currentDate = new Date();
+    let fullYearData = []; 
+    let loadedYear = null;
+    const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+
+    // 1. Popup Timer Awal
+    function startPopupTimer() {
+        const toast = document.getElementById('syncToast');
+        setTimeout(() => {
+            if(toast) toast.style.display = 'none';
+        }, 12000); 
+    }
+
+    // 2. Fungsi Render Utama
+    async function renderCalendar() {
+        const month = currentDate.getMonth() + 1;
+        const year = currentDate.getFullYear();
+        const today = new Date();
+        document.getElementById('monthLabel').innerText = `${monthNames[month-1]} ${year}`;
+        document.getElementById('yearLabel').innerText = year;
+        const tbody = document.getElementById('calendarBody');
+
+        // Loading Data dari Database
+        if (loadedYear !== year) {
+            document.getElementById('loader').style.display = 'block';
+            try {
+                const response = await fetch(`${SCRIPT_URL}?year=${year}`);
+                fullYearData = await response.json();
+                loadedYear = year;
+                document.getElementById('loader').style.display = 'none';
+                
+                // Cek hari libur setelah data berhasil dimuat
+                checkTodayHoliday(fullYearData); 
+            } catch (e) { 
+                console.error("Gagal load data", e);
+                return; 
+            }
+        } else {
+            checkTodayHoliday(fullYearData);
+        }
+
+        // Proses Gambar Tabel
+        const apiData = fullYearData.filter(d => d.bln == month);
+        tbody.innerHTML = ''; 
+        
+        for (let i = 1; i <= 16; i++) {
+            const dayL = i; const dayR = i + 16;
+            const totalDays = new Date(year, month, 0).getDate();
+            const dL = apiData.find(d => d.tgl == dayL) || {};
+            const dR = apiData.find(d => d.tgl == dayR) || {};
+            const isTodayL = (dayL === today.getDate() && (month-1) === today.getMonth() && year === today.getFullYear());
+            const isTodayR = (dayR === today.getDate() && (month-1) === today.getMonth() && year === today.getFullYear());
+
+            tbody.innerHTML += `
+                <tr>
+                    <td class="${getTanggalClass(dayL, dL, isTodayL)}">${dayL}</td>
+                    <td class="col-day ${getDayName(year, month-1, dayL) === 'MIN' ? 'hari-minggu' : ''} ${isRamadhan(dL)?'is-ramadhan':''}">${getDayName(year, month-1, dayL)}</td>
+                    <td class="${getBoxClass(dL.A, dL)}">${dL.A || ''}</td>
+                    <td class="${getBoxClass(dL.B, dL)}">${dL.B || ''}</td>
+                    <td class="${getBoxClass(dL.C, dL)}">${dL.C || ''}</td>
+                    <td class="${getBoxClass(dL.D, dL)}">${dL.D || ''}</td>
+                    <td class="batas" style="width: 1px;"></td>
+                    <td class="${dayR <= totalDays ? getTanggalClass(dayR, dR, isTodayR) : ''}">${dayR <= totalDays ? dayR : ''}</td>
+                    <td class="col-day ${dayR <= totalDays && getDayName(year, month-1, dayR) === 'MIN' ? 'hari-minggu' : ''} ${isRamadhan(dR)?'is-ramadhan':''}">${dayR <= totalDays ? getDayName(year, month-1, dayR) : ''}</td>
+                    <td class="${getBoxClass(dR.A, dR)}">${dayR <= totalDays ? (dR.A || '') : ''}</td>
+                    <td class="${getBoxClass(dR.B, dR)}">${dayR <= totalDays ? (dR.B || '') : ''}</td>
+                    <td class="${getBoxClass(dR.C, dR)}">${dayR <= totalDays ? (dR.C || '') : ''}</td>
+                    <td class="${getBoxClass(dR.D, dR)}">${dayR <= totalDays ? (dR.D || '') : ''}</td>
+                </tr>`;
+        }
+        
+        // Tampilkan Catatan Libur di bawah tabel
+        apiData.filter(d => d.ket && d.ket !== '-' && d.ket !== '').forEach(item => {
+    // Jika di Sheet Bapak tulisannya diawali kata "NOTIF", maka JANGAN tampilkan di tabel bawah
+    if (!item.ket.toUpperCase().startsWith("NOTIF")) {
+        let clean = item.ket.replace(/[x!#+]/gi, '').trim();
+        tbody.innerHTML += `<tr class="libur-row"><td colspan="13"><span>${item.tgl}</span> : ${clean}</td></tr>`;
+    }
+});
+ }
+
+
+    // 3. Fungsi Navigasi dengan Animasi
+    function changeMonth(o) {
+        const tbody = document.getElementById('calendarBody'); 
+        tbody.classList.remove('animate-calendar');
+        void tbody.offsetWidth; // Reset animasi
+        currentDate.setMonth(currentDate.getMonth() + o);
+        renderCalendar(); 
+        tbody.classList.add('animate-calendar');
+    }
+
+    function goToToday() { 
+        currentDate = new Date(); 
+        renderCalendar(); 
+    }
+
+    function searchYear() { 
+        const y = document.getElementById('inputYear').value; 
+        if (y > 1900) { 
+            currentDate.setFullYear(parseInt(y)); 
+            renderCalendar(); 
+        } 
+    }
+
+    // 4. Logika Notifikasi Hari Libur ➕➕
+    function checkTodayHoliday(dataTahun) {
+    const hariIni = new Date();
+    const tglSekarang = hariIni.getDate();
+    const blnSekarang = hariIni.getMonth() + 1;
+    const thnSekarang = hariIni.getFullYear();
+    const jamSekarang = hariIni.getHours();
+
+    if (currentDate.getFullYear() !== thnSekarang) return;
+
+    const dataHariIni = dataTahun.find(d => d.tgl == tglSekarang && d.bln == blnSekarang);
+
+    if (dataHariIni) {
+        const shiftDiv = document.getElementById('shiftInfo');
+        const statusText = document.getElementById('statusText');
+        
+        statusText.innerHTML = '<span style="color:#2ecc71">● Database Terhubung</span>';
+
+        // Fungsi Badge Warna
+        const getBadge = (grp, val) => {
+            let cls = "bg-shift-off";
+            let v = val ? val.toString().toUpperCase() : "";
+            if (v.includes("1")) cls = "bg-shift-1";
+            else if (v.includes("2")) cls = "bg-shift-2";
+            else if (v.includes("3")) cls = "bg-shift-3";
+            return `<span class="shift-badge ${cls}">${grp}: ${v || 'OFF'}</span>`;
+        };
+        
+        // Logika Greeting berdasarkan Waktu
+        let salam = "Selamat bekerja!";
+        if (jamSekarang >= 4 && jamSekarang < 10) salam = "Semangat Pagi! Maju Terus Gajah Tunggal!";
+        else if (jamSekarang >= 10 && jamSekarang < 15) salam = "Selamat Siang, tetap fokus!";
+        else if (jamSekarang >= 15 && jamSekarang < 19) salam = "Selamat Sore, hati-hati di jalan!";
+        else salam = "Selamat Malam, tetap waspada!";
+
+        // Update Tampilan Popup
+        shiftDiv.innerHTML = `
+            <div style="margin-bottom:5px;">
+                ${getBadge('A', dataHariIni.A)} ${getBadge('B', dataHariIni.B)}
+                ${getBadge('C', dataHariIni.C)} ${getBadge('D', dataHariIni.D)}
+            </div>
+            <span id="greetingText">🚀 ${salam}</span>
+        `;
+        shiftDiv.style.display = 'block';
+
+        if (dataHariIni.ket && dataHariIni.ket !== '-' && dataHariIni.ket !== '') {
+            showHolidayNotif(dataHariIni.ket);
+        }
+    }
+}
+
+
+    function showHolidayNotif(pesan) {
+        if (document.getElementById('holidayNotif')) return;
+        const notif = document.createElement('div');
+        notif.id = 'holidayNotif';
+        notif.className = 'holiday-popup';
+        // Menghilangkan simbol dan juga kata NOTIF (case insensitive)
+let cleanPesan = pesan.replace(/[x!#+]/gi, '').replace(/NOTIF/gi, '').trim();
+        notif.innerHTML = `<div style="font-weight:bold; font-size:11px; opacity:0.8;">INFO HARI INI:</div><div style="font-size:14px;">🎉 ${cleanPesan}</div>`;
+        document.body.appendChild(notif);
+        setTimeout(() => {
+            notif.style.opacity = '0';
+            setTimeout(() => notif.remove(), 1000);
+        }, 10000);
+    }
+
+    // 5. Fungsi Helper
+    function isRamadhan(data) { return data.ket && (data.ket.toLowerCase().includes('ramadhan') || data.ket.includes('+')); }
+    function getDayName(y, m, d) { const dt = new Date(y, m, d); return isNaN(dt) ? '' : dt.toLocaleDateString('id-ID', { weekday: 'short' }).toUpperCase(); }
+    function toggleLegend() { const modal = document.getElementById('legendModal'); modal.style.display = (modal.style.display === 'block') ? 'none' : 'block'; }
+    
+    function getTanggalClass(day, data, isToday) {
+    let classes = [];
+    if (isToday) classes.push('today-highlight');
+    
+    // CEK: Jika ada keterangan DAN keterangannya TIDAK diawali kata "NOTIF"
+    if (data.ket && data.ket !== '-' && data.ket !== '') {
+        const ket = data.ket.toString().toUpperCase();
+        
+        // Hanya kasih tanda jika BUKAN "NOTIF"
+        if (!ket.startsWith("NOTIF")) {
+            if (ket.includes('#')) classes.push('has-cuti-info');
+            else if (ket.includes('!')) classes.push(isToday ? 'has-vip-info' : 'has-info');
+            else if (!isToday) classes.push('has-info');
+        }
+    }
+    
+    // Tanda ramadhan tetap muncul (jika Bapak mau)
+    if (isRamadhan(data)) {
+        classes.push('is-ramadhan');
+        classes.push('ramadhan-circle');
+    }
+
+    return classes.join(' ');
+}
+
+
+    function getBoxClass(shiftVal, data) {
+        if (data.ket && data.ket.toString().toUpperCase().includes('X')) return 'libur-bersama';
+        let classes = [];
+        if (isRamadhan(data)) classes.push('is-ramadhan');
+        if (shiftVal) {
+            let val = shiftVal.toString().toUpperCase();
+            if (val.includes('1')) classes.push('shift-1');
+            else if (val.includes('2')) classes.push('shift-2');
+            else if (val.includes('3')) classes.push('shift-3');
+            else if (val.includes('O') || val.includes('LIBUR')) classes.push('shift-off');
+        }
+        return classes.join(' ');
+    }
+
+    // Panggil saat pertama kali buka
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCalendar();
+        startPopupTimer();
+    });
+
+</script>
+</body>
+</html>
