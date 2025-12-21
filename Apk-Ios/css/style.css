@@ -1,0 +1,123 @@
+ :root {
+            --primary-orange: #de7016;
+            --dark-orange: #c7670e;
+            --info-blue: #ffe0e0;
+            --info-green: #2ecc71;
+            --holiday-red: #ff3b3b;
+            --ramadhan-green: #e8f5e9; /* Hijau muda untuk Ramadhan */
+        }
+        body { margin: 0; padding: 10px; font-family: Verdana, sans-serif; background: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background-color: rgba(250, 164, 97, 0.1); padding: 10px; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-orange); box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 12px solid var(--primary-orange); position: relative; }
+        
+        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .search-box { display: flex; gap: 5px; align-items: center; }
+        .input-year { width: 60px; padding: 5px; border: 1px solid var(--dark-orange); border-radius: 4px; text-align: center; }
+        .btn-nav { padding: 5px 14px; cursor: pointer; background: var(--primary-orange); color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 0.75rem; }
+        .btn-prev, .btn-next { background: var(--primary-orange); color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 1.4rem; }
+        .thn-tag { background: var(--dark-orange); color: white; padding: 5px 18px; font-weight: bold; border-radius: 0 0 0 20px;}
+        
+        /* Tombol Info */
+        .btn-info-toggle { background: #444; color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-left: 10px; }
+
+        /* Modal Legend */
+        .legend-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .legend-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border-radius: 8px; width: 85%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+   .legend-content p {font-size: 0.65rem;}
+        .legend-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-orange); padding-bottom: 10px; margin-bottom: 10px; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 6px; font-size: 0.75rem; }
+        .legend-color { width: 20px; height: 20px; border-radius: 4px; margin-right: 10px; border: 1px solid #ccc; }
+
+        table { width: 100%; border-collapse: collapse; border: 1px solid #ccc; background: white; }
+        .monthLabel { background: linear-gradient(to right, var(--dark-orange), var(--primary-orange)); color: white; text-align: center; font-weight: bold; }
+        .bln { font-size: 1.2rem; background: linear-gradient(to right, var(--dark-orange), var(--primary-orange)); color: white; text-align: center; font-weight: bold; letter-spacing: 2px;}
+        tr.header-group th { background: #444; color: white; font-size: 0.7rem; padding: 6px; }
+        tr.header-sub th { background: #f8f8f8; color: #333; font-size: 0.75rem; padding: 4px; border: 1px solid orange; }
+        td { border: 1px solid #eee; text-align:center; padding: 5px 0px; font-size: 0.8rem;  width: 7.69%;}
+        
+                /* Warna Khusus Shift - Ditambah !important agar tidak tertutup warna Ramadhan */
+        .shift-1 { background-color: #3498db !important; color: white !important; }
+        .shift-2 { background-color: #0cad9b !important; color: white !important; }
+        .shift-3 { background-color: #f1c40f !important; color: black !important; }
+        .shift-off { background-color: #eee !important; color: #cc0000 !important; }
+        
+        /* Highlight Ramadhan - Diletakkan lebih rendah prioritasnya */
+        .is-ramadhan { background-color: var(--ramadhan-green) !important; color: #000}
+     
+         /* Indikator Lingkaran Hijau untuk Ramadhan */
+.ramadhan-circle {
+    position: relative;
+}
+.ramadhan-circle::before {
+    content: 'i';
+    position: absolute;
+    top: 0;
+    right: -6px;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: #2ecc71; /* Warna hijau */
+    border-radius: 50%;
+    border: 1px solid white;
+    z-index: 999;
+    color: #fff;
+    font-size: 0.6rem;
+}
+/* Lingkaran hijau terang khusus untuk hari ini ➕➕ */
+.today-highlight.ramadhan-circle::before {
+    background-color: #00ff7f !important; /* Hijau neon/terang */
+    width: 8px; /* Sedikit lebih besar */
+    height: 8px;
+    box-shadow: 0 0 5px rgba(0, 255, 127, 0.8);
+}
+   /* Indikator Lingkaran Umum */
+.ramadhan-circle {
+    position: relative;
+}
+.today-highlight.ramadhan-circle::before {
+    background-color: #00ff00 !important; /* Hijau Terang */
+    box-shadow: 0 0 6px #00ff00;
+    width: 7px;
+    height: 7px;
+}
+        .hari-minggu { color: red !important; font-weight: bold; }
+        .libur-bersama { background-color: var(--holiday-red) !important; color: white !important; font-weight: bold; }
+        .today-highlight { background-color: #ffeb3b !important; border: 2px solid var(--dark-orange) !important; font-weight: bold; color: #de7016 !important; }
+
+        .is-ramadhan { 
+            border-bottom: 2px solid #2ecc71 !important; 
+            background-color: #f0fff4; /* Background sangat tipis */
+        }
+        .shift-1.is-ramadhan { background: linear-gradient(to bottom, #3498db 80%, #2ecc71 100%) !important; }
+        .shift-2.is-ramadhan { background: linear-gradient(to bottom, #0cad9b 80%, #2ecc71 100%) !important; }
+        .shift-3.is-ramadhan { background: linear-gradient(to bottom, #f1c40f 80%, #2ecc71 100%) !important; }
+        
+        .has-info { background-color: var(--info-blue) !important; color: red !important; font-weight: bold; position: relative; }
+        .has-info::after { content: 'i'; position: absolute; top: 1px; right: 1px; font-size: 6px; background: red; color: #fff; width: 8px; height: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        
+        .has-vip-info { background-color: #e8f5e9 !important; border: 2px solid var(--info-green) !important; font-weight: bold; position: relative; }
+        .has-vip-info::after { content: 'i'; position: absolute; top: 1px; right: 1px; font-size: 6px; background: var(--info-green); color: #fff; width: 8px; height: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .has-cuti-info { background-color: #fff9e6 !important; border: 1px solid #ffd700 !important; font-weight: bold; position: relative; }
+        .has-cuti-info::after { content: 'i'; position: absolute; top: 1px; right: 1px; font-size: 6px; background: #ffd700; color: #000; width: 8px; height: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .loading-text { text-align: center; padding: 20px; font-style: italic; color: var(--dark-orange); background: #eee; position: fixed; left: 50%; top: 40%; transform: translate(-50%, -50%); width: 70%; border: 1px solid orange; border-radius: 8px; z-index: 2000; }
+        .col-day { font-size: 0.7rem; text-align: left; color: #434082; font-weight: bold; padding-left: 5px; }
+        .batas { width: 0px; background: #ddd; padding: 0; border: none; }
+        .libur-row td { font-size: 0.7rem; color: #333; text-align: left; background: #fafafa; padding: 3px 12px; border-left: 4px solid var(--primary-orange); }
+   
+  .loading-text:after {
+  font-style: normal;
+  position: absolute;
+         content: '⏳';
+         bottom: 20px;
+         border-radius: 50px;
+      animation: animName 2s linear infinite;
+       }
+  @keyframes animName {
+ 0%{
+    transform: rotate(0deg);
+   }
+100%{
+    transform: rotate(360deg);
+   }
+}
