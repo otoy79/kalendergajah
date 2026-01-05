@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar 4G3S GAJAH TUNGGAL</title>
+   <link rel="stylesheet" href="css/style.css">
+    <style>
+   body {
+            opacity: 0;
+            animation: fadeIn 3s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+   :root {
+            --primary-orange: #de7016;
+            --dark-orange: #c7670e;
+            --info-blue: #ffe0e0;
+            --info-green: #2ecc71;
+            --holiday-red: #ff3b3b;
+            --ramadhan-green: #e8f5e9; /* Hijau muda untuk Ramadhan */
+        }
+        body { margin: 0; padding: 10px; font-family: Verdana, sans-serif; background: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background-color: rgba(250, 164, 97, 0.1); padding: 10px; border-radius: 0 0 8px 8px; border: 1px solid var(--primary-orange); box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid var(--primary-orange); position: relative; }
+        
+        .nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        .search-box { display: flex; gap: 5px; align-items: center; }
+        .input-year { width: 50px; padding: 4px; border: 1px solid var(--dark-orange); border-radius: 4px; text-align: center; align-items: center; justify-content: center;}
+        .btn-nav {height: 28px; padding: 8px 14px; cursor: pointer; background: var(--primary-orange); color: white; border: none; border-radius: 5px; font-weight: bold; font-size: 0.75rem; }
+        .btn-prev, .btn-next { background: var(--primary-orange); color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-size: 1.4rem; }
+        .thn-tag { background: var(--dark-orange); color: white; padding: 5px 18px; font-weight: bold; border-radius: 0 0 0 20px;}
+       .nav-regis { display:none; position:fixed; z-index:999; left:0; top:0; width:100%; height:100%; background:rgba(201, 123, 12, 0.99); justify-content:center; align-items:center; z-index: 9999;
+}        
+        /* Tombol Info */
+        .btn-info-toggle { background: #444; color: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-weight: bold; font-size: 1rem; margin-left: 10px; }
+         
+        /* Modal Legend */
+        .legend-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .legend-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 10px; border-radius: 8px; width: 85%; max-width: 400px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+   .legend-content p {font-size: 0.65rem;}
+        .legend-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary-orange); padding-bottom: 10px; margin-bottom: 10px; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 6px; font-size: 0.75rem; }
+        .legend-color { width: 20px; height: 20px; border-radius: 4px; margin-right: 10px; border: 1px solid #ccc; }
+
+        table { width: 100%; border-collapse: collapse; border: 1px solid #ccc; background: white; }
+        .monthLabel { background: linear-gradient(to right, var(--dark-orange), var(--primary-orange)); color: white; text-align: center; font-weight: bold; }
+        .bln { font-size: 1.2rem; background: linear-gradient(to right, var(--dark-orange), var(--primary-orange)); color: white; text-align: center; font-weight: bold; letter-spacing: 2px;}
+        tr.header-group th { background: #444; color: white; font-size: 0.7rem; padding: 6px; }
+        tr.header-sub th { background: #f8f8f8; color: #333; font-size: 0.75rem; padding: 4px; border: 1px solid orange; }
+        td { border: 0.8px solid orange; text-align:center; padding: 5px 0px; font-size: 0.9rem;  width: 7.69%; font-weight: bold;}
+        
+                /* Warna Khusus Shift - Ditambah !important agar tidak tertutup warna Ramadhan */
+        .shift-1❌ { background-color: #3498db !important; color: white !important; }
+        .shift-2❌ { background-color: #0cad9b !important; color: white !important; }
+        .shift-3❌ { background-color: #f1c40f !important; color: black !important; }
+        .shift-off { background-color: rgba(230, 51, 28, 0.15) !important; color: red !important; }
+         td:nth-child(3) {
+  background: rgba(217, 250, 226, 0.99);}
+         td:nth-child(4) {
+  background: rgba(245, 240, 193, 0.99);}
+         td:nth-child(5) {
+  background: rgba(217, 230, 250, 0.99);}
+         td:nth-child(6) {
+  background: rgba(252, 212, 250, 0.99);}
+         td:nth-child(10) {
+  background: rgba(217, 250, 226, 0.99);}
+         td:nth-child(11) {
+  background: rgba(245, 240, 193, 0.99);}
+         td:nth-child(12) {
+  background: rgba(217, 230, 250, 0.99);}
+         td:nth-child(13) {
+  background: rgba(252, 212, 250, 0.99);}
+
+       table tr .A {
+  background: rgba(160, 250, 248, 0.99);}
+        table tr .B {
+  background: rgba(250, 241, 160, 0.99);}
+        table tr .C {
+  background: rgba(160, 179, 250, 0.99);}
+        table tr .D {
+  background: rgba(230, 160, 250, 0.99);}
+        
+        /* Highlight Ramadhan - Diletakkan lebih rendah prioritasnya */
+        .is-ramadhan { background-color: var(--ramadhan-green) !important; color: #000}
+     
+         /* Indikator Lingkaran Hijau untuk Ramadhan */
+.ramadhan-circle {
+    position: relative;
+}
+.ramadhan-circle::before {
+    content: 'i';
+    position: absolute;
+    top: 0;
+    right: -6px;
+    transform: translateX(-50%);
+    width: 9px;
+    height: 9px;
+    background-color: green; /* Warna hijau */
+    border-radius: 50%;
+    border: 1px solid white;
+    z-index: 999;
+    color: #fff;
+    font-size: 0.7rem;
+}
+/* Lingkaran hijau terang khusus untuk hari ini ➕➕ */
+.today-highlight.ramadhan-circle::before {
+    background-color: #00ff7f !important; /* Hijau neon/terang */
+    width: 8px; /* Sedikit lebih besar */
+    height: 8px;
+    box-shadow: 0 0 5px rgba(0, 255, 127, 0.8);
+}
+   /* Indikator Lingkaran Umum */
+.ramadhan-circle {
+    position: relative;
+}
+.today-highlight❌.ramadhan-circle❌::before {
+    background-color: #00ff00 !important; /* Hijau Terang */
+    box-shadow: 0 0 6px #00ff00;
+    width: 7px;
+    height: 7px;
+}
+        .hari-minggu { color: red !important; font-weight: bold; }
+        .libur-bersama { background-color: var(--holiday-red) !important; color: white !important; font-weight: bold; }
+         .libur-cuti { background-color: var(--holiday-blue) !important; color: white !important; font-weight: bold; }
+        .today-highlight { background-color: #5858fc !important; border-top: 4px solid red !important; font-weight: bold; color: #fff !important; border-radius: 0 0 5px 5px; }
+
+        .is-ramadhan, .is-cutileb { 
+            border-bottom: 3px solid #2ecc71 !important; 
+            background-color: #f0fff4; /* Background sangat tipis */
+        }
+        .shift-1.is-ramadhan { background: linear-gradient(to bottom, #fcf5a4 20%, #2ecc71 150%) !important; }
+        .shift-2.is-ramadhan { background: linear-gradient(to bottom, #fcf5a4 20%, #2ecc71 150%) !important; }
+        .shift-3.is-ramadhan { background: linear-gradient(to bottom, #fcf5a4 20%, #2ecc71 150%) !important; }
+         .shift-off.is-ramadhan { background: linear-gradient(to bottom, #fcf5a4 20%, #2ecc71 150%) !important; }
+
+          .has-info.is-ramadhan { background: linear-gradient(to bottom, #fff 20%, #2ecc71 170%) !important; z-index:999; color: #000 !important; }
+        
+        .has-info { background-color: red !important; color: #fff !important; font-weight: bold; position: relative; }
+
+        .has-info::after { content: 'i'; position: absolute; top: 1px; right: 1px; font-size: 6px; background: #fff; color: red; width: 8px; height: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+         
+        .has-vip-info { background-color: #e8f5e9 !important; border: 2px solid var(--info-green) !important; font-weight: bold; position: relative; }
+        .has-vip-info::after { content: 'i'; position: absolute; top: 1px; right: 1px; font-size: 6px; background: var(--info-green); color: #fff; width: 8px; height: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .has-cuti-info { background-color: #fff9e6 !important; border: 1px solid #ffd700 !important; font-weight: bold; position: relative; }
+        .has-cuti-info::after { content: 'i'; position: absolute; top: 1px; right: 1px; font-size: 6px; background: #ffd700; color: #000; width: 9px; height: 9px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .libur-cuti {
+    background-color: #fae370 !important; /* KUNING MENYALA */
+    color: #000 !important;               /* TULISAN HITAM */
+    font-weight: bold !important;
+    border: 1px solid #ffcc00 !important; /* Kasih bingkai dikit */
+}
+        .shift-off.libur-cuti { background: linear-gradient(to bottom, #edcccc 20%, #f5ec6e 150%) !important; color: red !important;}
+       
+        .loading-text { text-align: center; padding: 20px; font-style: italic; color: var(--dark-orange); background: linear-gradient(135deg, #1e1e2f 0%, #434082 100%);
+    color: #ffffff; position: fixed; left: 50%; top: 30%; transform: translate(-50%, -50%); width: 70%;  border-radius: 8px; z-index: 2000; border-left: 5px solid #2ecc71; border-right: 5px solid #2ecc71; box-shadow: 0 10px 25px rgba(0,0,0,0.4);}
+        .col-day { font-size: 0.7rem; text-align: left; color: #434082; font-weight: bold; padding-left: 5px; }
+        .batas { width: 0px; background: #ddd; padding: 0; border: none; }
+        .libur-row td { font-size: 0.7rem; color: #333; text-align: left; background: #fafafa; padding: 3px 12px; border-left: 4px solid var(--primary-orange); }
+   
+  .loading-text:after {
+  font-style: normal;
+  position: absolute;
+         content: '⏳';
+         bottom: 20px;
+         border-radius: 50px;
+      animation: animName 2s linear infinite;
+       }
+  @keyframes animName {
+ 0%{
+    transform: rotate(0deg);
+   }
+100%{
+    transform: rotate(360deg);
+   }
+}
+  /* Styling Popup Notif */
+  .shift-badge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px;
+    margin: 2px;
+    display: inline-block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.bg-shift-1 { background: #3498db; } /* Biru */
+.bg-shift-2 { background: #1abc9c; } /* Hijau Toska */
+.bg-shift-3 { background: #f1c40f; color: #000; } /* Kuning */
+.bg-shift-off { background: #e74c3c; } /* Merah/Libur */
+
+/* Teks Greeting */
+#greetingText {
+    display: block;
+    margin-top: 8px;
+    font-style: italic;
+    font-size: 11px;
+    color: #ffd700; /* Warna emas agar menonjol */
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 5px;
+}
+
+    /* Styling Popup Kanan Atas */
+.sync-popup {
+    position: fixed;
+    top: 20px; /* Posisi di atas */
+    right: 20px; /* Posisi di kanan */
+    background: linear-gradient(135deg, #1e1e2f 0%, #434082 100%);
+    color: #ffffff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    z-index: 10000;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border-left: 5px solid #2ecc71; /* Aksen hijau sebagai indikator sukses */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 250px;
+    animation: slideInRight 0.5s ease-out, fadeOut 1s 59s forwards;
+}
+
+.sync-popup .dot {
+    height: 12px;
+    width: 12px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #2ecc71;
+    animation: blink 1.2s infinite;
+}
+
+/* Animasi Muncul dari Kanan */
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Animasi Menghilang */
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(20px); visibility: hidden; }
+}
+
+@keyframes blink {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+  .sync-popup {
+    /* ... kode yang sudah ada ... */
+    min-width: 200px; /* Lebarkan sedikit */
+    line-height: 1.4;
+}
+
+#shiftInfo b {
+    color: #fff; /* Biar huruf grup A,B,C,D lebih menonjol */
+    background: rgba(255,255,255,0.1);
+    padding: 0 3px;
+    border-radius: 3px;
+}
+
+  /* Animasi Slide Masuk */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Class untuk memicu animasi */
+.animate-calendar {
+    animation: slideIn 0.4s ease-out;
+}
+
+/* Tambahan agar tombol prev/next terasa mantap saat ditekan */
+.btn-prev:active, .btn-next:active {
+    transform: scale(0.9);
+    transition: 0.1s;
+}
+.holiday-popup {
+    position: fixed;
+    bottom: 50%; /* Di bawah popup sinkronisasi */
+    right: 20px;
+    background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    z-index: 9998;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    border-left: 5px solid #ffeb3b;
+    animation: slideInRight 0.5s ease-out;
+}
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-calendar {
+    animation: slideIn 0.4s ease-out;
+}
+
+    /* Container pembatas */
+.marquee-window {
+    height: 40px; 
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2); 
+    border-radius: 6px;
+    margin-left: ppx;
+    flex: 1;
+    position: relative;
+}
+
+/* Kontainer yang bergeser */
+.marquee-container {
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Gerakan lebih elegan */
+}
+
+/* Item Status */
+.status-item {
+    height: 40px; /* Harus sama dengan marquee-window */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box; /* Wajib ada agar padding tidak nambah tinggi */
+}
+
+.text-utama {
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+}
+
+.text-waktu {
+    font-size: 0.6rem;
+    color: #00ff88;
+    margin: 0;
+}
+
+  .user-identity-bar {
+    display: flex;
+    align-items: center; /* Supaya sejajar tengah secara vertikal */
+    background: #434082; /* Warna biru GT */
+    color: white;
+    padding: 5px 8px;
+    gap: 5px;
+    height: 50px; /* Kita kunci tingginya agar tidak numpuk */
+    overflow: hidden;
+}
+  .btn-user-profil { background: #fff; color: white; border: 2px solid #00ff88; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; margin: 4px;}
+
+.user-fixed-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 100px; /* Area untuk Nama & Group */
+    border-right: 1px solid rgba(255,255,255,0.3);
+    padding-right: 5px;
+}
+
+#displayNama {
+    font-size: 0.7rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-badge-group {
+    font-size: 0.7rem;
+    background: #2ecc71;
+    padding: 2px 5px;
+    border-radius: 4px;
+    width: fit-content;
+    margin-top: 2px;
+}
+.user-info-item {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-badge-group {
+    background: #2ecc71;
+    color: #434082;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.7rem;
+}
+  /* Efek fokus: yang bukan group user akan jadi transparan 30% */
+.bukan-group-saya { 
+    opacity: 0.6; 
+    filter: grayscale(10%); 
+}
+ /* Pastikan input date tidak merusak tata letak */
+#jumpDate::-webkit-calendar-picker-indicator {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+ .jumpData {
+   width: 40px; border: none; background: #f39c12; color: white; border-radius: 4px; padding: 5px; cursor: pointer;
+}
+  .cari-tgl {
+ border: none; background: #fff; color: #fff; border-radius: 6px; padding: 2px; cursor: pointer; margin-left: 10px;}
+   
+   
+  /* Styling saat mode Full Screen aktif */
+.container:fullscreen {
+    background: #aaa; /* Samakan dengan warna background web Bapak */
+    width: 100vw;
+    height: 100vh;
+    padding: 15px;
+    overflow-y: auto;
+}
+
+/* Khusus untuk Chrome/Safari HP */
+.container:-webkit-full-screen {
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    padding: 15px;
+}
+
+/* Sembunyikan elemen tertentu saat Full Screen (opsional) */
+.container:fullscreen .nav-header {
+    margin-bottom: 20px;
+}
+   .btn-nav span {
+    font-size: 14px;
+    font-weight: bold;
+     align-items: center;
+}
+  
+   .offline-bar {
+    display: none;
+    background: #e74c3c;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-size: 12px;
+    position: fixed;
+    top: 0; left: 0; width: 100%;
+    z-index: 10000;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+    </style>
+</head>
+<body>
+
+<div id="legendModal" class="legend-overlay">
+    <div class="legend-content">
+        <div class="legend-header">
+            <span style="font-weight: bold;">KETERANGAN WARNA</span>
+            <button onclick="toggleLegend()" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">×</button>
+        </div>
+       
+        <div class="legend-item"><div class="legend-color is-ramadhan"></div><span>Bulan Ramadhan (Hijau Muda)</span></div>
+        <div class="legend-item"><div class="legend-color libur-bersama"></div><span>Hari Libur Nasional (Merah)</span></div>
+        <div class="legend-item"><div class="legend-color today-highlight"></div><span>Hari Ini (Biru)</span></div>
+        <div class="legend-item"><div class="legend-color has-cuti-info"></div><span>Cuti Lebaran (#)</span></div>
+   <p>Note:<br>
+    * Kalender Aktif fullYears dengan Database Kal-4G3S GT dengan auto Update dari Database.<br>
+    * Hari Libur Nas sifatnya Tentatif (dapat berubah sewaktu-waktu) <br>
+     * Kalender hanya bisa di buka dengan koneksi Internet untuk sinkronisasi dengan Database. <br>
+   * Kal-Kerja Up 4G3S. 2026 ~ 2030 (Load Pertahun mengambil data)<br>
+    * Pastikan Koneksi Internal anda Kuat sekuat Gajah 😎. <br>
+    *  Salam semangat! "Maju Terus Gajah Tunggal..! 🙏
+  </p>
+        <button class="btn-nav" style="width:100%; margin-top:10px;" onclick="toggleLegend()">TUTUP</button>
+    </div>
+</div>
+
+
+ 
+<div id="userBar" class="user-identity-bar">
+  <div>
+        <button class="btn-user-profil" onclick="editProfil()">⚙️</button>
+    </div>
+   <div class="user-fixed-info">
+        <span id="displayNama">NAMA USER</span>
+      <span class="user-badge-group" id="displayGroup">GROUP</span>
+    </div>
+    
+    <div class="marquee-window">
+        <div class="marquee-container" id="marqueeContainer">
+            <div class="status-item">
+                <span class="text-utama">MAJU TERUS GAJAH TUNGGAL</span>
+                <span class="text-waktu">Update Status...</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+     
+ <div id="statusUpdateArea" style="padding: 10px; background: #eee; display: flex; gap: 5px; margin:0;">
+    <input type="text" id="inputStatus" placeholder="Update info status..." style="flex: 1; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
+    <button onclick="kirimStatus()" style="background: #2ecc71; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">KIRIM</button>
+</div>
+
+  <div class="container">
+    <div class="nav-header">
+        <div class="search-box">
+            <button class="btn-nav" style="background:#434082;" onclick="goToToday()">TODAY</button>
+
+     <div style="position: relative; padding: 0px 6px; background: #434082; border-radius: 4px; width: 55px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+    <span style="font-size: 1.2rem;">📅</span><span class="cari-tgl"> 🔍 </span>
+    <input type="date" id="jumpDate" onchange="loncatKeTanggal()" 
+        style="position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; left: 0; top: 0; z-index: 10;"> 
+  </div>
+
+            <button class="btn-info-toggle" onclick="toggleLegend()">?</button>
+      <!-- Icon Full Screen disini -->
+       <button class="btn-info-toggle" style="background:#434082; margin-left: 1px;" onclick="toggleFullScreen()">
+    <span id="fsIcon">⛶</span>
+</button>
+        </div>
+        <div class="thn-tag" id="yearLabel">2025</div>
+    </div>
+
+       <!-- Bagian yg di Full Screen -->
+    <table id="mainTable">
+        <thead>
+            <tr class="monthLabel">
+                <th style="text-align:left" colspan="2"><button class="btn-prev" onclick="changeMonth(-1)">❮</button></th>
+                <th style=" position: relative; text-align: center; align-items: center; justify-content: center;" colspan="9"> 
+              <button><input class="input-year" type="number" id="inputYear" value="2025"></button>
+                    <button class="btn-nav" style="background:#eee; color: #333; margin-left: 0px;" onclick="searchYear()">GO</button>
+                </th>
+                <th colspan="2" style="text-align:right"><button class="btn-next" onclick="changeMonth(1)">❯</button></th>
+            </tr>
+            <tr class="bln"><th colspan="13" id="monthLabel" style="text-align:center; padding: 10px 0;">LOADING...</th></tr>
+            <tr class="header-group">
+                <th colspan="2">4G3S SYSTEM</th><th colspan="4">SHIFT GROUP</th>
+                <th class="batas" style="width: 1px;"></th>
+                <th colspan="2">4G3S SYSTEM</th><th colspan="4">SHIFT GROUP</th>
+            </tr>
+            <tr class="header-sub">
+                <th>TG</th><th style="text-align:left">HAR</th><th class="A">A</th><th class="B">B</th><th class="C">C</th><th class="D">D</th>
+                <th class="batas" style="width: 1px;"></th>
+                <th>TG</th><th style="text-align:left">HAR</th><th class="A">A</th><th class="B">B</th><th class="C">C</th><th class="D">D</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+    </table>
+    <div id="loader" class="loading-text">Menyambungkan ke Database Kal 4G3S Gajah Tunggal...</div>
+</div>
+  <div id="syncToast" class="sync-popup">
+    <div class="dot"></div>
+    <div id="syncContent">
+        <span style="display:block; font-size: 8px; color: #ccc; margin-bottom: 2px;">SYSTEM STATUS</span>
+        <div id="statusText">Menghubungkan ke Database...</div>
+        <div id="shiftInfo" style="font-size: 11px; margin-top: 5px; color: #2ecc71; display: none;">
+            </div>
+    </div>
+</div>
+
+    <div id="offlineNotice" class="offline-bar"> ⚠️ KONEKSI INTERNET TERPUTUS - Data mungkin tidak akurat </div>
+
+   <div id="regisModal" class="nav-regis" style="display:none">
+    <div style="background: #fff; padding:20px; border-radius:8px; width:75%; max-width:300px;">
+        <h3 style="margin: 5px;"><span style="font-size: 0.8rem;">(Up Th 2026~2030)</span> <br>Registrasi User : </h3>
+        <input type="text" id="regNama" placeholder="Nama Lengkap" style="width:100%; margin-bottom:10px; padding:8px; box-sizing: border-box;">
+        <input type="text" id="regNik" placeholder="NIK" style="width:100%; margin-bottom:10px; padding:8px; box-sizing: border-box;">
+        
+        <label style="font-size: 12px; color: #666;">Pilih Group:</label>
+        <select id="regGroup" style="width:100%; margin-bottom:10px; padding:8px;">
+            <option value="A">Group A</option>
+            <option value="B">Group B</option>
+            <option value="C">Group C</option>
+            <option value="D">Group D</option>
+            <option value="NS">Group NS</option>
+        </select>
+
+        <label style="font-size: 12px; color: #666;">Nama Plant / Departemen:</label>
+<input type="text" id="regPlant" placeholder="Contoh: Plant A / Gudang" style="width:100%; margin-bottom:15px; padding:8px; box-sizing: border-box;">
+
+   <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <button onclick="prosesDaftar()" id="btnSimpan" style="flex: 2; background:#2ecc71; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer; font-weight:bold;"><span onClick="history.go(0);">SIMPAN</span></button>
+    
+    <button onclick="tutupModal()" style="flex: 1; background:#e74c3c; color:white; border:none; padding:10px; border-radius:4px; cursor:pointer; font-weight:bold;">BATAL</button>
+</div>
+    </div>
+</div>
+
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2TKZxFqiD25lvVibm3rAkYUjMtarfjGVIgv7lDA7pZRSHfROTIlVDnNJwtDS0ZwnAMA/exec';
+    let currentDate = new Date();
+    let fullYearData = []; 
+    let loadedYear = null;
+    const monthNames = ["JANUARI", "FEBRUARI", "MARET", "APRIL", "MEI", "JUNI", "JULI", "AGUSTUS", "SEPTEMBER", "OKTOBER", "NOVEMBER", "DESEMBER"];
+
+   let slideTimer = null; // Biar tidak dobel jalannya
+let currentSlide = 0;
+
+   // Status Animate
+function jalankanSlide() {
+    const container = document.getElementById('marqueeContainer');
+    const items = container.getElementsByClassName('status-item');
+    
+    // Bersihkan timer lama jika ada (mencegah double speed)
+    if (slideTimer) clearInterval(slideTimer);
+    if (items.length <= 1) return;
+
+    slideTimer = setInterval(() => {
+        currentSlide++;
+        if (currentSlide >= items.length) {
+            currentSlide = 0;
+        }
+        // Geser ke atas kelipatan 40px
+        container.style.transform = `translateY(-${currentSlide * 40}px)`;
+    }, 4000); // Ganti setiap 4 detik
+}
+
+    //CARI TANGGAL
+    function loncatKeTanggal() {
+    const pilihTanggal = document.getElementById('jumpDate').value; // Format: YYYY-MM-DD
+    if (!pilihTanggal) return;
+
+    const targetDate = new Date(pilihTanggal);
+    
+    // Set currentDate ke tanggal yang dipilih user
+    currentDate = targetDate;
+
+    // Jalankan render ulang
+    renderCalendar();
+
+    // Beri info ke user (Toast/Alert singkat)
+    console.log("Loncat ke: " + targetDate.toLocaleString('id-ID', { month: 'long', year: 'numeric' }));
+}
+
+    // 1. Popup Timer Awal
+    function startPopupTimer() {
+        const toast = document.getElementById('syncToast');
+        setTimeout(() => {
+            if(toast) toast.style.display = 'none';
+        }, 12000); 
+    }
+
+   // Cek saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+    const user = localStorage.getItem('userData4G3S');
+    if (!user) {
+        document.getElementById('regisModal').style.display = 'flex';
+    } else {
+        renderCalendar();
+    }
+});
+    async function prosesDaftar() {
+    const btn = document.querySelector('#regisModal button');
+    const nama = document.getElementById('regNama').value;
+    const nik = document.getElementById('regNik').value;
+    const group = document.getElementById('regGroup').value;
+    const plant = document.getElementById('regPlant').value;
+
+    if (!nama || !nik || !plant) return alert("Semua kolom wajib diisi!");
+
+    const payload = {
+        nama: nama.toUpperCase(),
+        nik: nik,
+        group: group,
+        plant: plant.toUpperCase()
+    };
+
+    try {
+        btn.innerText = "Menyimpan..."; // Beri info sedang proses
+        btn.disabled = true;
+
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        
+        localStorage.setItem('userData4G3S', JSON.stringify(payload));
+        alert("Profil berhasil diperbarui!");
+        location.reload(); 
+    } catch (err) {
+        alert("Gagal menyimpan ke database!");
+        btn.innerText = "SIMPAN PERUBAHAN";
+        btn.disabled = false;
+    }
+setTimeout(() => {
+    location.reload();
+   }, 1000); 
+}
+
+  // Tampilkan di atas Header
+        function updateIdentityBar() {
+    const userData = JSON.parse(localStorage.getItem('userData4G3S'));
+    if (userData) {
+        document.getElementById('displayNama').innerText = userData.nama;
+        document.getElementById('displayGroup').innerText = "GROUP " + userData.group;
+    }
+}
+
+
+// Panggil fungsi ini di dalam DOMContentLoaded (setelah user login)
+document.addEventListener('DOMContentLoaded', () => {
+    const user = localStorage.getItem('userData4G3S');
+    if (!user) {
+        document.getElementById('regisModal').style.display = 'flex';
+    } else {
+        updateIdentityBar(); // Tampilkan baris nama
+        renderCalendar();
+    }
+});
+
+   // Edit User
+   // Fungsi untuk memunculkan kembali modal dengan data lama
+function editProfil() {
+    const userData = JSON.parse(localStorage.getItem('userData4G3S'));
+    
+    if (userData) {
+        // Isi form dengan data yang sudah ada di memori HP
+        document.getElementById('regNama').value = userData.nama;
+        document.getElementById('regNik').value = userData.nik;
+        document.getElementById('regGroup').value = userData.group;
+        document.getElementById('regPlant').value = userData.plant;
+        
+        // Ubah Judul Modal agar user tahu dia sedang mengedit
+        document.querySelector('#regisModal h3').innerText = " ⚙️ Edit Profil";
+        document.querySelector('#regisModal button').innerText = "SIMPAN PERUBAHAN";
+        
+        // Munculkan Modalnya
+        document.getElementById('regisModal').style.display = 'flex';
+    } else {
+        // Jika belum ada data sama sekali
+        document.getElementById('regisModal').style.display = 'flex';
+    }
+}
+  function tutupModal() {
+    // Cek dulu apakah user sudah terdaftar di memori HP
+    const userSudahAda = localStorage.getItem('userData4G3S');
+    
+    if (userSudahAda) {
+        // Jika sudah ada data, tutup saja modalnya
+        document.getElementById('regisModal').style.display = 'none';
+    } else {
+        // Jika user baru (belum pernah daftar), jangan boleh tutup sebelum isi data
+        alert("Anda harus mendaftar dulu untuk melihat kalender!");
+    }
+}
+
+    // Update Status
+       async function kirimStatus() {
+    const statusBaru = document.getElementById('inputStatus').value;
+    const userData = JSON.parse(localStorage.getItem('userData4G3S'));
+
+    if (!statusBaru) return alert("Isi status dulu, Pak!");
+    if (!userData) return alert("Anda harus terdaftar dulu!");
+
+    // Tambahkan Jam Menit (Timestamp)
+    const sekarang = new Date();
+    const jam = sekarang.getHours().toString().padStart(2, '0');
+    const menit = sekarang.getMinutes().toString().padStart(2, '0');
+    const waktuString = jam + ":" + menit;
+
+    // Gabungkan status dengan jam menggunakan pemisah unik, misalnya " | "
+    const payload = {
+        ...userData,
+        status: statusBaru + " | " + waktuString 
+    };
+
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        alert("Status terupdate!");
+        document.getElementById('inputStatus').value = "";
+        location.reload(); 
+    } catch (err) {
+        alert("Gagal kirim status!");
+    }
+}
+
+
+
+    // 2. Fungsi Render Utama
+        async function renderCalendar() {
+        const month = currentDate.getMonth() + 1;
+        const year = currentDate.getFullYear();
+        const today = new Date();
+        document.getElementById('inputYear').value = year; document.getElementById('monthLabel').innerText = `${monthNames[month-1]} ${year}`;
+        document.getElementById('yearLabel').innerText = year;
+        const tbody = document.getElementById('calendarBody');
+
+        // --- BAGIAN YANG DIPERBAIKI ---
+        if (loadedYear !== year) {
+            document.getElementById('loader').style.display = 'block';
+          try {
+                const response = await fetch(`${SCRIPT_URL}?year=${year}`);
+                // Jika respon tidak OK (misal internet lemot banget atau server down)
+                if (!response.ok) throw new Error("Gagal konek server");
+
+                const rawData = await response.json();
+                fullYearData = rawData.kalender; 
+              
+                // TAMPILKAN STATUS USER KE SLIDE UP
+// TAMPILKAN 5 STATUS TERBARU
+const areaStatus = document.getElementById('marqueeContainer'); 
+
+if(areaStatus && rawData.statusUpdates) {
+    let htmlContent = "";
+    const updates = rawData.statusUpdates.slice(0, 5);
+    
+    updates.forEach(msg => {
+        let bagian = msg.split(" | ");
+        let teksPesan = bagian[0] || "MAJU TERUS GT";
+        let jamUpdate = bagian[1] || "--:--";
+
+        htmlContent += `
+            <div class="status-item">
+                <p class="text-utama">📢 ${teksPesan}</p>
+                <span class="text-waktu">Update: ${jamUpdate} WIB</span>
+            </div>
+        `;
+    });
+    
+    areaStatus.innerHTML = htmlContent;
+    
+    // Reset posisi ke awal setiap kali ganti bulan/tahun
+    currentSlide = 0;
+    areaStatus.style.transform = "translateY(0)";
+    
+    // Jalankan animasi slide
+    setTimeout(jalankanSlide, 500); // Kasih jeda dikit biar loading halus
+}
+
+
+                loadedYear = year;
+                document.getElementById('loader').style.display = 'none';
+                checkTodayHoliday(fullYearData); 
+            } catch (e) { 
+                console.error("Gagal load data", e);
+                document.getElementById('loader').style.display = 'none';
+                return; 
+            }
+        } else {
+            checkTodayHoliday(fullYearData);
+        }
+        // --- SELESAI PERBAIKAN ---
+
+
+        // Proses Gambar Tabel
+        const apiData = fullYearData.filter(d => d.bln == month);
+        tbody.innerHTML = ''; 
+        
+        for (let i = 1; i <= 16; i++) {
+            const dayL = i; const dayR = i + 16;
+            const totalDays = new Date(year, month, 0).getDate();
+            const dL = apiData.find(d => d.tgl == dayL) || {};
+            const dR = apiData.find(d => d.tgl == dayR) || {};
+            const isTodayL = (dayL === today.getDate() && (month-1) === today.getMonth() && year === today.getFullYear());
+            const isTodayR = (dayR === today.getDate() && (month-1) === today.getMonth() && year === today.getFullYear());
+
+         // Ambil data group user dari HP
+         const user = JSON.parse(localStorage.getItem('userData4G3S'));
+const grupUser = user ? user.group.toUpperCase() : "";
+
+// Di dalam innerHTML, tambahkan class 'bukan-group-saya' jika hurufnya beda
+tbody.innerHTML += `
+    <tr>
+        <td class="${getTanggalClass(dayL, dL, isTodayL)}">${dayL}</td>
+        <td class="col-day ${getDayName(year, month-1, dayL) === 'MIN' ? 'hari-minggu' : ''}">${getDayName(year, month-1, dayL)}</td>
+        
+        <td class="${getBoxClass(dL.A, dL)} ${grupUser && grupUser !== 'A' ? 'bukan-group-saya' : ''}">${dL.A || ''}</td>
+        <td class="${getBoxClass(dL.B, dL)} ${grupUser && grupUser !== 'B' ? 'bukan-group-saya' : ''}">${dL.B || ''}</td>
+        <td class="${getBoxClass(dL.C, dL)} ${grupUser && grupUser !== 'C' ? 'bukan-group-saya' : ''}">${dL.C || ''}</td>
+        <td class="${getBoxClass(dL.D, dL)} ${grupUser && grupUser !== 'D' ? 'bukan-group-saya' : ''}">${dL.D || ''}</td>
+        
+        <td class="batas" style="width: 1px;"></td>
+        
+        <td class="${dayR <= totalDays ? getTanggalClass(dayR, dR, isTodayR) : ''}">${dayR <= totalDays ? dayR : ''}</td>
+        <td class="col-day ${dayR <= totalDays && getDayName(year, month-1, dayR) === 'MIN' ? 'hari-minggu' : ''}">${dayR <= totalDays ? getDayName(year, month-1, dayR) : ''}</td>
+        
+        <td class="${getBoxClass(dR.A, dR)} ${grupUser && grupUser !== 'A' ? 'bukan-group-saya' : ''}">${dayR <= totalDays ? (dR.A || '') : ''}</td>
+        <td class="${getBoxClass(dR.B, dR)} ${grupUser && grupUser !== 'B' ? 'bukan-group-saya' : ''}">${dayR <= totalDays ? (dR.B || '') : ''}</td>
+        <td class="${getBoxClass(dR.C, dR)} ${grupUser && grupUser !== 'C' ? 'bukan-group-saya' : ''}">${dayR <= totalDays ? (dR.C || '') : ''}</td>
+        <td class="${getBoxClass(dR.D, dR)} ${grupUser && grupUser !== 'D' ? 'bukan-group-saya' : ''}">${dayR <= totalDays ? (dR.D || '') : ''}</td>
+    </tr>`;
+  }
+        
+        // Tampilkan Catatan Libur di bawah tabel
+        apiData.filter(d => d.ket && d.ket !== '-' && d.ket !== '').forEach(item => {
+    // Jika di Sheet Bapak tulisannya diawali kata "NOTIF", maka JANGAN tampilkan di tabel bawah
+    if (!item.ket.toUpperCase().startsWith("NOTIF")) {
+        let clean = item.ket.replace(/[x!#+√]/gi, '').trim();
+        tbody.innerHTML += `<tr class="libur-row"><td colspan="13"><span>${item.tgl}</span> : ${clean}</td></tr>`;
+    }
+});
+ }
+
+
+    // 3. Fungsi Navigasi dengan Animasi
+    function changeMonth(o) {
+        const tbody = document.getElementById('calendarBody'); 
+        tbody.classList.remove('animate-calendar');
+        void tbody.offsetWidth; // Reset animasi
+        currentDate.setMonth(currentDate.getMonth() + o);
+        renderCalendar(); 
+        tbody.classList.add('animate-calendar');
+    }
+  
+   // User 
+      function updateGreeting() {
+    const userData = localStorage.getItem('userData4G3S');
+    const statusText = document.getElementById('statusText');
+    
+    if (userData) {
+        const user = JSON.parse(userData);
+        // Menampilkan nama di bagian status popup bawah
+        statusText.innerHTML = `<span style="color:#2ecc71">● Online: ${user.nama} (${user.plant})</span>`;
+    }
+}
+
+    function goToToday() { 
+        currentDate = new Date(); 
+        renderCalendar(); 
+    }
+
+    function searchYear() { 
+        const y = document.getElementById('inputYear').value; 
+        if (y > 1900) { 
+            currentDate.setFullYear(parseInt(y)); 
+            renderCalendar(); 
+        } 
+    }
+
+    // 4. Logika Notifikasi Hari Libur ➕
+function checkTodayHoliday(dataTahun) {
+    // 1. Ambil Data User dari HP
+    const userData = JSON.parse(localStorage.getItem('userData4G3S'));
+    const namaUser = userData ? userData.nama : "Rekan Gajah";
+    const plantUser = userData ? userData.plant : "";
+
+    const hariIni = new Date();
+    const tglSekarang = hariIni.getDate();
+    const blnSekarang = hariIni.getMonth() + 1;
+    const thnSekarang = hariIni.getFullYear();
+    const jamSekarang = hariIni.getHours();
+
+    if (currentDate.getFullYear() !== thnSekarang) return;
+
+    const dataHariIni = dataTahun.find(d => d.tgl == tglSekarang && d.bln == blnSekarang);
+
+    if (dataHariIni) {
+        const shiftDiv = document.getElementById('shiftInfo');
+        const statusText = document.getElementById('statusText');
+        
+        // 2. Update Status Online dengan Nama & Plant
+        statusText.innerHTML = `<span style="color:#2ecc71">● Online: ${namaUser} (${plantUser})</span>`;
+
+        const getBadge = (grp, val) => {
+            let cls = "bg-shift-off";
+            let v = val ? val.toString().toUpperCase() : "";
+            if (v.includes("1")) cls = "bg-shift-1";
+            else if (v.includes("2")) cls = "bg-shift-2";
+            else if (v.includes("3")) cls = "bg-shift-3";
+            return `<span class="shift-badge ${cls}">${grp}: ${v || 'OFF'}</span>`;
+        };
+        
+        // 3. Logika Greeting (Nama User dipasang di sini)
+        let salam = `Selamat bekerja, ${namaUser}!`;
+        if (jamSekarang >= 4 && jamSekarang < 10) 
+            salam = `Semangat Pagi, ${namaUser}! Maju Terus GT!`;
+        else if (jamSekarang >= 10 && jamSekarang < 15) 
+            salam = `Selamat Siang ${namaUser}, tetap fokus!`;
+        else if (jamSekarang >= 15 && jamSekarang < 19) 
+            salam = `Selamat Sore ${namaUser}, hati-hati di jalan!`;
+        else 
+            salam = `Selamat Malam ${namaUser}, tetap waspada!`;
+
+        // Update Tampilan Popup
+        shiftDiv.innerHTML = `
+            <div style="margin-bottom:5px;">
+                ${getBadge('A', dataHariIni.A)} ${getBadge('B', dataHariIni.B)}
+                ${getBadge('C', dataHariIni.C)} ${getBadge('D', dataHariIni.D)}
+            </div>
+            <span id="greetingText">🚀 ${salam}</span>
+        `;
+        shiftDiv.style.display = 'block';
+
+        if (dataHariIni.ket && dataHariIni.ket !== '-' && dataHariIni.ket !== '') {
+            showHolidayNotif(dataHariIni.ket);
+        }
+    }
+}
+
+
+    function showHolidayNotif(pesan) {
+        if (document.getElementById('holidayNotif')) return;
+        const notif = document.createElement('div');
+        notif.id = 'holidayNotif';
+        notif.className = 'holiday-popup';
+        // Menghilangkan simbol dan juga kata NOTIF (case insensitive)
+let cleanPesan = pesan.replace(/[x!#+]/gi, '').replace(/NOTIF/gi, '').trim();
+        notif.innerHTML = `<div style="font-weight:bold; font-size:11px; opacity:0.8;">INFO HARI INI:</div><div style="font-size:14px;">🎉 ${cleanPesan}</div>`;
+        document.body.appendChild(notif);
+        setTimeout(() => {
+            notif.style.opacity = '0';
+            setTimeout(() => notif.remove(), 1000);
+        }, 10000);
+    }
+
+    // 5. Fungsi Helper
+    function isRamadhan(data) { return data.ket && (data.ket.toLowerCase().includes('ramadhan') || data.ket.includes('+')); }
+    function getDayName(y, m, d) { const dt = new Date(y, m, d); return isNaN(dt) ? '' : dt.toLocaleDateString('id-ID', { weekday: 'short' }).toUpperCase(); }
+    function toggleLegend() { const modal = document.getElementById('legendModal'); modal.style.display = (modal.style.display === 'block') ? 'none' : 'block'; }
+    
+    function getTanggalClass(day, data, isToday) {
+    let classes = [];
+    if (isToday) classes.push('today-highlight');
+    
+    // CEK: Jika ada keterangan DAN keterangannya TIDAK diawali kata "NOTIF"
+    if (data.ket && data.ket !== '-' && data.ket !== '') {
+        const ket = data.ket.toString().toUpperCase();
+
+        // Hanya kasih tanda jika BUKAN "NOTIF"
+        if (!ket.startsWith("NOTIF")) {
+            if (ket.includes('#')) classes.push('has-cuti-info');
+            else if (ket.includes('!')) classes.push(isToday ? 'has-vip-info' : 'has-info');
+            else if (!isToday) classes.push('has-info');
+        }
+    } 
+    
+    // Tanda ramadhan tetap muncul (jika Bapak mau)
+    if (isRamadhan(data)) {
+        classes.push('is-ramadhan');
+        classes.push('ramadhan-circle');
+    }
+
+    return classes.join(' ');
+}
+     
+     // ➕ Backgroung Kuning
+   
+function getBoxClass(shiftVal, data) {
+    let classes = [];
+    
+    // Ambil data dari kolom Keterangan dan kolom Shift
+    let ket = data.ket ? data.ket.toString().toUpperCase() : "";
+    let val = shiftVal ? shiftVal.toString().toUpperCase() : "";
+
+    // LOGIKA BARU: Pakai tanda bintang (*) atau kata "CUTI"
+    // Jika di Keterangan ada "*" atau di kolom Shift ada "*"
+    if (ket.includes('*') || val.includes('*') || ket.includes('CUTI')) {
+        classes.push('libur-cuti');
+    }
+
+    // Cek Libur Bersama (Tanda X) -> Tetap Merah
+    if (ket.includes('X')) {
+        classes.push('libur-bersama');
+    }
+
+    // Cek Ramadhan
+    if (isRamadhan(data)) {
+        classes.push('is-ramadhan');
+    }
+
+    // Logika Shift Normal
+    if (val.includes('1')) classes.push('shift-1');
+    else if (val.includes('2')) classes.push('shift-2');
+    else if (val.includes('3')) classes.push('shift-3');
+    else if (val.includes('O') || val.includes('LIBUR')) classes.push('shift-off');
+
+    return classes.join(' ');
+}
+
+    // Panggil saat pertama kali buka
+    document.addEventListener('DOMContentLoaded', () => {
+        renderCalendar();
+        startPopupTimer();
+    });
+    // --- FITUR SLIDER SWIPE LEFT/RIGHT ---
+let touchstartX = 0;
+let touchendX = 0;
+
+// Daftarkan event pada body atau container kalender
+const calendarArea = document.getElementById('calendarBody');
+
+calendarArea.addEventListener('touchstart', e => {
+    touchstartX = e.changedTouches[0].screenX;
+});
+
+calendarArea.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX;
+    handleGesture();
+});
+
+function handleGesture() {
+    const swipeThreshold = 50; // Jarak minimal geser (pixel)
+    
+    // Geser ke Kiri (Swipe Left) -> Bulan Depan
+    if (touchstartX - touchendX > swipeThreshold) {
+        changeMonth(1);
+    }
+    
+    // Geser ke Kanan (Swipe Right) -> Bulan Sebelumnya
+    if (touchendX - touchstartX > swipeThreshold) {
+        changeMonth(-1);
+    }
+}
+
+   function toggleFullScreen() {
+    // Kita targetkan class "container" supaya tombol navigasi tetap ikut
+    const elem = document.querySelector('.container'); 
+    const icon = document.getElementById('fsIcon');
+
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        }
+        icon.innerText = "✕";
+        // Tambahkan class khusus biar tabelnya cantik saat full screen
+        elem.classList.add('is-fs');
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        }
+        icon.innerText = "⛶";
+        elem.classList.remove('is-fs');
+    }
+}
+
+   // Pantau perubahan koneksi internet
+window.addEventListener('online', () => {
+    document.getElementById('offlineNotice').style.display = 'none';
+    // Jika data masih kosong, coba tarik data lagi otomatis
+    if (fullYearData.length === 0) renderCalendar();
+});
+
+window.addEventListener('offline', () => {
+    document.getElementById('offlineNotice').style.display = 'block';
+});
+
+// Cek status saat pertama kali aplikasi dibuka
+if (!navigator.onLine) {
+    document.getElementById('offlineNotice').style.display = 'block';
+}
+</script>
+</body>
+</html>
