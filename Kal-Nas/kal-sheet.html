@@ -819,7 +819,7 @@ const areaStatus = document.getElementById('marqueeContainer');
 
 if(areaStatus && rawData.statusUpdates) {
     let htmlContent = "";
-    const updates = rawData.statusUpdates.slice(0, 5);
+    const updates = rawData.statusUpdates.slice(0, 500);
     
     updates.forEach(msg => {
         let bagian = msg.split(" | ");
