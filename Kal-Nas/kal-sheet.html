@@ -817,31 +817,50 @@ function editProfil() {
 // TAMPILKAN 5 STATUS TERBARU
 const areaStatus = document.getElementById('marqueeContainer'); 
 
+    // TAMPILKAN STATUS USER KE SLIDE UP (VERSI ANTI-KOSONG)
 if(areaStatus && rawData.statusUpdates) {
     let htmlContent = "";
-    const updates = rawData.statusUpdates.slice(0, 500);
     
-    updates.forEach(msg => {
-        let bagian = msg.split(" | ");
-        let teksPesan = bagian[0] || "MAJU TERUS GT";
-        let jamUpdate = bagian[1] || "--:--";
-
-        htmlContent += `
+    // 1. KITA FILTER (SARING): Hanya ambil yang ada teks statusnya
+    const updates = rawData.statusUpdates
+        .filter(msg => {
+            // Pisahkan antara pesan dan jam
+            let pesan = msg.split(" | ")[0]; 
+            // Syarat: pesan tidak boleh kosong dan bukan cuma spasi
+            return pesan && pesan.trim().length > 0; 
+        })
+        .slice(0, 10); // Ambil 10 status terbaru yang BENERAN ADA ISINYA
+    
+    // 2. CEK: Kalau setelah disaring ternyata kosong semua
+    if (updates.length === 0) {
+        htmlContent = `
             <div class="status-item">
-                <p class="text-utama">📢 ${teksPesan}</p>
-                <span class="text-waktu">Update: ${jamUpdate} WIB</span>
+                <p class="text-utama">📢 MAJU TERUS GT</p>
+                <span class="text-waktu">Update: --:-- WIB</span>
             </div>
         `;
-    });
+    } else {
+        // 3. JALANKAN LOOPING: Tampilkan data yang sudah lolos saringan
+        updates.forEach(msg => {
+            let bagian = msg.split(" | ");
+            let teksPesan = bagian[0] || "MAJU TERUS GT";
+            let jamUpdate = bagian[1] || "--:--";
+
+            htmlContent += `
+                <div class="status-item">
+                    <p class="text-utama">📢 ${teksPesan}</p>
+                    <span class="text-waktu">Update: ${jamUpdate} WIB</span>
+                </div>
+            `;
+        });
+    }
     
     areaStatus.innerHTML = htmlContent;
     
-    // Reset posisi ke awal setiap kali ganti bulan/tahun
+    // Reset posisi & Jalankan animasi
     currentSlide = 0;
     areaStatus.style.transform = "translateY(0)";
-    
-    // Jalankan animasi slide
-    setTimeout(jalankanSlide, 500); // Kasih jeda dikit biar loading halus
+    setTimeout(jalankanSlide, 500); 
 }
 
 
