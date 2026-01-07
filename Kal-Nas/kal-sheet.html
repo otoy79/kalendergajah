@@ -330,12 +330,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 10px;
+    padding: 0 6px;
     box-sizing: border-box; /* Wajib ada agar padding tidak nambah tinggi */
 }
 
 .text-utama {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: bold;
     color: #fff;
     white-space: nowrap;
@@ -345,10 +345,78 @@
 }
 
 .text-waktu {
-    font-size: 0.6rem;
+    font-size: 0.53rem;
     color: #00ff88;
-    margin: 0;
+    margin: 2px;
 }
+.btn-expand {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px;
+   border: 0.5px solid #00ff88;
+}
+
+
+   .status-overlay {
+    position: fixed;
+    top: -100%; /* Sembunyi di atas layar */
+    left: 0;
+    width: 100%;
+    max-height: 70vh; /* Maksimal 70% tinggi layar HP */
+    background: rgba(26, 26, 26, 0.98); /* Hitam elegan transparan */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    z-index: 9999; /* Pastikan di atas segalanya */
+    transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-bottom: 3px solid #f1c40f;
+    border-radius: 0 0 15px 15px;
+    padding-bottom: 15px;
+}
+
+.status-overlay.show {
+    top: 0; /* Meluncur turun */
+}
+
+.status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #222;
+    color: #f1c40f;
+    font-weight: bold;
+    border-bottom: 1px solid #444;
+}
+
+.status-header button {
+    background: #e74c3c;
+    border: none;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.status-content {
+    overflow-y: auto;
+    max-height: 60vh;
+    padding: 10px 20px;
+}
+
+.status-full-item {
+    background: #333;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 4px solid #f1c40f;
+}
+
+.status-full-item b { color: #f1c40f; font-size: 13px; }
+.status-full-item p { margin: 5px 0; color: #fff; font-size: 15px; line-height: 1.4; }
+.status-full-item span { font-size: 11px; color: #aaa; }
 
   .user-identity-bar {
     display: flex;
@@ -360,12 +428,12 @@
     height: 50px; /* Kita kunci tingginya agar tidak numpuk */
     overflow: hidden;
 }
-  .btn-user-profil { background: #fff; color: white; border: 2px solid #00ff88; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; margin: 4px;}
+  .btn-user-profil { background: #fff; color: white; border: 2px solid #00ff88; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold; font-size: 1rem; display: flex; align-items: center; justify-content: center; margin: 4px;}
 
 .user-fixed-info {
     display: flex;
     flex-direction: column;
-    min-width: 100px; /* Area untuk Nama & Group */
+    min-width: 90px; /* Area untuk Nama & Group */
     border-right: 1px solid rgba(255,255,255,0.3);
     padding-right: 5px;
 }
@@ -379,7 +447,7 @@
 }
 
 .user-badge-group {
-    font-size: 0.7rem;
+    font-size: 0.5rem;
     background: #2ecc71;
     padding: 2px 5px;
     border-radius: 4px;
@@ -399,7 +467,7 @@
     padding: 1px 8px;
     border-radius: 4px;
     font-weight: bold;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
 }
   /* Efek fokus: yang bukan group user akan jadi transparan 30% */
 .bukan-group-saya { 
@@ -488,7 +556,15 @@
 </div>
 
 
- 
+<div id="statusOverlay" class="status-overlay">
+    <div class="status-header">
+        <span>📢 Info Status Terkini</span>
+        <button onclick="tutupPanelStatus()">✕</button>
+    </div>
+    <div id="listStatusLengkap" class="status-content">
+        </div>
+</div>
+
 <div id="userBar" class="user-identity-bar">
   <div>
         <button class="btn-user-profil" onclick="editProfil()">⚙️</button>
@@ -496,8 +572,8 @@
    <div class="user-fixed-info">
         <span id="displayNama">NAMA USER</span>
       <span class="user-badge-group" id="displayGroup">GROUP</span>
-    </div>
-    
+</div>
+
     <div class="marquee-window">
         <div class="marquee-container" id="marqueeContainer">
             <div class="status-item">
@@ -505,9 +581,12 @@
                 <span class="text-waktu">Update Status...</span>
             </div>
         </div>
-    </div>
+        </div>
+    <div class="user-status-toggle">
+    <button id="btnExpandStatus" class="btn-expand" onclick="bukaPanelStatus()">▼</button>
 </div>
-
+</div>
+          
      
  <div id="statusUpdateArea" style="padding: 10px; background: #eee; display: flex; gap: 5px; margin:0;">
     <input type="text" id="inputStatus" placeholder="Update info status..." style="flex: 1; padding: 5px; border-radius: 4px; border: 1px solid #ccc;">
@@ -1177,6 +1256,44 @@ window.addEventListener('offline', () => {
 // Cek status saat pertama kali aplikasi dibuka
 if (!navigator.onLine) {
     document.getElementById('offlineNotice').style.display = 'block';
+}
+
+   function bukaPanelStatus() {
+    const overlay = document.getElementById('statusOverlay');
+    const listContent = document.getElementById('listStatusLengkap');
+    
+    // Ambil data dari container marquee yang sudah ada
+    const items = document.querySelectorAll('#marqueeContainer .status-item');
+    let html = "";
+
+    if (items.length === 0) {
+        html = "<p style='color:white; text-align:center;'>Tidak ada status terbaru.</p>";
+    } else {
+        items.forEach(item => {
+            const teks = item.querySelector('.text-utama').innerText;
+            const waktu = item.querySelector('.text-waktu').innerText;
+            
+            // Kita pecah kalau ada Nama: Pesan
+            let splitTeks = teks.replace("📢 ", "").split(": ");
+            let nama = splitTeks.length > 1 ? splitTeks[0] : "Info";
+            let pesan = splitTeks.length > 1 ? splitTeks[1] : splitTeks[0];
+
+            html += `
+                <div class="status-full-item">
+                    <b>👤 ${nama}</b>
+                    <p>${pesan}</p>
+                    <span>🕒 ${waktu}</span>
+                </div>
+            `;
+        });
+    }
+
+    listContent.innerHTML = html;
+    overlay.classList.add('show');
+}
+
+function tutupPanelStatus() {
+    document.getElementById('statusOverlay').classList.remove('show');
 }
 </script>
 </body>
