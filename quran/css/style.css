@@ -1,0 +1,309 @@
+  /* ============================================================
+       1. FONTS (Lokal & External)
+       ============================================================ */
+    @font-face {
+        font-family: 'LPMQ';
+        src: url('../font/LPMQ.ttf') format('truetype');
+        font-display: swap;
+    }
+    @font-face {
+        font-family: 'Amiri';
+        src: url('../font/Amiri-Bold.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'Uthmani';
+        src: url('../font/hafs.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'Qalam';
+        src: url('../font/qalammajeed3.ttf') format('truetype');
+    }
+
+    /* ============================================================
+       2. VARIABEL WARNA & TEMA MUSHAF
+       ============================================================ */
+    body❌ {
+            opacity: 0;
+            animation: fadeIn 2.5s forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    :root {
+        --primary: #f2a972;
+        --primary-dark: #219150;
+        --bg: #ffffff;
+        --text: #333333;
+        --card-bg: #f9f9f9;
+        --accent: #e67e22;
+        --border: #eeeeee;
+    }
+
+    /* Mushaf 1: Standar Hijau */
+    body.mushaf-1 { --primary: #b0540e; --bg: #ffffff; --card-bg: #ffffff; --text: #333; }
+
+    /* Mushaf 2: Madinah (Krem) - Dikunci agar tetap nyaman */
+    body.mushaf-2 { 
+        --primary: #5d4037 !important; 
+        --bg: #f4ecd8 !important; 
+        --card-bg: #fdfaf0 !important; 
+        --text: #3e2723 !important; 
+        --border: #e0d5b0;
+    }
+
+    /* Mushaf 3: Hafalan (Teal) */
+    body.mushaf-3 { 
+        --primary: #00796b !important; 
+        --bg: #e0f2f1 !important; 
+        --card-bg: #ffffff !important; 
+        --text: #004d40 !important; 
+    }
+
+    /* Mushaf 4: Minimalis (Arab Saja) */
+    body.mushaf-4 { --primary: #2c3e50; --bg: #ffffff; --card-bg: #ffffff; --text: #333; }
+    body.mushaf-4 .teks-latin, body.mushaf-4 .teks-indo { display: none !important; }
+
+    /* Logika Dark Mode (Hanya aktif jika BUKAN mushaf 2 atau 3) */
+    body.dark-mode:not(.mushaf-2):not(.mushaf-3) {
+        --bg: #121212;
+        --card-bg: #1e1e1e;
+        --text: #e0e0e0;
+        --border: #333333;
+        --primary: #2ecc71;
+        --header-bg: #111111;
+    }
+
+    /* ============================================================
+       3. BASE STYLING (BODY & LAYOUT)
+       ============================================================ */
+    body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding-bottom: 120px;
+        overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    .header {
+        background: var(--header-bg, var(--primary)); 
+        color: white;
+        padding: 15px;
+        text-align: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: 0.4s ease;
+        border-bottom: 2px solid var(--primary);
+    }
+
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ============================================================
+       4. TEKS ARAB & TAJWID
+       ============================================================ */
+    .teks-arab { 
+        font-family: var(--font-arab, 'LPMQ'), serif;
+        text-align: right; 
+        line-height: 2.2; 
+        direction: rtl; 
+        cursor: pointer;
+        word-spacing: 5px;
+        margin-bottom: 15px;
+    }
+
+    .teks-arab span { color: inherit; }
+
+    /* Visibilitas Terjemahan */
+    body.hide-latin .teks-latin { display: none !important; }
+    body.hide-indo .teks-indo { display: none !important; }
+
+    /* Warna Tajwid */
+    body.tajwid-on .ghunnah { color: #f44336 !important; }
+    body.tajwid-on .iqlab { color: #4caf50 !important; }
+    body.tajwid-on .idgham { color: #9c27b0 !important; }
+    body.tajwid-on .qalqalah { color: #2196f3 !important; }
+    body.tajwid-on .ikhfa { color: #ff9800 !important; }
+    body.tajwid-on .idzhar { color: inherit !important; font-weight: normal !important; }
+
+    /* ============================================================
+       5. CARD STYLING (AYAT & HERO)
+       ============================================================ */
+    .ayat-card {
+        background: var(--card-bg); 
+        margin: 15px; 
+        padding: 20px;
+        border-radius: 16px; 
+        border: 1px solid rgba(0,0,0,0.05); 
+        transition: background 0.5s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .ayat-card.active { 
+        border-left: 5px solid var(--primary); 
+        background: rgba(39, 174, 96, 0.08);
+        transform: scale(1.02);
+    }
+
+    body.mushaf-2 .ayat-card { background: #fffdf5; border: 1px solid #eaddc1; }
+    body.mushaf-2.dark-mode .ayat-card { background: #3d3a30; }
+
+    .card-hero-mini {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-bottom: 10px;
+    }
+
+    /* ============================================================
+       6. UI COMPONENTS (BUTTONS, INPUTS, PANELS)
+       ============================================================ */
+    .menu-btn, .back-btn {
+        position: absolute; width: 40px; height: 40px;
+        background: rgba(255,255,255,0.2); border: none; font-size: 20px; color: white; 
+        cursor: pointer; border-radius: 12px; backdrop-filter: blur(5px);
+        transition: 0.3s; top: 15px;
+    }
+    .menu-btn { left: 15px; }
+    .back-btn { right: 15px; }
+    .menu-btn:hover { background: rgba(255,255,255,0.3); }
+
+    .btn-action {
+        background: var(--primary); color: white; border: none; padding: 12px 35px;
+        border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    .btn-action:active { transform: scale(0.95); }
+  .btn-kecil {background:none; border:1px solid #ccc; color:var(--text); border-radius:5px; cursor:pointer; padding:3px 8px;}
+
+    /* Hasil Cari Button Group */
+    /* GAYA KAPSUL FULL WIDTH */
+.hasilCari {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 5px;
+}
+
+    /* Update CSS Kapsul untuk mendukung tulisan Arab */
+.hasilCari button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+    box-sizing: border-box;
+    margin-bottom: 5px; /* Jarak antar kapsul */
+}
+
+.no-surah {
+    font-size: 11px;
+    color: var(--primary);
+    margin-right: 12px;
+    min-width: 20px;
+}
+
+.nama-surah {
+    flex-grow: 1; /* Ini akan mendorong elemen setelahnya ke kanan */
+    text-align: left;
+}
+
+.nama-arab {
+    font-family: 'LPMQ', serif; /* Pakai font Arab kita */
+    font-size: 18px;
+    color: var(--primary);
+    margin-left: 10px;
+}
+
+/* Efek pas diklik */
+.hasilCari button:active {
+    background: var(--primary);
+    color: white !important;
+}
+.hasilCari button:active .nama-arab, 
+.hasilCari button:active .no-surah {
+    color: white;
+}
+
+    /* Settings Side Panel */
+    .settings-panel {
+        position: fixed; left: -320px; top: 0; width: 260px; height: 100%;
+        background: var(--card-bg); z-index: 200; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 25px; visibility: hidden; font-size: 12px;
+    }
+    .settings-panel.open { left: 0; visibility: visible; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
+    
+    .overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.4); display: none; z-index: 150; backdrop-filter: blur(3px);
+    }
+
+    /* Custom Select & Settings Items */
+    .settings-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .settings-item select {
+        appearance: none; -webkit-appearance: none;
+        background-color: var(--card-bg); color: var(--text);
+        padding: 8px 30px 8px 15px; border: 1.5px solid var(--primary);
+        border-radius: 12px; font-size: 12px; cursor: pointer; outline: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23f2a972' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 10px center;
+        transition: all 0.3s ease;
+    }
+
+    /* ============================================================
+       7. ADDITIONAL UI (PLAYER, TOAST, BACK-TOP)
+       ============================================================ */
+    .player-bar {
+        position: fixed; bottom: 0; width: 100%; background: var(--card-bg);
+        padding: 10px 0; text-align: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+        z-index: 90;
+    }
+
+    #toast {
+        position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+        background: #333; color: white; padding: 12px 25px; border-radius: 30px;
+        font-size: 14px; z-index: 1000; opacity: 0; transition: 0.4s; pointer-events: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; min-width: 200px;
+    }
+    #toast.show { opacity: 1; bottom: 120px; }
+
+    #btnBackToTop {
+        display: none; position: fixed; bottom: 25px; right: 25px; z-index: 1000;
+        border: none; outline: none; background-color: var(--primary); color: white;
+        cursor: pointer; width: 45px; height: 45px; border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 20px; font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    #btnBackToTop:active { transform: scale(0.9); background-color: var(--primary-dark); }
+
+    /* Jadwal Sholat Utility */
+    .waktu-item { flex: 1; padding: 5px; }
+    .waktu-item b { font-size: 16px; display: block; margin-top: 5px; }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
