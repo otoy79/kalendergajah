@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta property="og:image" content="img/quran.png">
+    <title>Al-Qur'an Pro Ultimate</title>
+     <link rel="stylesheet" href="css/style.css"> 
+    <style>
+  
+</style>
+</head>
+<body class="tajwid-on mushaf-1">
+
+  <div class="header">
+    <button class="menu-btn" onclick="toggleSettings()">⚙️</button>
+    
+    <div style="display: flex; flex-direction: column; flex-grow: 1; align-items: center;">
+        <h2 id="judul-app" style="margin:0; cursor:pointer; font-size: 23px;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+            Al-Qur'an Pro
+        </h2>
+        <small id="sub-judul" style="opacity:0.8; font-size: 11px; margin-top: 2px;">
+            Memuat...
+        </small>
+    </div>
+
+    <button class="back-btn" onclick="kembaliKeHome()">📖</button>
+</div>
+
+       <div id="dashboard-awal" style="padding:10px;">
+    
+   <h1 style="display:none">
+    <div style="background:var(--primary); color:white; padding:15px; border-radius:15px; margin-bottom:20px; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
+        <div style="font-size: 9px; opacity: 0.8; margin-bottom: 10px; text-align: right;">
+            📍 Jadwal Sholat Otomatis
+        </div>
+        
+        <div id="countdown-sholat" style="font-size: 13px; margin-bottom: 15px; font-weight: 500; text-align:center; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:10px;">
+            Menghitung waktu sholat...
+        </div>
+        
+        <div style="display:flex; justify-content:space-around; text-align:center;">
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Subuh</span>
+                <b id="shubuh-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Dzuhur</span>
+                <b id="dhuhr-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Ashar</span>
+                <b id="asr-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Maghrib</span>
+                <b id="maghrib-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Isya</span>
+                <b id="isha-val" style="font-size:13px;">--:--</b>
+            </div>
+        </div>
+    </div>    <h1>
+
+    <div id="resume-card" class="card-hero-mini" onclick="bukaTerakhir()">
+        <span style="font-size:12px;">📌 Terakhir Dibuka/di baca:</span>
+        <span id="resume-info" style="font-weight:bold;">--</span>
+    </div>
+
+    <input type="text" placeholder="Cari surah (contoh: Al-Kahf)..." oninput="filterSurah(this.value)" 
+           style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing:border-box;">
+    
+    <div id="hasilCari" class="hasilCari"></div>
+</div>
+
+<div id="mushaf-container"></div>
+
+<div class="overlay" id="overlay" onclick="toggleSettings()"></div>
+
+<div class="settings-panel" id="settingsPanel">
+    <h3 style="margin-top:0; color:var(--primary);">Pengaturan</h3>
+    <hr style="border:0; border-top:1px solid #ddd; margin-bottom:10px;">
+
+    <div class="settings-item">
+        <label>Pilih Font Arab</label>
+        <select id="pilihFontArab" onchange="gantiFontArab(this.value)">
+            <option value="'LPMQ', sans-serif">LPMQ (Standar Indo)</option>
+            <option value="'Uthmani', serif">Uthmanic (Madinah)</option>
+            <option value="'Amiri', serif">Amiri (Klasik/Tebal)</option>
+           <option value="'Qalam', serif">Qalam Majed (Tebal)</option>
+        </select>
+    </div>
+    
+    <div class="settings-item">
+        <label>Tipe Mushaf</label>
+        <select id="pilihMushaf" onchange="gantiTipeMushaf(this.value)">
+            <option value="mushaf-1">Standar</option>
+            <option value="mushaf-4">Hafalan (Arab Saja)</option>
+            <option value="mushaf-2">Madinah (Krem)</option>
+            <option value="mushaf-3">Minimalis</option>
+        </select>
+    </div>
+
+    <div class="settings-item">
+        <label>Pilih Qari</label>
+        <select id="pilihQari" onchange="gantiQari(this.value)">
+            <option value="Alafasy">M. Rashid Alafasy</option>
+            <option value="Abdurrahmaan_As-Sudais">As-Sudais</option>
+            <option value="Muhammad_Jibreel">Muhammad_Jibreel</option>
+            <option value="Abdul_Basit_Murattal">Abdul Basit</option>
+        </select>
+    </div>
+
+    <div class="settings-item"><label>Mode Gelap</label><input type="checkbox" id="checkDark" onchange="toggleDarkMode(this.checked)"></div>
+    <div class="settings-item"><label>Tajwid Warna</label><input type="checkbox" id="checkTajwid" onchange="toggleTajwid(this.checked)"></div>
+    <div class="settings-item"><label>Tampilkan Latin</label><input type="checkbox" id="checkLatin" onchange="toggleLatin(this.checked)"></div>
+    <div class="settings-item"><label>Tampilkan Terjemah</label><input type="checkbox" id="checkIndo" onchange="toggleIndo(this.checked)"></div>
+    
+    <div class="settings-item">
+        <label>Ukuran Font</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button onclick="ubahFont(-2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➖</button>
+            <b id="fontLabel" style="min-width:40px; text-align:center;">30px</b>
+            <button onclick="ubahFont(2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➕</button>
+        </div>
+    </div>
+
+    <button onclick="toggleSettings()" style="width:100%; margin-top:20px; padding:12px; background:#e74c3c; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Simpan & Tutup</button>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<button id="btnBackToTop" onclick="keAtas()" title="Kembali ke atas">
+    ↑
+</button>
+
+<div class="player-bar">
+    <button id="btnPlay" class="btn-action" onclick="handlePlayPause()">Play Audio</button>
+</div>
+    <script src="js/script.js"></script>
+
+</body>
+</html>

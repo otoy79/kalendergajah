@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="img/quran.png">
+    <title>Al-Qur'an Pro - Home</title>
+    <link rel="stylesheet" href="css/style.css"> 
+    <link rel="apple-touch-icon" href="img/quran.png">
+    <style>
+        /* Styling khusus tambahan untuk Menu Utama */
+        body { padding-bottom: 50px; } /* Reset padding bawah index */
+        
+        .hero-menu { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: white; padding: 25px 20px; 
+            text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+     .hero-menu h1 {      
+       font-size: 11vw;
+        }
+
+        .sholat-container {
+            background: var(--card-bg); margin: -30px 20px 20px; border-radius: 20px;
+            padding: 15px; display: flex; justify-content: space-around;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid var(--border);
+        }
+
+        .sholat-box { text-align: center; font-size: 11px; }
+        .sholat-box b { display: block; color: var(--primary); font-size: 14px; margin-top: 5px; }
+
+      
+        .menu-item:active { transform: scale(0.95); background: var(--border); }
+       
+        .resume-card-home {
+            margin: 10px 20px 20px; background: var(--primary); color: white;
+            padding: 18px; border-radius: 20px; cursor: pointer;
+            display: none; position: relative; overflow: hidden;
+        }
+   .menu-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; 
+        padding: 10px 20px;
+    }
+
+    .menu-item {
+        background: var(--card-bg); 
+        padding: 30px; 
+        border-radius: 20px;
+        text-align: center; 
+        text-decoration: none; 
+        color: var(--text);
+        border: 1px solid var(--border); 
+        transition: 0.2s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu-item:active { 
+        transform: scale(0.95); 
+        background: var(--border); 
+    }
+
+    /* Ikon dibuat tegak dan lebih berisi */
+    .menu-icon { 
+        font-style: normal; /* Ini biar nggak miring lagi! */
+        font-size: 40px; 
+        margin-bottom: 5px; 
+        line-height: 1;
+    }
+
+    .menu-item b { 
+        font-size: 12px; 
+        font-weight: 600;
+        margin-top: 8px;
+    }
+    </style>
+</head>
+<body class="mushaf-1"> 
+    <div class="hero-menu">
+    <h1 style="margin:0; font-family: 'Amiri', serif;">Al-Qur'an Pro</h1>
+    <p id="greeting" style="opacity:0.9; font-size:14px; margin-top:5px;">Assalamu'alaikum</p>
+    
+    <div id="countdown-sholat" style="font-size: 13px; margin: 10px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 10px 0;">
+        Menghitung waktu sholat...
+</div>
+  <div style="font-size: 11px; opacity: 0.8; margin: 5px; text-align: right;">
+        GPS    📍 Jadwal Sholat Otomatis
+        </div>
+  </div>
+    <div class="sholat-container">
+        <div class="sholat-box">Subuh<b id="s-subuh">--:--</b></div>
+        <div class="sholat-box">Dzuhur<b id="s-dzuhur">--:--</b></div>
+        <div class="sholat-box">Ashar<b id="s-ashar">--:--</b></div>
+        <div class="sholat-box">Maghrib<b id="s-maghrib">--:--</b></div>
+        <div class="sholat-box">Isya<b id="s-isya">--:--</b></div>
+    </div>
+  
+
+    <div id="resume-home" class="resume-card-home" onclick="bukaTerakhir()" style="display:none;">
+    <span style="font-size:13px; opacity:0.9;">📌 Terakhir Dibaca:</span>
+    <span id="resume-info-home" style="font-weight:bold; margin-top:5px; font-size:14px;">--</span>
+</div>
+
+   <div class="menu-grid">
+    <a href="quran.html" class="menu-item">
+        <span class="menu-icon">📖</span>
+        <b>Al-Qur'an</b>
+    </a>
+    <a href="tahlil.html" class="menu-item">
+        <span class="menu-icon">📿</span>
+        <b>Tahlil & Yasin</b>
+    </a>
+    <a href="jadwal.html" class="menu-item">
+        <span class="menu-icon">🕌</span>
+        <b>Jadwal Sholat</b>
+    </a>
+    <a href="doa.html" class="menu-item">
+        <span class="menu-icon">🤲</span>
+        <b>Doa Pilihan</b>
+    </a>
+    <a href="kalender.html" class="menu-item">
+    <span class="menu-icon">📅</span> <b>Kalender Hijriah</b>
+</a>
+        <a href="asmaul-husna.html" class="menu-item">
+    <span class="menu-icon">💎</span>
+    <b>Asmaul Husna</b>
+</a>
+</div>
+
+
+   <script src="js/script.js"></script>
+    <script>
+        // 1. Fungsi Sinkronisasi Tema (Ikuti Mushaf)
+        function sinkronTema() {
+            const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+            const isDark = localStorage.getItem('userDark') === 'true';
+            
+            document.body.className = tipe;
+            if (isDark) document.body.classList.add('dark-mode');
+        }
+
+        // 2. Cek Bookmark
+        function cekBookmark() {
+    // Ambil data dari KTP permanen (localStorage)
+    const b = JSON.parse(localStorage.getItem('quran_bmark'));
+    
+    const wadahCard = document.getElementById('resume-home');
+    const infoTeks = document.getElementById('resume-info-home');
+
+    if (b && wadahCard && infoTeks) {
+        wadahCard.style.display = 'block';
+        
+        // Menampilkan Nama Surah, Ayat, dan Waktu Save (b.waktu)
+        // b.waktu berasal dari simpanBmark di script.js
+        infoTeks.innerHTML = `
+            ${b.nama} (Ayat ${b.a})
+            <div style="font-size: 11px; font-weight: normal; opacity: 0.8; margin-top: 4px;">
+                🕒 Disimpan: ${b.waktu || 'Baru saja'}
+            </div>
+        `;
+    }
+}
+
+        function bukaTerakhir() {
+    // Ambil data bookmark dari memori HP
+    const b = JSON.parse(localStorage.getItem('quran_bmark'));
+    
+    if (b) {
+        // Kita kirim parameter surah DAN ayat ke quran.html
+        // Contoh: quran.html?surah=2&ayat=255
+        window.location.href = `quran.html?surah=${b.s}&ayat=${b.a}`;
+    } else {
+        alert("Belum ada riwayat bacaan.");
+    }
+}
+
+        // 3. Ambil Jadwal Sholat Jakarta (Default)
+        let jadwalSholatGlobal = {};
+
+async function ambilJadwal() {
+    try {
+        const r = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Jakarta&country=Indonesia&method=11');
+        const data = await r.json();
+        jadwalSholatGlobal = data.data.timings;
+        
+        // Update angka di kartu kecil
+        document.getElementById('s-subuh').innerText = jadwalSholatGlobal.Fajr;
+        document.getElementById('s-dzuhur').innerText = jadwalSholatGlobal.Dhuhr;
+        document.getElementById('s-ashar').innerText = jadwalSholatGlobal.Asr;
+        document.getElementById('s-maghrib').innerText = jadwalSholatGlobal.Maghrib;
+        document.getElementById('s-isya').innerText = jadwalSholatGlobal.Isha;
+
+        // Jalankan countdown
+        mulaiCountdown();
+    } catch (e) { 
+        document.getElementById('countdown-sholat').innerText = "Gagal memuat jadwal";
+    }
+}
+
+function mulaiCountdown() {
+    const listNama = {
+        'Fajr': 'Subuh',
+        'Dhuhr': 'Dzuhur',
+        'Asr': 'Ashar',
+        'Maghrib': 'Maghrib',
+        'Isha': 'Isya'
+    };
+
+    setInterval(() => {
+        const sekarang = new Date();
+        const jamSekarang = sekarang.getHours().toString().padStart(2, '0') + ":" + sekarang.getMinutes().toString().padStart(2, '0');
+        
+        let targetWaktu = null;
+        let namaSholat = "";
+
+        // Cari sholat berikutnya
+        for (let key in listNama) {
+            if (jadwalSholatGlobal[key] > jamSekarang) {
+                targetWaktu = jadwalSholatGlobal[key];
+                namaSholat = listNama[key];
+                break;
+            }
+        }
+
+        // Jika sudah lewat Isya, targetnya Subuh besok
+        if (!targetWaktu) {
+            targetWaktu = jadwalSholatGlobal['Fajr'];
+            namaSholat = "Subuh (Besok)";
+        }
+
+        // Hitung selisih
+        const [h, m] = targetWaktu.split(':');
+        const waktuTarget = new Date();
+        waktuTarget.setHours(h, m, 0);
+        
+        // Jika buat besok
+        if (waktuTarget < sekarang) waktuTarget.setDate(waktuTarget.getDate() + 1);
+
+        const selisih = waktuTarget - sekarang;
+        const sJam = Math.floor(selisih / (1000 * 60 * 60));
+        const sMenit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
+        const sDetik = Math.floor((selisih % (1000 * 60)) / 1000);
+
+        document.getElementById('countdown-sholat').innerHTML = 
+            `⏳ <b>${sJam}j ${sMenit}m ${sDetik}s</b> lagi menuju <b>${namaSholat}</b>`;
+    }, 1000);
+}
+     // Tambahkan di dalam script index.html biar muncul tanggal di Hero
+async function muatTanggalHeader() {
+    try {
+        const r = await fetch('https://api.aladhan.com/v1/gToH?date=' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear());
+        const res = await r.json();
+        const d = res.data.hijri;
+        document.getElementById('greeting').innerHTML = `Assalamu'alaikum<br><small>${d.day} ${d.month.en} ${d.year} H</small>`;
+    } catch (e) { }
+}
+
+// Panggil di window.onload
+window.onload = () => {
+    sinkronTema();
+    cekBookmark();
+    ambilJadwal();
+    muatTanggalHeader(); // Tambahkan ini
+};
+    </script>
+</body>
+</html>

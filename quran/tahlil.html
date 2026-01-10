@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahlil - Al-Qur'an Pro</title>
+    <link rel="stylesheet" href="css/style.css"> 
+    <style>
+        :root { --primary: #008080; } /* Sesuaikan warna utama ente */
+        body { background: #f4f4f4; margin: 0; font-family: sans-serif; }
+        
+        .header-tahlil { 
+            background: var(--primary); 
+            color: white; 
+            padding: 15px; 
+            position: sticky; 
+            top: 0; 
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+      
+        .arab {
+    font-family: 'LPMQ', serif;
+    font-size: 28px;
+    text-align: right;
+    direction: rtl;
+    line-height: 2.2;
+    /* PAKAI INI: Biar otomatis hitam di terang, putih di gelap */
+    color: var(--text); 
+}
+      /* Default tampil, tapi bisa disembunyikan lewat class */
+.latin.sembunyi, .arti.sembunyi { 
+    display: none; 
+}
+
+/* Biar teks Arab ikut gede kalau Latin/Arti hilang (opsional) */
+.tahlil-item { transition: all 0.3s ease; }
+        
+        .latin { color: var(--primary); font-size: 14px; font-weight: bold; margin-top: 10px; }
+        .arti { font-style: italic; font-size: 13px; color: #888; margin-top: 5px; }
+        
+        .btn-back {
+            background: none; border: none; color: white; font-size: 20px; cursor: pointer; margin-right: 15px;
+        }
+
+   /* Update CSS di tahlil.html */
+.tahlil-item {
+    background: var(--card-bg); /* Mengikuti tema kartu di style.css */
+    color: var(--text);        /* Tulisan otomatis putih kalau Dark Mode */
+    border-bottom: 1px solid var(--border);
+    padding: 20px;
+    transition: 0.3s;
+}
+
+/* Khusus untuk pemisah Yasin & Doa agar tidak terlalu silau */
+.pembatas-section {
+    background: var(--primary-dark);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+    </style>
+</head>
+<body>
+
+    <div class="header-tahlil">
+        <h2 style="margin:0; font-size:18px;">Tahlil & Doa Arwah</h2>
+    </div>
+
+   
+    <div id="isi-tahlil"></div>
+
+    <script src="data/tahlil.js"></script>
+  <script src="js/script.js"></script>
+
+    <script>
+        async function muatHalamanTahlilLengkap() {
+    const wadah = document.getElementById('isi-tahlil');
+    
+    // 1. Sinkronkan Tema (PENTING biar class dark-mode aktif)
+    const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+    const isDark = localStorage.getItem('userDark') === 'true';
+    document.body.className = tipe;
+    if (isDark) document.body.classList.add('dark-mode');
+
+    // 2. Ambil Pengaturan Latin/Arti
+    const isLatinHidden = localStorage.getItem('userLatin') === 'false';
+    const isIndoHidden = localStorage.getItem('userIndo') === 'false';
+    const statusLatin = isLatinHidden ? 'sembunyi' : '';
+    const statusArti = isIndoHidden ? 'sembunyi' : '';
+
+    let html = '';
+
+    // 1. RENDER TAHLIL
+    if (typeof dataTahlil !== 'undefined') {
+        dataTahlil.isi.forEach(item => {
+            html += `<div class="tahlil-item">
+                        <p class="arab">${item.arab}</p>
+                        <p class="latin ${statusLatin}">${item.latin}</p>
+                        <p class="arti ${statusArti}">${item.arti}</p>
+                    </div>`;
+        });
+    }
+
+    // 2. RENDER YASIN
+    html += `<div style="background: var(--primary-dark); color: white; padding: 15px; text-align: center; font-weight: bold;">
+                📖 SURAH YASIN
+             </div>`;
+    
+    const scriptYasin = document.createElement('script');
+    scriptYasin.src = 'data/36.js';
+    document.head.appendChild(scriptYasin);
+
+    scriptYasin.onload = () => {
+        if (typeof dataSurah !== 'undefined') {
+            dataSurah.ayat.forEach(ayat => {
+                // HAPUS background:#f9f9f9 agar tidak nutup saat dark mode
+                html += `<div class="tahlil-item">
+                            <p class="arab">${ayat.teksArab} <span style="font-size:18px; color:var(--primary);">(${ayat.nomorAyat})</span></p>
+                            <p class="latin ${statusLatin}">${ayat.teksLatin}</p>
+                            <p class="arti ${statusArti}">${ayat.teksIndonesia}</p>
+                        </div>`;
+            });
+        }
+
+        // 3. RENDER DOA
+        html += `<div style="background:var(--primary); color:white; padding:15px; text-align:center; font-weight:bold;">🤲 DOA ARWAH (PENUTUP)</div>`;
+        dataTahlil.doa.forEach(item => {
+            // HAPUS background:#fffde7 agar tidak nutup saat dark mode
+            html += `<div class="tahlil-item">
+                        <p class="arab">${item.arab}</p>
+                        <p class="latin ${statusLatin}">${item.latin}</p>
+                        <p class="arti ${statusArti}">${item.arti}</p>
+                    </div>`;
+        });
+
+        wadah.innerHTML = html;
+        scriptYasin.remove();
+    };
+}
+
+window.onload = muatHalamanTahlilLengkap;
+    </script>
+</body>
+</html>

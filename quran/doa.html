@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doa Pilihan - Al-Qur'an Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Reset Dasar agar tidak geser */
+* { box-sizing: border-box; } 
+
+body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg); /* Ikut variabel style.css */
+    overflow-x: hidden; /* Biar gak bisa geser kanan-kiri */
+}
+
+.container-doa { 
+    padding: 15px;
+    max-width: 600px; /* Biar kalau dibuka di laptop gak melebar banget */
+    margin: 0 auto;   /* Kuncinya di sini biar pas di TENGAH */
+}
+
+.search-doa {
+    padding: 10px 15px; 
+    position: sticky; 
+    top: 55px; /* Sesuaikan dengan tinggi header */
+    background: var(--bg); 
+    z-index: 10;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.search-doa input {
+    width: 100%; 
+    padding: 12px 15px; 
+    border-radius: 12px; 
+    border: 1px solid var(--border);
+    background: var(--card-bg); 
+    color: var(--text); 
+    font-size: 14px;
+    outline: none;
+    display: block;
+}
+
+.doa-item {
+    background: var(--card-bg); 
+    border-radius: 15px; 
+    padding: 20px;
+    margin-bottom: 15px; 
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    width: 100%; /* Pastikan lebar penuh dalam container */
+}
+
+/* Biar Header Navigasi juga presisi */
+.header-nav {
+    width: 100%;
+    max-width: 100%;
+}
+  @font-face {
+    font-family: 'LPMQ';
+    src: url('fonts/lpmq.ttf') format('truetype'); /* Pastikan path filenya benar */
+}
+
+/* Update class arab agar identik dengan mushaf */
+.arab {
+    font-family: 'LPMQ', serif;
+    font-size: 32px; /* Sesuaikan dengan quran.html ente */
+    text-align: right;
+    direction: rtl;
+    line-height: 2.3; /* Penting biar harakat atas-bawah gak tabrakan */
+    color: var(--text);
+    margin: 20px 0;
+    word-spacing: 5px; /* Biar spasi antar kata Arab lebih enak dibaca */
+}
+    </style>
+</head>
+<body>
+
+    <div class="header-nav" style="background:var(--primary); color:white; padding:15px; text-align: center; position:sticky; top:0; z-index:100;">
+        <h2 style="margin:0; font-size:18px;">Doa-Doa Pilihan</h2>
+    </div>
+
+    <div class="search-doa">
+        <input type="text" id="cari-doa" placeholder="Cari doa (misal: makan, tidur)..." onkeyup="filterDoa()">
+    </div>
+
+    <div class="container-doa" id="list-doa">
+        <p style="text-align:center; opacity:0.5;">Memuat koleksi doa...</p>
+    </div>
+
+  <script src="data/doa.js"></script>
+
+<script>
+    // 1. Sinkron Tema (Seperti biasa)
+    const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+    const isDark = localStorage.getItem('userDark') === 'true';
+    document.body.className = tipe;
+    if (isDark) document.body.classList.add('dark-mode');
+
+    // 2. Fungsi Tampilkan Doa (Ambil dari dataDoa di file doa.js)
+    function tampilkanDoa() {
+        let html = '';
+        // Cek apakah dataDoa sudah dimuat
+        if (typeof dataDoa !== 'undefined') {
+            dataDoa.forEach(item => {
+                html += `<div class="doa-item">
+                            <h3>${item.judul}</h3>
+                            <div class="arab">${item.arab}</div>
+                            <div class="arti">${item.arti}</div>
+                         </div>`;
+            });
+        }
+        document.getElementById('list-doa').innerHTML = html;
+    }
+
+    // 3. Fungsi Filter (Untuk pencarian)
+    function filterDoa() {
+        const keyword = document.getElementById('cari-doa').value.toLowerCase();
+        const items = document.getElementsByClassName('doa-item');
+        
+        for (let item of items) {
+            const judul = item.getElementsByTagName('h3')[0].innerText.toLowerCase();
+            item.style.display = judul.includes(keyword) ? 'block' : 'none';
+        }
+    }
+
+    window.onload = tampilkanDoa;
+</script>
+</body>
+</html>

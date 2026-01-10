@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asmaul Husna - Al-Qur'an Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .audio-player {
+            background: var(--primary); color: white;
+            padding: 20px; border-radius: 20px; text-align: center;
+            margin: 20px; position: sticky; top: 70px; z-index: 10; font-size:12px;
+        }
+        .list-asma { padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .asma-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 15px; border-radius: 15px; text-align: center;
+        }
+        .asma-arab { font-family: 'LPMQ', serif; font-size: 28px; color: var(--primary); margin-bottom: 5px; }
+        .asma-indo { font-size: 12px; opacity: 0.8; font-weight: bold; text-transform: uppercase; }
+        .asma-arti { font-size: 11px; opacity: 0.6; font-style: italic; }
+        
+        .play-btn {
+            background: white; color: var(--primary); border: none;
+            padding: 10px 20px; border-radius: 50px; font-weight: bold;
+            cursor: pointer; margin-top: 10px; font-size:14px;
+        }
+  .asma-card {
+    transition: all 0.3s ease; /* Biar pas ganti warna gak kaget */
+}
+    </style>
+</head>
+<body>
+
+<div class="header-nav" style="background:var(--primary); color:white; padding: 15px 25px; display:flex; align-items:center; position:sticky; top:0; z-index:100;">
+   
+    <h2 style="margin:0; font-size:18px;">99 Asmaul Husna أَسْمَاءُ الْحُسْنى</h2>
+</div>
+
+<div class="audio-player">
+    <div id="status-play">Dengarkan Lantunan Merdu</div>
+    <audio id="audioHusna" src="data/asmaul-husna.mp3"></audio>
+    <button class="play-btn" id="btnPlay" onclick="toggleAudio()">▶️ Putar Audio</button>
+</div>
+
+<div class="list-asma" id="container-asma">
+    </div>
+   <script src="js/script.js"></script>
+   <script src="data/asmaul-husna.js"></script>
+   <script>
+    // Inisialisasi variabel global agar bisa dibaca semua fungsi
+    const audio = document.getElementById('audioHusna');
+    // Tambahkan ini biar 'btn' gak error
+    const btn = document.getElementById('btnPlay');
+
+    function renderAsma() {
+    let html = '';
+    asmaData.forEach((item, index) => {
+        // Jika ini adalah elemen pertama (Header)
+        if (index === 0 && item.judul_header) {
+            html += `
+                <div class="asma-card header-asma" id="asma-0" style="grid-column: 1 / -1; background: var(--primary); color: white; padding: 20px 15px; border:none; margin: 6px;">
+        <div class="asma-arab" style="font-size: 35px; color: white !important;">${item.judul_header}</div>
+        <div class="asma-indo" style="font-size: 20px; margin: 10px 0; color: white !important;">${item.sub_header}</div>
+        <div class="asma-arti" style="color: rgba(255,255,255,0.95) !important; font-size: 14px;">${item.arti_header}</div>
+                </div>`;
+        } else if (item.ar) {
+            // Ini kartu Asmaul Husna biasa
+            html += `
+                <div class="asma-card" id="asma-${index}">
+                    <div class="asma-arab">${item.ar}</div>
+                    <div class="asma-indo">${item.id}</div>
+                    <div class="asma-arti">${item.arti_header || item.arti}</div>
+                </div>`;
+        }
+    });
+    document.getElementById('container-asma').innerHTML = html;
+}
+
+    // LOGIKA SYNC AUDIO
+    audio.ontimeupdate = function() {
+    const waktuSekarang = audio.currentTime; 
+    
+    asmaData.forEach((item, index) => {
+        
+        if (waktuSekarang >= item.waktu && waktuSekarang < item.waktu + 0.5) {
+            // 1. Reset semua kartu ke gaya asal
+            document.querySelectorAll('.asma-card').forEach((c, idx) => {
+                if (idx === 0) {
+                    // Gaya asli Header (Indeks 0)
+                    c.style.background = "var(--primary)";
+                    c.style.color = "white";
+                    c.style.border = "none";
+                    c.style.transform = "scale(1)";
+                } else {
+                    // Gaya asli Kartu Biasa
+                    c.style.background = "var(--card-bg)";
+                    c.style.color = "var(--text-color)";
+                    c.style.border = "1px solid var(--border)";
+                    c.style.transform = "scale(1)";
+                }
+            });
+            
+            // 2. Kasih efek spesial ke kartu yang lagi AKTIF
+            const kartuAktif = document.getElementById(`asma-${index}`);
+            if(kartuAktif) {
+                if (index === 0) {
+                    // Highlight buat Header: Bikin makin nyala/besar dikit
+                    kartuAktif.style.background = "var(--accent)"; // Pakai warna aksen biar beda
+                    kartuAktif.style.color = "white";
+                    kartuAktif.style.transform = "scale(1.02)";
+                    kartuAktif.style.boxShadow = "0 10px 20px rgba(0,0,0,0.2)";
+                } else {
+                    // Highlight buat Kartu Biasa
+                    kartuAktif.style.border = "2px solid var(--primary)";
+                    kartuAktif.style.background = "rgba(var(--primary-rgb), 0.1)";
+                    kartuAktif.style.transform = "scale(1.05)";
+                }
+
+                // 3. Scroll otomatis
+                kartuAktif.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+        }
+    });
+};
+
+    function toggleAudio() {
+        // Pastikan variabel 'btn' dan 'audio' sudah ada
+        const statusText = document.getElementById('status-play');
+        
+        if (audio.paused) {
+            audio.play();
+            btn.innerText = "⏸️ Pause Audio";
+            statusText.innerText = "Sedang Melantunkan...";
+        } else {
+            audio.pause();
+            btn.innerText = "▶️ Putar Audio";
+            statusText.innerText = "Audio Berhenti";
+        }
+    }
+
+    window.onload = () => {
+        renderAsma();
+        const isDark = localStorage.getItem('userDark') === 'true';
+        if (isDark) document.body.classList.add('dark-mode');
+    };
+</script>
+</body>
+</html>

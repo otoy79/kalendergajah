@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender Hijriah - Al-Qur'an Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { padding-bottom: 20px; }
+        .header-nav {
+            background: var(--primary); color: white; padding: 15px;
+            text-align: center; position: sticky; top: 0; z-index: 100;
+        }
+        .container-kalender { padding: 20px; }
+        
+        /* Card Utama */
+        .card-hijri {
+            background: var(--card-bg); border-radius: 25px; padding: 30px 20px;
+            text-align: center; border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+        .tgl-islam { font-size: 40px; font-weight: bold; color: var(--primary); margin: 10px 0; }
+        .bln-islam { font-size: 22px; font-weight: bold; color: var(--text); }
+        .tgl-masehi { font-size: 14px; opacity: 0.7; margin-top: 10px; color: var(--text); }
+
+        /* List Puasa Sunnah */
+        .info-puasa {
+            background: var(--card-bg); border-radius: 20px; padding: 20px;
+            border: 1px solid var(--border);
+        }
+        .info-puasa h3 { margin-top: 0; font-size: 16px; color: var(--primary); display: flex; align-items: center; }
+        .puasa-item {
+            display: flex; justify-content: space-between; padding: 12px 0;
+            border-bottom: 1px dashed var(--border); font-size: 14px; color: var(--text);
+        }
+        .puasa-item:last-child { border: none; }
+        .tag-puasa { background: var(--primary); color: white; padding: 2px 10px; border-radius: 10px; font-size: 11px; }
+
+      .tag-puasa {
+    background: var(--primary);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    
+    /* Jurus biar teks di tengah */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px; /* Kita kunci tingginya biar stabil */
+    min-width: 60px; /* Biar ukurannya nggak terlalu mepet */
+    line-height: 1; /* Hapus line-height bawaan */
+}
+    </style>
+</head>
+<body>
+
+    <div class="header-nav">
+        <h2 style="margin:0; font-size:18px; padding: 0px 25px; text-align: center;">Kalender Hijriah</h2>
+    </div>
+
+    <div class="container-kalender">
+        <div class="card-hijri">
+            <div id="hari-ini" style="font-weight: bold; opacity: 0.8; color: var(--text);">--</div>
+            <div class="tgl-islam" id="h-tgl">--</div>
+            <div class="bln-islam" id="h-bln">--</div>
+            <div class="tgl-masehi" id="h-masehi">--</div>
+        </div>
+
+        <div class="info-puasa">
+            <h3>✨ Agenda Terdekat</h3>
+            <div id="list-agenda">
+                <div class="puasa-item"><span>Memuat data...</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Sinkron Tema
+        const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+        const isDark = localStorage.getItem('userDark') === 'true';
+        document.body.className = tipe;
+        if (isDark) document.body.classList.add('dark-mode');
+
+        // 2. Ambil Data Tanggal dari API Aladhan
+        async function muatKalender() {
+            try {
+                // API Tanggal hari ini
+                const r = await fetch('https://api.aladhan.com/v1/gToH?date=' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear());
+                const res = await r.json();
+                const d = res.data;
+
+                // Tampilkan ke layar
+                document.getElementById('hari-ini').innerText = d.hijri.weekday.en + " / " + d.hijri.weekday.ar;
+                document.getElementById('h-tgl').innerText = d.hijri.day;
+                document.getElementById('h-bln').innerText = d.hijri.month.en + " " + d.hijri.year + " H";
+                document.getElementById('h-masehi').innerText = d.gregorian.day + " " + d.gregorian.month.en + " " + d.gregorian.year + " M";
+
+                generateAgenda(d.hijri);
+            } catch (e) {
+                document.getElementById('h-tgl').innerText = "Offline";
+            }
+        }
+
+        function generateAgenda(hijri) {
+    const tglSekarang = parseInt(hijri.day);
+    const bln = hijri.month.en;
+    let html = '';
+
+    // 1. Logika Puasa Ayyamul Bidh
+    // Kita cek: Ayyamul Bidh gak ada di bulan Ramadan & Dzulhijjah (karena beda aturan)
+    if (bln !== "Ramadan" && bln !== "Dzul Hijjah") {
+        const tglBidh = [13, 14, 15];
+        tglBidh.forEach(t => {
+            let status = t < tglSekarang ? "Sudah Lewat" : (t == tglSekarang ? "HARI INI" : "Akan Datang");
+            let warna = t == tglSekarang ? "background:var(--accent);" : "";
+            
+            html += `<div class="puasa-item">
+                        <div style="display:flex; flex-direction:column">
+                            <b>Puasa Ayyamul Bidh (${t} ${bln})</b>
+                            <small style="opacity:0.7">${status}</small>
+                        </div>
+                        <span class="tag-puasa" style="${warna}">Sunnah</span>
+                    </div>`;
+        });
+    }
+
+    // 2. Tambahan Otomatis buat Bulan Spesial
+    if (bln === "Ramadan") {
+        html += itemAgenda("Bulan Ramadan", "Wajib Puasa Sebulan Penuh", "Wajib");
+    } else if (bln === "Dzul Hijjah") {
+        html += itemAgenda("Puasa Arafah (9 Dzul Hijjah)", "Sangat Dianjurkan", "Sunnah");
+        html += itemAgenda("Idul Adha (10 Dzul Hijjah)", "Haram Berpuasa", "Haram");
+    }
+
+    document.getElementById('list-agenda').innerHTML = html || '<div class="puasa-item">Tidak ada agenda khusus bulan ini.</div>';
+}
+
+// Fungsi pembantu biar gak ngetik div panjang-panjang
+function itemAgenda(judul, info, label) {
+    let warnaLabel = label === 'Wajib' ? 'background:red' : (label === 'Haram' ? 'background:black' : '');
+    return `<div class="puasa-item">
+                <div style="display:flex; flex-direction:column">
+                    <b>${judul}</b>
+                    <small style="opacity:0.7">${info}</small>
+                </div>
+                <span class="tag-puasa" style="${warnaLabel}">${label}</span>
+            </div>`;
+}
+
+        window.onload = muatKalender;
+    </script>
+</body>
+</html>

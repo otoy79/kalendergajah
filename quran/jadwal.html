@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Sholat - Al-Qur'an Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .container-jadwal { padding: 20px; }
+        .info-lokasi {
+            background: var(--card-bg); padding: 20px; border-radius: 20px;
+            text-align: center; margin-bottom: 20px; border: 1px solid var(--border); 
+        }
+     .info-gps {  
+    border-radius: 20px;
+            text-align: center; border: 1px solid var(--border); display: flex; gap: 15px; justify-content: center; padding: 5px;
+        }
+        .info-lokasi h2 { margin: 0; color: var(--primary); font-size: 22px; }
+        
+        /* Input & Tombol Lokasi */
+        .search-box { margin-top: 15px; display: flex; gap: 8px; justify-content: center; }
+        .search-box input {
+            padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+            width: 60%; background: var(--bg); color: var(--text); outline: none;
+        }
+        .btn-loc {
+            background: var(--primary); color: white; border: none; 
+            padding: 2px 10px; border-radius: 12px; cursor: pointer;
+        }
+        .btn-cari {
+            background: var(--primary); color: white; border: none; font-size:18px;
+            padding: 5px 10px; border-radius: 12px; cursor: pointer;
+        }
+
+        /* Tabel Styles */
+        .table-wrapper {
+            background: var(--card-bg); border-radius: 20px; overflow: hidden;
+            border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; color: var(--text); }
+        th { background: var(--primary); color: white; padding: 12px 5px; }
+        td { padding: 15px 5px; text-align: center; border-bottom: 1px solid var(--border); }
+        
+        tr.hari-ini { background: var(--primary); color: white !important; font-weight: bold; }
+        tr.hari-ini td { color: white !important; }
+        .loading { text-align: center; padding: 50px; opacity: 0.6; }
+    </style>
+</head>
+<body>
+
+    <div class="header-nav" style="background:var(--primary); color:white; padding:15px; text-align: center; position:sticky; top:0; z-index:100;">
+        <h2 style="margin:0; font-size:18px;">Jadwal Sholat</h2>
+    </div>
+
+    <div class="container-jadwal">
+        <div class="info-lokasi">
+   <div class="info-gps">
+         <h2 id="nama-kota">Jakarta</h2>
+   <button class="btn-loc" style="background:var(--primary-dark)" onclick="pakeGPS()">GPS📍</button>
+   </div>
+            <p id="bln-tahun" style="margin:5px 0; font-size:14px; color:var(--text); opacity:0.8;">--</p>
+            
+            <div class="search-box">
+                <input type="text" id="input-kota" placeholder="Nama kota/kecamatan...">
+                <button class="btn-cari" onclick="cariKotaManual()">🔍</button>
+           </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tgl</th>
+                        <th>Subuh</th>
+                        <th>Dzuhur</th>
+                        <th>Ashar</th>
+                        <th>Maghrib</th>
+                        <th>Isya</th>
+                    </tr>
+                </thead>
+                <tbody id="isi-jadwal">
+                    <tr><td colspan="6" class="loading">Memuat jadwal...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 1. Sinkron Tema & Kota Terakhir
+        let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
+        
+        function terapkanTema() {
+            const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+            const isDark = localStorage.getItem('userDark') === 'true';
+            document.body.className = tipe;
+            if (isDark) document.body.classList.add('dark-mode');
+        }
+
+        // 2. Fungsi Cari Kota
+        function cariKotaManual() {
+            const val = document.getElementById('input-kota').value;
+            if (val) {
+                kotaAktif = val;
+                localStorage.setItem('userKota', val);
+                muatJadwal();
+            }
+        }
+
+        function pakeGPS() {
+            if (navigator.geolocation) {
+                document.getElementById('nama-kota').innerText = "Mencari Lokasi...";
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    try {
+                        const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`);
+                        const d = await r.json();
+                        const kota = d.address.city || d.address.town || d.address.suburb || "Jakarta";
+                        kotaAktif = kota;
+                        localStorage.setItem('userKota', kota);
+                        muatJadwal();
+                    } catch (e) { alert("GPS Berhasil, tapi gagal ambil nama kota."); }
+                });
+            }
+        }
+
+        // 3. Load Data dari API
+       async function muatJadwal() {
+    const wadahTabel = document.getElementById('isi-jadwal');
+    const namaKotaTampil = document.getElementById('nama-kota');
+    
+    namaKotaTampil.innerText = kotaAktif;
+    wadahTabel.innerHTML = '<tr><td colspan="6" class="loading">Sedang mencari jadwal di ' + kotaAktif + '...</td></tr>';
+
+    const skr = new Date();
+    const bulan = skr.getMonth() + 1;
+    const tahun = skr.getFullYear();
+    const tglSkr = skr.getDate();
+
+    try {
+        // Kita pakai endpoint 'timingsByCity' tapi untuk kalender sebulan
+        // Kita tambahkan parameter ?address agar API lebih pintar mencari teks kota
+        const url = `https://api.aladhan.com/v1/calendarByAddress?address=${kotaAktif},Indonesia&method=11&month=${bulan}&year=${tahun}`;
+        
+        const r = await fetch(url);
+        const res = await r.json();
+        
+        if (res.code !== 200 || !res.data) {
+            throw new Error("Kota tidak ditemukan");
+        }
+
+        const data = res.data;
+        let html = '';
+        
+        data.forEach(hari => {
+            const tgl = parseInt(hari.date.gregorian.day);
+            const isToday = (tgl === tglSkr) ? 'class="hari-ini"' : '';
+            
+            html += `<tr ${isToday}>
+                <td>${tgl}</td>
+                <td>${hari.timings.Fajr.split(' ')[0]}</td>
+                <td>${hari.timings.Dhuhr.split(' ')[0]}</td>
+                <td>${hari.timings.Asr.split(' ')[0]}</td>
+                <td>${hari.timings.Maghrib.split(' ')[0]}</td>
+                <td>${hari.timings.Isha.split(' ')[0]}</td>
+            </tr>`;
+        });
+
+        wadahTabel.innerHTML = html;
+        document.getElementById('bln-tahun').innerText = data[0].date.gregorian.month.en + " " + tahun;
+
+        // Auto scroll ke hari ini
+        setTimeout(() => {
+            const el = document.querySelector('.hari-ini');
+            if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 500);
+
+    } catch (e) {
+        console.error(e);
+        wadahTabel.innerHTML = `<tr><td colspan="6" style="color:red; padding:20px;">
+            Maaf, kota "<b>${kotaAktif}</b>" tidak ditemukan.<br>
+            Coba ketik nama Kota/Kabupaten saja.
+        </td></tr>`;
+    }
+}
+
+        // Jalankan saat startup
+        window.onload = () => {
+            terapkanTema();
+            muatJadwal();
+        };
+    </script>
+</body>
+</html>
