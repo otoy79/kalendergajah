@@ -615,7 +615,7 @@ function prosesShare(index, namaSurah) {
                       `${item.teksArab}\n\n` +
                       `_(${item.teksLatin})_\n\n` +
                       `Artinya: "${item.teksIndonesia}"\n\n` +
-                      `via : https://alquran.pages.dev/quran/ (Al-Qur'an Pro by ℴ𝓉ℴ𝓎) `;
+                      `via : https://kalendergajah.pages.dev/quran/ (Al-Qur'an Pro by ℴ𝓉ℴ𝓎) `;
 
         if (navigator.share) {
             navigator.share({
