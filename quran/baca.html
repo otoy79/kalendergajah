@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Al-Qur'an Pro V.3</title>
+    <script>
+    // CEK TEMA SECEPAT KILAT sebelum halaman digambar
+    (function() {
+      const tema = localStorage.getItem('theme') || 'light';
+      if (tema === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        // Tambahkan style darurat biar body langsung item
+        document.documentElement.style.backgroundColor = '#121212'; 
+      }
+    })();
+  </script>
+   <script>
+    // Langsung tembak tema SEBELUM body digambar browser
+    (function() {
+        const savedMushaf = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+        const savedDark = localStorage.getItem('userDark') === 'true';
+        
+        // Kita set class ke element HTML (induk paling atas)
+        document.documentElement.className = savedMushaf + (savedDark ? ' dark-mode' : '');
+        
+        // Pas body sudah siap, kita pindahkan class-nya ke body
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.className = document.documentElement.className;
+        });
+    })();
+</script>
+    <link rel="stylesheet" href="css/style.css">
+   <style>
+    /* --- VARIABEL DASAR --- */
+    :root🚫 { 
+        --primary: #004d40; 
+        --primary-dark: #00251a; 
+        --bg: #ffffff; 
+        --text: #333; 
+        --card-bg: #f9f9f9; 
+        --border: rgba(0,0,0,0.1); 
+    }
+    [data-theme="dark"] { 
+        --bg: #121212; 
+        --text: #e0e0e0; 
+        --card-bg: #1e1e1e; 
+        --primary: #4db6ac; 
+        --primary-dark: #004d40; 
+        --border: rgba(255,255,255,0.1); 
+        --bg-color: #ffffff; 
+    }
+
+    /* --- RESET TOTAL --- */
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* --- HEADER SULTAN (FIXED) --- */
+    .header-pro, .header {
+        position: fixed !important;
+        top: 0; left: 0; right: 0;
+        height: 65px;
+        z-index: 99;
+        background: var(--bg);
+        border-bottom: 2px solid var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        transition: transform 0.4s ease; /* Untuk Mode Fokus */
+    }
+
+    /* --- CONTAINER UTAMA --- */
+    /* Pastikan Halaman Menu punya jarak dari atas karena Header-nya melayang (fixed) */
+#halaman-menu {
+    padding-top: 55px !important; /* Tinggi header 60px + jarak 10px */
+}
+
+/* Rapikan Search Box agar presisi */
+.search-box {
+    margin: 10px 15px 0px 15px; /* Atas, Kanan, Bawah, Kiri */
+    position: relative; /* Penting agar icon kaca pembesar tidak lari */
+    z-index: 10; /* Di bawah header tapi di atas list surat */
+}
+
+.search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 15px; /* Ruang extra di kanan (45px) untuk icon 🔍 */
+    border-radius: 25px;
+    border: 1.5px solid var(--primary);
+    background: var(--card-bg);
+    color: var(--text);
+    box-sizing: border-box; /* WAJIB agar padding tidak ngerusak lebar */
+    outline: none;
+    font-size: 14px;
+}
+
+/* Pastikan icon kaca pembesar pas di tengah input */
+.search-box span {
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Agar klik tembus ke input */
+}
+   #container-ayat {
+        margin-top: 65px !important; /* Jarak agar tidak tertutup header */
+        width: 100%;
+        box-sizing: border-box;
+        padding-bottom: 100px;
+    }
+
+    /* --- SEARCH BOX --- */
+    .search-box {
+        padding: 15px;
+        background: var(--bg);
+        
+    }
+    .search-box input {
+        width: 100%; padding: 12px 15px; border-radius: 25px;
+        border: 1.5px solid var(--primary); background: var(--card-bg);
+        color: var(--text); box-sizing: border-box; outline: none;
+    }
+
+    /* --- AYAT CARD (FULL WIDTH) --- */
+    .ayat-card {
+        width: 100vw;
+        max-width: 100%;
+        margin: 0 !important;
+        padding: 25px 20px;
+        border-bottom: 1px solid var(--border);
+        box-sizing: border-box;
+        background: var(--bg);
+        transition: background 0.3s;
+    }
+    .ayat-card.active {
+        background-color: rgba(0, 77, 64, 0.05) !important;
+    }
+    [data-theme="dark"] .ayat-card.active {
+        background-color: rgba(77, 182, 172, 0.1) !important;
+    }
+
+    /* --- TEKS ARAB --- */
+    .teks-arab { 
+        font-family: var(--font-arab, 'Qalam'), serif;
+        text-align: right; 
+        font-size: 32px; 
+        line-height: 2.3; 
+        direction: rtl; 
+        word-spacing: 5px;
+        margin-bottom: 15px;
+        word-wrap: break-word;
+    }
+    .arabtext { 
+        direction: rtl; 
+        word-spacing: 5px;
+        word-wrap: break-word;
+         color: white;
+    }
+/* Kita buatkan class khusus font */
+.font-qalam { font-family: 'Qalam', serif !important; }
+.font-uthmani { font-family: 'Uthmani', serif !important; }
+.font-lpmq { font-family: 'LPMQ', sans-serif !important; }
+
+    /* --- NOMOR AYAT --- */
+    .no-ayat {
+        background: var(--primary); color: white; padding: 5px 12px;
+        border-radius: 50px; font-size: 12px; font-weight: bold;
+         display: inline-block;
+    margin: 0;
+     top: 0px; position: relative;
+    }
+
+    /* --- SWITCH MODE FOKUS --- */
+    .switch {
+        position: relative; display: inline-block; width: 45px; height: 22px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+        position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+        background-color: #ccc; transition: .4s; border-radius: 34px;
+    }
+    input:checked + .slider { background-color: var(--primary); }
+    .slider:before {
+        position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 3px;
+        background-color: white; transition: .4s; border-radius: 50%;
+    }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+   
+    .footnote-box {
+    font-size: 13px;
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 77, 64, 0.03); /* Hijau sangat tipis */
+    border-left: 2px solid var(--primary);
+    color: #666;
+    font-style: italic;
+    line-height: 1.4;
+    border-radius: 0 8px 8px 0;
+}
+[data-theme="dark"] .footnote-box {
+    background: rgba(255, 255, 255, 0.05);
+    color: #bbb;
+}
+  /* Berikan warna pada angka footnote di dalam teks terjemahan */
+.teks-translate sup {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 0.8em;
+    margin: 0 2px;
+}
+  /* Mengecilkan judul bab di dalam terjemahan */
+.teks-translate h2 {
+    font-size: 15px !important; /* Ukuran pas buat judul bab */
+    color: var(--primary);
+    margin: 10px 0 5px 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 5px;
+    line-height: 1.4;
+}
+
+.teks-translate h3 {
+    font-size: 15px !important;
+    color: var(--text);
+    margin: 8px 0 4px 0;
+    font-weight: bold;
+    opacity: 0.8;
+}
+   /* Jurus Kunci Mati: Halaman yang ngumpet gak boleh punya tinggi */
+#halaman-menu[style*="display: none"], 
+#halaman-baca[style*="display: none"] {
+    position: fixed; /* Keluar dari alur dokumen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0 !important;
+    overflow: hidden !important;
+    visibility: hidden;
+}
+
+/* Pastikan halaman yang tampil bener-bener bersih scrollnya */
+#halaman-menu, #halaman-baca {
+    width: 100%;
+    min-height: 100vh;
+}
+  /* Style Dasar Tombol Tab */
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease; /* Biar perpindahan warna halus */
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+}
+
+/* Warna saat Tab Aktif */
+.tab-btn.active {
+    background: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3); /* Efek bayangan dikit */
+}
+  .nomer-ayat {
+   background: var(--primary); color: white; padding: 8px;
+        border-radius: 50px; font-size: 18px; font-weight: bold;
+         display: inline-block;
+    margin: 0;
+     top: 0px; position: relative;
+     width:20px; height:20px;
+   }
+   .nomor-ayat-arab {
+    font-family: 'Qalam', 'Uthmani', serif; 
+    color: var(--primary); 
+    font-size: 0.7em; 
+    margin-right: 5px;
+    vertical-align: middle;
+}
+  .container-share {
+   display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-top: 5px;
+}
+
+/* Biar teks-arab otomatis ngikutin --text tema */
+.teks-arab {
+    color: var(--text);
+}
+   body.no-tajwid .teks-arab font {
+    color: inherit !important; /* Paksa ikut warna teks utama */
+}
+</style>
+</head>
+<body>
+
+   <div id="modalReset" class="modal-custom">
+    <div class="modal-content">
+        <div style="font-size: 50px; margin-bottom: 15px;">⚠️</div>
+        <h3 style="margin: 0; color: #333;">Reset Pengaturan?</h3>
+        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 15px 0;">
+            Semua bookmark, riwayat baca, dan pengaturan font akan dihapus kembali ke pengaturan awal.
+        </p>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="tutupModalReset()" style="flex:1; padding: 12px; border: none; border-radius: 10px; background: #eee; color: #333; font-weight: bold; cursor: pointer;">Batal</button>
+            <button onclick="eksekusiReset()" style="flex:1; padding: 12px; border: none; border-radius: 10px; background: #e74c3c; color: white; font-weight: bold; cursor: pointer;">Ya, Reset!</button>
+        </div>
+    </div>
+</div>
+
+    <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+<div id="settingsPanel" class="settings-panel">
+    <h2 style="color: var(--primary);">Pengaturan</h2>
+     <hr style="border:0; border-top:1px solid #ddd; margin-bottom:10px;">
+
+   <div class="settings-item">
+    <label for="modeMushaf">Mode Baca (Arab Saja)</label>
+    <input type="checkbox" id="modeMushaf" onchange="toggleModeMushaf(this.checked)" style="cursor: pointer;">
+</div>
+
+   <div class="settings-item">
+    <label for="tajwidWarna">Tajwid Warna</label>
+    <input type="checkbox" id="tajwidWarna" onchange="toggleTajwid(this.checked)">
+</div>
+
+    <div class="settings-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; display:none;">
+        <span>Mode Fokus (Mushaf)</span>
+        <label class="switch">
+            <input type="checkbox" id="mode-fokus" onchange="simpanPengaturan()">
+            <span class="slider round"></span>
+        </label>
+    </div>
+
+    <div class="settings-item">
+    <label>Pilih Font Arab</label>
+    <select id="pilihFontArab" onchange="gantiFontArab(this.value)">
+        <option value="font-qalam">Qalam Majed (Tebal)</option>
+        <option value="font-uthmani">Uthmanic (Madinah)</option>
+    </select>
+</div>
+
+
+   <div class="settings-item">
+        <label>Tipe Mushaf</label>
+        <select id="pilihMushaf" onchange="gantiTipeMushaf(this.value)">
+            <option value="mushaf-1">Standar</option>
+            <option value="mushaf-4">Hafalan (Arab Saja)</option>
+            <option value="mushaf-2">Madinah (Krem)</option>
+            <option value="mushaf-3">Minimalis</option>
+        </select>
+    </div>
+
+   <div class="settings-item">
+        <label>Pilih Qari</label>
+        <select id="pilihQari" onchange="gantiQari(this.value)">
+            <option value="Alafasy">M. Rashid Alafasy</option>
+            <option value="Abdurrahmaan_As-Sudais">As-Sudais</option>
+            <option value="Muhammad_Jibreel">Muhammad_Jibreel</option>
+            <option value="Abdul_Basit_Murattal">Abdul Basit</option>
+        </select>
+    </div>
+
+    <div class="settings-item"><label>Mode Gelap</label><input type="checkbox" id="checkDark" onchange="toggleDarkMode(this.checked)"></div>
+    
+   <div class="settings-item">
+        <span>Tampilkan Terjemah</span> 
+        <input type="checkbox" id="show-translate" checked onchange="simpanPengaturan()">
+    </div>
+    
+    <div class="settings-item">
+        <span>Tafsir (Singkat)</span> 
+        <input type="checkbox" id="show-footnote" checked onchange="simpanPengaturan()">
+    </div>
+
+   
+     <div class="settings-item">
+        <label>Ukuran Font</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button onclick="ubahFont(-2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➖</button>
+            <b id="fontLabel" style="min-width:40px; text-align:center;">30px</b>
+            <button onclick="ubahFont(2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➕</button>
+        </div>
+    </div>
+
+     <div class="settings-item" style="flex-direction: column; align-items: flex-start; gap: 10px; display:none">
+        <span>Ukuran Huruf Arab</span>
+        <select id="font-size-arab" onchange="simpanPengaturan()" style="width: 100%; padding: 8px; border-radius: 8px; background❌: var(--bg); color: var(--text); border: 1px solid var(--primary);">
+            <option value="28px">Kecil</option>
+            <option value="36px" selected>Sedang</option>
+            <option value="48px">Besar</option>
+            <option value="60px">Jumbo</option>
+        </select>
+    </div>
+
+    <hr style="border:0; border-top:1px solid #ddd; margin: 15px 0;">
+    
+    <div class="settings-item">
+        <label style="color: #e74c3c;">Reset Pengaturan</label>
+        <p style="font-size: 11px; color: #888; margin-top: 5px;">🗳</p>
+        <button onclick="resetAplikasi()" style="padding: 6px; background: #ffece8; color: white; border: none; border-radius: 8px; border: 2px solid #e74c3c; font-weight: bold; cursor: pointer; margin-top: 0px;">
+            🗑️
+        </button>
+    </div>
+
+    <button onclick="toggleMenu()" style="width:100%; padding:12px; margin-top:20px; background:var(--primary); color:white; border:none; border-radius:10px; font-weight:bold;">Simpan & Tutup</button>
+</div>
+
+<div id="halaman-menu">
+    <div class="header-pro">
+        <a onclick="return noHistory(this);" href="index.html" style="position: absolute; left: 25px; text-decoration: none; color: var(--primary); font-size: 20px;">❮</a>
+        <h1 style="margin: 0; font-size: 1.3rem; color: var(--primary);">Al-Qur'an V.3</h1>
+        <div onclick="toggleMenu()" style="position: absolute; right: 25px; cursor: pointer; color: var(--primary); font-size: 20px;">⚙️</div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="inputCari" onkeyup="filterMenu()" placeholder="Cari Surat (Nama/Nomor)...">
+        <span>🔍</span>
+    </div>
+
+    <div style="display: flex; gap: 10px; padding: 0 15px 15px 15px;">
+    <button id="btnTabSurah" onclick="tampilkanDaftarMenu()" class="tab-btn active">Daftar Surah</button>
+    <button id="btnTabJuz" onclick="renderDaftarJuz()" class="tab-btn">Daftar Juz</button>
+</div>
+
+    <div id="list-surat-container" style="padding: 0 10px 100px 10px;">
+        </div>
+</div>
+
+<div id="halaman-baca" style="display: none;">
+    <div class="header-pro">
+        <div onclick="tutupBacaan()" style="position: absolute; left: 25px; cursor: pointer; color: var(--primary); font-size: 20px;">❮</div>
+        <h2 id="nama-surat-header" style="margin: 0; font-size: 1.1rem; font-family: 'Segoe UI';"></h2>
+        <div onclick="toggleMenu()" style="position: absolute; right: 25px; cursor: pointer; color: var(--primary); font-size: 20px;">⚙️</div>
+    </div>
+    <div id="container-ayat"></div>
+</div>
+
+    <div id="toast" class="toast"></div>
+
+<button id="btnBackToTop" onclick="keAtas()" title="Kembali ke atas">
+    ↑
+</button>
+
+<div class="player-bar">
+    <button id="btnPlay" class="btn-action" onclick="handlePlayPause()">Play Audio</button>
+</div>
+     
+
+
+   <script src="data2/juz.js"></script>
+    <script src="data2/kamus.js"></script>
+   <script src="js/script.js"></script>
+
+   <script>
+    // 1. Inisialisasi
+window.addEventListener('load', () => {
+    // Muat setelan dulu sebelum render apapun
+    if (typeof muatPengaturan === "function") muatPengaturan();
+    
+    const params = new URLSearchParams(window.location.search);
+    const no = params.get('no');
+
+    if(no) {
+        bukaSurat(no);
+    } else {
+        tampilkanDaftarMenu();
+    }
+    
+    // Pastikan fungsi ini ada di bawah nanti ya Boss
+    if (typeof initSwipe === "function") initSwipe();
+});
+
+// 2. Tampilkan Daftar Surat
+function tampilkanDaftarMenu() {
+    setTabAktif('surah');
+    noSuratAktif = null;
+    document.getElementById('halaman-menu').style.display = 'block';
+    document.getElementById('halaman-baca').style.display = 'none';
+
+document.getElementById('container-ayat').innerHTML = '';
+    
+    let html = '';
+    
+    // --- KARTU TERAKHIR BACA ---
+    const lastRead = JSON.parse(localStorage.getItem('terakhirBaca'));
+    if (lastRead) {
+        html += `
+        <div onclick="pilihSurat(${lastRead.noSurat})" style="background: var(--primary); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); cursor:pointer;">
+            <div>
+                <div style="font-size: 12px; opacity: 0.8;margin-bottom: 5px;">Terakhir Baca/di putar:</div>
+                <div style="font-size: 18px; font-weight: bold;">${lastRead.namaSurat} : Ayat ${lastRead.nomorAyat}</div>
+                <div style="font-size: 11.5px; margin-top: 5px; opacity: 0.7;">📅 ${lastRead.waktu}</div>
+            </div>
+            <div style="font-size: 30px;">📖</div>
+        </div>
+        <div style="font-weight: bold; margin-bottom: 10px; color: var(--primary); padding-left:5px;">Daftar Surat</div>`;
+    }
+
+    // --- LOOPING DAFTAR SURAT ---
+    for (let no in daftarSurah) {
+        const s = daftarSurah[no];
+        html += `
+        <div onclick="pilihSurat(${no})" class="surah-item" style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--card-bg); margin-bottom:10px; border-radius:12px; border:1px solid var(--border); cursor:pointer;">
+            <div style="display:flex; align-items:center; gap:15px;">
+                <div style="width:35px; height:35px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:bold;">${no}</div>
+                <div style="text-align:left;">
+                    <div style="font-weight:bold; color:var(--text);">${s.nama}</div>
+                    <div style="font-size:11px; color:#888;">${s.type} • ${s.ayat} Ayat</div>
+                </div>
+            </div>
+            <div class="teks-arab" style="font-size:20px;line-height: 1.4;margin:0;">${s.arab || ''}</div>
+        </div>`;
+    }
+    
+document.getElementById('list-surat-container').innerHTML = html;
+}
+
+   // Tab Menu
+   function setTabAktif(tab) {
+    // Ambil kedua tombol
+    const btnSurah = document.getElementById('btnTabSurah');
+    const btnJuz = document.getElementById('btnTabJuz');
+
+    if (tab === 'surah') {
+        btnSurah.classList.add('active');
+        btnJuz.classList.remove('active');
+    } else {
+        btnJuz.classList.add('active');
+        btnSurah.classList.remove('active');
+    }
+}
+
+   // 3. Fungsi Buka Surat
+   function pilihSurat(no) {
+    bukaSurat(no);
+    
+}
+   // 1. Tambahkan parameter mulaiAyat di baris paling atas
+      function bukaSurat(no, mulaiAyat = 0) {
+    noSuratAktif = no; 
+    if (typeof surahSekarang !== 'undefined') surahSekarang = no; 
+    
+    // 1. RESET SCROLL TOTAL (Jurus Anti-Sungsang)
+    window.scrollTo(0, 0); 
+    document.body.scrollTop = 0; 
+    document.documentElement.scrollTop = 0; // Tambahkan ini buat jaga-jaga di browser lain
+
+    // 2. Clear hasil pencarian (Biar filternya nutup otomatis)
+    const searchInput = document.getElementById('searchSurah');
+    if (searchInput) {
+        searchInput.value = ''; // Kosongkan kolom cari
+        tampilkanDaftarMenu();   // Kembalikan ke daftar normal
+    }
+
+    // 3. Pindah Halaman
+    document.getElementById('halaman-menu').style.display = 'none';
+    document.getElementById('halaman-baca').style.display = 'block';
+    document.getElementById('nama-surat-header').innerText = "Memuat...";
+
+    const old = document.getElementById('loader-js'); 
+    if(old) old.remove();
+
+    const s = document.createElement('script');
+    s.id = 'loader-js';
+    s.src = `data2/${no}.js`;
+    s.onload = () => { 
+        if (typeof renderAyat === "function") {
+            renderAyat(); 
+            
+            // --- LOGIKA LOMPAT JUZ (Jika dipanggil dari Menu Juz) ---
+            if (mulaiAyat > 1) {
+                setTimeout(() => {
+                    const idx = mulaiAyat - 1; // Konversi nomor ayat ke index
+                    const elJuz = document.getElementById(`card-${idx}`);
+
+             if (elJuz) {
+                        elJuz.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        elJuz.classList.add('active');
+                        // Opsional: Langsung putar audio? putarAudio(idx);
+                    }
+
+    const headerHeight = 85; // <-- Kurangi angka ini jika mau lebih dekat ke atas
+    const offsetPosition = elJuz.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+    
+    window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+    });
+
+                }, 500);
+                return; // Berhenti di sini, jangan jalankan scroll bookmark
+               elJuz.classList.add('active');
+            }
+ 
+            // --- 5. LOGIKA AUTO-SCROLL KE BOOKMARK (Bawaan Asli Masbrow) ---
+            const lastRead = JSON.parse(localStorage.getItem('terakhirBaca'));
+            if (lastRead && String(lastRead.noSurat) === String(no)) {
+                setTimeout(() => {
+                    const el = document.getElementById(`card-${lastRead.indexAyat}`);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.style.backgroundColor = 'var(--primary-light)'; 
+                        setTimeout(() => { el.style.backgroundColor = 'transparent'; }, 2000);
+                    }
+                }, 600);
+            }
+        }
+    };
+    document.head.appendChild(s);
+}
+
+    // Juzz  ➕
+    function renderDaftarJuz() {
+    setTabAktif('juz');
+    let html = '<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px 15px 100px 15px;">';
+    
+    for (let j in window.dataJuz) {
+        const d = window.dataJuz[j];
+        const namaAwal = daftarSurah[d.beginsurat].nama;
+
+        // KUNCINYA DI SINI: bukaSurat(nomorSurat, nomorAyat)
+        html += `
+        <div onclick="bukaSurat(${d.beginsurat}, ${d.beginayat})" class="surah-item" style="padding:15px; background:var(--card-bg); border-radius:15px; border:1px solid var(--border); text-align:center; cursor:pointer;">
+            <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 12px; font-weight: bold;">${j}</div>
+            <div style="font-weight:bold; color:var(--text); font-size: 14px;">Juz ${j}</div>
+            <div style="font-size:10px; color:#999; margin-top:5px;">${namaAwal}</div>
+            <div style="font-size:9px; color:var(--primary); font-weight:bold;">Mulai Ayat ${d.beginayat}</div>
+        </div>`;
+    }
+    html += '</div>';
+    document.getElementById('list-surat-container').innerHTML = html;
+}
+
+    function renderAyat() {
+    const data = window.dataAlquran;
+    if(!data) return;
+
+    // 1. SINKRONISASI DATA AUDIO (WAJIB)
+    // Mengubah objek ayat ke array agar bisa diputar berurutan
+    dataAyatAktif = Object.keys(data.ayat).map(no => {
+        return { nomorAyat: no, ...data.ayat[no] };
+    });
+
+    // 2. LOGIKA MODE FOKUS
+    const isFocus = document.getElementById('mode-fokus')?.checked;
+    const allHeaders = document.querySelectorAll('.header-pro, .header');
+    const containerAyat = document.getElementById('container-ayat');
+
+    allHeaders.forEach(h => {
+        h.style.setProperty('display', isFocus ? 'none' : 'flex', 'important');
+    });
+    // Jika fokus, hilangkan margin atas agar teks mentok ke atas layar
+    if(containerAyat) containerAyat.style.marginTop = isFocus ? "0px" : "65px";
+
+    // 3. AMBIL SETELAN USER
+    const info = daftarSurah[noSuratAktif] || {};
+    document.getElementById('nama-surat-header').innerText = `${noSuratAktif}. ${info.nama}`;
+
+    const isTrans = document.getElementById('show-translate').checked;
+    const isFoot = document.getElementById('show-footnote').checked;
+    const fSize = document.getElementById('font-size-arab').value;
+
+    // 4. HEADER SURAT (HERO SECTION)
+    let html = `
+        <div style="text-align:center;   padding:20px 20px; color:white; background:linear-gradient(135deg, var(--primary), var(--primary-dark)); box-sizing:border-box;">
+            <h2 style="margin:0;">${noSuratAktif}. ${info.nama} - <span class="${fontAktif}" style="font-size:24px; font-weight: 400;">${info.arab || ''}</span></h2>
+            <p style="opacity:0.8; margin:5px 0;">${info.arti}</p>
+            <div style="font-size:12px; margin-top:10px; font-weight:bold;">${info.type.toUpperCase()} • ${info.ayat} AYAT</div>
+        </div>
+            <div class="teks-arab ${fontAktif}" style="margin:5px; padding:0px 20px; font-size:${fontSizeArab}px; font-family: Qalam, serif; line-height:2.1; direction: rtl; cursor: none;">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+       
+    `;
+
+    // 5. LOOPING AYAT
+let idx = 0; 
+for (let n in data.ayat) {
+    let txtIndo = '';
+    const ayat = data.ayat[n];
+    const nomorNya = n || ayat.nomor || (idx + 1); 
+    const teksArabFinal = filterTajwid(ayat.arabic);
+    
+    ayat.translate.forEach(t => {
+        // --- PROSES SAPU BERSIH (Sanitize) ---
+        let bersih = t
+            .replace(/<a href[^>]*>.*?<\/a>/g, '') // Buang link mati (#002anz)
+            .replace(/<img[^>]*>/g, '')           // Buang gambar pecah (anz.gif)            
+            .trim();
+
+        if (t.includes('<footnote>')) {
+    if (isFoot) {
+        // Kita ambil isi di dalam tag footnote
+        let isiFootnote = bersih.replace('<footnote>', '').replace('</footnote>', '');
+        txtIndo += `<div class="footnote-box"><b>Tafsir/Penjelasan:</b> ${isiFootnote}</div>`;
+    }
+} else {
+    if (isTrans) {
+        // Terjemahan utama dengan penanda [11] yang tetap eksis
+        txtIndo += `<div style="margin-bottom: 5px;">${bersih}</div>`;
+            }
+        }
+    });
+
+    // --- RENDER KE HTML  ---
+    html += `
+    <div id="card-${idx}" class="ayat-card" style="border-bottom: 1px solid var(--border); padding: 5px 25px; box-sizing: border-box; background: var(--bg);">
+        <div class="container-share">  
+      <div class="no-ayat"  style="padding:0;">
+                <span style="background:rgba(255,255,255,0.2); width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px;">${n}</span>                    
+          </div>               
+            <div style="display: flex; gap: 25px; align-items:center;">
+             <span onclick="putarAudio(${idx}); simpanBookmark(${idx}, true)" style="cursor:pointer; font-size:12px; opacity:0.7;">▶️ PUTAR</span>
+                <span onclick="copyAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7;">📋</span>
+                <span onclick="shareAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7;">🔗</span>
+            </div>
+        </div>
+     <div class="teks-arab ${fontAktif}" style="font-size:${fontSizeArab}px; line-height:2.1; direction: rtl; cursor.: none; text-align: right;"> 
+    ${teksArabFinal} <span class="nomor-ayat-arab">﴿${keAngkaArab(nomorNya)}﴾</span> 
+</div>       
+        <div class="teks-translate" style="text-align:left; margin-top:15px; font-size:15px; color:var(--text); display:${isTrans ? 'block' : 'none'}; opacity:0.9; line-height:1.7;">
+            ${txtIndo}
+        </div>
+    </div>`;
+    idx++;
+}
+     document.getElementById('container-ayat').innerHTML = html;
+   terapkanModeMushaf();
+}
+
+   // ➕➕ Mode Baca Saja
+   localStorage
+let isMushaf = localStorage.getItem('modeMushaf') === 'true';
+
+  function toggleModeMushaf(checked) {
+    isMushaf = checked;
+    localStorage.setItem('modeMushaf', checked);
+    terapkanModeMushaf();
+}
+
+function terapkanModeMushaf() {
+    // Cari semua yang bukan teks-arab (container-share dan teks-translate)
+    const elemenSembunyi = document.querySelectorAll('.container-share, .teks-translate');
+    
+    elemenSembunyi.forEach(el => {
+        if (isMushaf) {
+            el.style.display = 'none';
+        } else {
+            // Balikin ke display aslinya (flex buat container-share, block buat teks-translate)
+            el.style.display = el.classList.contains('container-share') ? 'flex' : 'block';
+        }
+    });
+}
+   document.addEventListener("DOMContentLoaded", function() {
+    const savedMushaf = localStorage.getItem('modeMushaf') === 'true';
+    const check = document.getElementById('modeMushaf');
+    if (check) check.checked = savedMushaf;
+    isMushaf = savedMushaf;
+});
+
+   
+   // 5. TEMA & PENGATURAN
+    function ubahTema() {
+    const isDark = document.getElementById('dark-mode').checked;
+    if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+   
+    function muatPengaturan() {
+    try {
+        const saved = localStorage.getItem('setelanQuran');
+        if (saved) {
+            const setelan = JSON.parse(saved);
+            document.getElementById('show-translate').checked = setelan.tampilTerjemahan;
+            document.getElementById('show-footnote').checked = setelan.tampilFootnote;
+            document.getElementById('font-size-arab').value = setelan.ukuranFont;
+            if(document.getElementById('mode-fokus')) {
+                document.getElementById('mode-fokus').checked = setelan.modeFokus || false;
+            }
+        }
+    } catch (e) { console.log(e); }
+}
+
+
+    function simpanPengaturan() {
+    const setelan = {
+        
+        tampilTerjemahan: document.getElementById('show-translate').checked,
+        tampilFootnote: document.getElementById('show-footnote').checked,
+        ukuranFont: document.getElementById('font-size-arab').value,
+        modeFokus: document.getElementById('mode-fokus').checked // Simpan status fokus
+    };
+
+    localStorage.setItem('setelanQuran', JSON.stringify(setelan));
+    renderAyat(); 
+}
+ 
+    // 6. GESTURE & NAVIGASI
+    let xDown = null;
+
+   function initSwipe() {
+    document.addEventListener('touchstart', e => {
+        xDown = e.touches[0].clientX;
+    }, false);
+
+    document.addEventListener('touchend', e => {
+        if (!xDown || !noSuratAktif) return;
+
+        let xUp = e.changedTouches[0].clientX;
+        let xDiff = xDown - xUp; 
+
+        if (Math.abs(xDiff) > 100) {
+            let cur = parseInt(noSuratAktif);
+
+            if (xDiff < 0) {
+                // TANGAN GESER KE KANAN (xDiff Negatif)
+                // Maunya MAJU ke surah selanjutnya (Surah 1 -> Surah 2)
+                if (cur < 114) {
+                    pilihSurat(cur + 1);
+                } else {
+                    pilihSurat(1); // Kalau sudah surah 114, balik ke 1
+                }
+            } else if (xDiff > 0) {
+                // TANGAN GESER KE KIRI (xDiff Positif)
+                // Maunya MUNDUR ke surah sebelumnya (Surah 1 -> Surah 114)
+                if (cur > 1) {
+                    pilihSurat(cur - 1);
+                } else {
+                    pilihSurat(114); // Kalau di surah 1, balik ke 114
+                }
+            }
+        }
+        xDown = null; 
+    }, false);
+}
+   function pilihSurat(no) {
+    // 1. Tarik Layar ke Atas (PENTING biar gak sungsang)
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
+    // 2. Panggil fungsi buka surahnya
+    bukaSurat(no); 
+    
+    // 3. Ambil data surah untuk notifikasi
+    const info = daftarSurah[no];
+    
+    if (typeof tampilkanToast === "function") {
+        // Tampilan notifikasi yang lebih "Premium"
+        // Contoh: "📖 Membuka Surah Al-Baqarah (2)"
+        tampilkanToast(`📖 Surah ${info.nama} (${no})`);
+    }
+}
+
+window.onpopstate = function() {
+    if (noSuratAktif) tampilkanDaftarMenu();
+    else window.location.href = 'index.html';
+};
+
+   function tutupBacaan() {
+    // Reset scroll ke 0 sebelum pindah halaman
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
+    window.history.replaceState({}, '', 'baca.html');
+    tampilkanDaftarMenu();
+}
+
+   function toggleMenu() {
+    const p = document.getElementById('settingsPanel');
+    const o = document.getElementById('overlay');
+    p.classList.toggle('open');
+    o.style.display = p.classList.contains('open') ? 'block' : 'none';
+}
+
+  function filterMenu() {
+    let val = document.getElementById('inputCari').value.toLowerCase();
+    let items = document.querySelectorAll('.surah-item');
+    let adaHasil = false;
+
+    items.forEach(item => {
+        if (item.innerText.toLowerCase().includes(val)) {
+            item.style.display = 'flex';
+            adaHasil = true;
+
+            // JURUS ANTI-SUNGSANG:
+            // Kita modifikasi sedikit tombolnya secara otomatis agar saat diklik
+            // dia juga menjalankan perintah reset scroll dan tutup filter.
+            const originalOnClick = item.getAttribute('onclick');
+            if (originalOnClick && !originalOnClick.includes('resetPencarian')) {
+                item.setAttribute('onclick', `resetPencarian(); ${originalOnClick}`);
+            }
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// Fungsi tambahan buat bantu filterMenu
+function resetPencarian() {
+    // 1. Kosongkan input cari
+    document.getElementById('inputCari').value = '';
+    
+    // 2. Tampilkan kembali semua item surah
+    let items = document.querySelectorAll('.surah-item');
+    items.forEach(item => { item.style.display = 'flex'; });
+
+    // 3. Tarik paksa ke atas paling nol (Kepala Duluan)
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+
+    function simpanBookmark(idxAyat, pakaiToast = false) {
+    // 1. Deteksi Data (Biar V.1 & V.3 gak berantem)
+    const daftarAyat = (typeof dataAyatAktif !== 'undefined') ? dataAyatAktif : (window.dataAlquran ? window.dataAlquran.ayat : null);
+    const noSurat = (typeof noSuratAktif !== 'undefined') ? noSuratAktif : (typeof surahSekarang !== 'undefined' ? surahSekarang : null);
+    
+    if (!daftarAyat || !noSurat) return;
+
+    // 2. Ambil Info Surat & Ayat
+    const info = daftarSurah[noSurat];
+    // Support Array (V.3) atau Object (V.1)
+    const ayat = Array.isArray(daftarAyat) ? daftarAyat[idxAyat] : daftarAyat[Object.keys(daftarAyat)[idxAyat]];
+    const nomorAyatReal = ayat.nomorAyat || Object.keys(daftarAyat)[idxAyat];
+
+    // 3. Catat Waktu
+    const skrg = new Date();
+    const waktuString = skrg.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ' | ' + 
+                        skrg.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+    const dataBookmark = {
+        noSurat: noSurat,
+        namaSurat: info.nama,
+        nomorAyat: nomorAyatReal,
+        indexAyat: idxAyat,
+        waktu: waktuString
+    };
+
+    // 4. EKSEKUSI SIMPAN
+    localStorage.setItem('terakhirBaca', JSON.stringify(dataBookmark));
+    
+    if (pakaiToast) {
+        tampilkanToast(`📌 Bookmark: ${info.nama} ayat ${nomorAyatReal}`);
+    }
+}
+     // Share
+    function shareAyat(idx) {
+    const info = daftarSurah[noSuratAktif];
+    const ayat = dataAyatAktif[idx];
+    
+    // 1. Bersihkan teks Arab dari tag HTML DAN Karakter Unicode Aneh
+    const arabBersih = ayat.arabic
+        .replace(/<[^>]*>?/gm, '') // Hapus tag <font> dll
+        .replace(/[\uE000-\uF8FF]|\u200F/g, '') // Hapus karakter Private Use Area (Biang kerok simbol kotak/hati)
+        .trim();
+    
+    // 2. Bersihkan Indo dari tag HTML dan angka footnote [24]
+    const teksIndo = ayat.translate[0]
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/\[\d+\]/g, '');
+    
+    // 3. Susun Pesan (Pakai Bold & Italic biar Sultan)
+    const pesan = `*${info.nama} : Ayat ${ayat.nomorAyat}*\n\n` +
+                  `${arabBersih}\n\n` +
+                  `_"${teksIndo}"_\n\n` +
+                  `Dibagikan dari: *Al-Qur'an Pro V.3*`;
+
+    // Kirim ke WA
+    const urlWA = `https://api.whatsapp.com/send?text=${encodeURIComponent(pesan)}`;
+    window.open(urlWA, '_blank');
+}
+
+     function copyAyat(idx) {
+    const info = daftarSurah[noSuratAktif]; // Ambil data surat (Nama Surat)
+    const ayat = dataAyatAktif[idx]; // Ambil data ayat
+
+     // 1. Bersihkan teks Arab dari tag HTML DAN Karakter Unicode Aneh
+    const arabBersih = ayat.arabic
+        .replace(/<[^>]*>?/gm, '') // Hapus tag <font> dll
+        .replace(/[\uE000-\uF8FF]|\u200F/g, '') // Hapus karakter Private Use Area (Biang kerok simbol kotak/hati)
+        .trim();
+    
+    // 2. Bersihkan teks Indo dari tag HTML dan angka footnote [13]
+    const teksIndo = ayat.translate[0]
+        .replace(/<[^>]*>?/gm, '') // Hapus tag HTML
+        .replace(/\[\d+\]/g, '');  // Hapus angka footnote
+
+    // 3. Gabungkan: *Nama Surat: Ayat X* + Arab + Indo
+    const teksCopy = `*${info.nama}: Ayat ${ayat.nomorAyat}*\n\n` + 
+                 `${arabBersih}\n\n` + 
+                 `_"${teksIndo}"_\n\n` + 
+                 `Shared from *Al-Qur'an V.3*`;
+
+    navigator.clipboard.writeText(teksCopy).then(() => {
+        tampilkanToast(`📋 ${info.nama} Ayat ${ayat.nomorAyat} Disalin!`);
+    }).catch(err => {
+        tampilkanToast("🚫 Gagal menyalin teks");
+    });
+}
+
+   // ➕➕ Hide Tajwid
+     let isTajwid = localStorage.getItem('tajwidWarna') === 'true';
+
+function toggleTajwid(checked) {
+    isTajwid = checked;
+    localStorage.setItem('tajwidWarna', checked);
+    
+    // Karena kita ngerubah isi teks, kita harus render ulang ayatnya
+    if (typeof renderAyat === "function") renderAyat();
+}
+
+function filterTajwid(teks) {
+    if (isTajwid) {
+        return teks; // Biarkan warna warni
+    } else {
+        // JURUS SAPU BERSIH: Buat teks jadi hitam polos
+        // Menghapus <font color="..."> dan </font> tapi huruf arabnya tetap
+        return teks.replace(/<font color="[^"]*">/g, '').replace(/<\/font>/g, '');
+    }
+}
+  document.addEventListener("DOMContentLoaded", function() {
+    // ... kode sinkronisasi mushaf tadi ...
+    const savedTajwid = localStorage.getItem('tajwidWarna') === 'true';
+    const checkTajwid = document.getElementById('tajwidWarna');
+    if (checkTajwid) checkTajwid.checked = savedTajwid;
+});
+
+
+   function gantiFontArab(className) {
+    fontAktif = className;
+    localStorage.setItem('fontArabPilihan', className);
+
+    // Update semua elemen di layar tanpa reload
+    const elemenArab = document.querySelectorAll('.teks-arab');
+    elemenArab.forEach(el => {
+        // Hapus class font yang lama, pasang yang baru
+        el.classList.remove('font-qalam', 'font-uthmani', 'font-lpmq');
+        el.classList.add(className);
+    });
+}
+
+   window.onscroll = function() {
+    const btn = document.getElementById("btnBackToTop");
+    if (btn) btn.style.display = (window.scrollY > 400) ? "block" : "none";
+};
+
+   // Fungsi ini dijalankan otomatis saat halaman selesai muat
+(function() {
+    const savedFont = localStorage.getItem('fontArabPilihan') || 'font-qalam';
+    const selectFont = document.getElementById('pilihFontArab');
+    
+    if (selectFont) {
+        selectFont.value = savedFont; // Mengunci pilihan sesuai simpanan
+        console.log("Font dimuat: " + savedFont);
+    }
+})();
+
+   function keAngkaArab(angka) {
+    const map = {
+        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
+        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+    };
+    return angka.toString().split('').map(c => map[c] || c).join('');
+}
+   function keAngkaArab(n) {
+    if (!n) return '';
+    const map = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    return n.toString().split('').map(digit => map[digit]).join('');
+}
+
+    </script>
+    
+</body>
+</html>
