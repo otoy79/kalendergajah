@@ -433,7 +433,7 @@ function renderAyat(namaSurah) {
         if(card) {
             card.classList.add('active');
             // Auto Scroll
-            const headerHeight = 65; 
+            const headerHeight = 55; 
             const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
@@ -668,7 +668,7 @@ function prosesShare(index, namaSurah) {
             });
         }
     } catch (e) {
-        tampilkanPesan("❌ Gagal memproses share");
+        tampilkanPesan("🚫 Gagal memproses share");
     }
 }
 
