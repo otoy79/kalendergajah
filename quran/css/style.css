@@ -84,7 +84,7 @@
     .header {
         background: var(--header-bg, var(--primary)); 
         color: white;
-        padding: 15px;
+        padding: 10px 15px;
         text-align: center;
         position: sticky;
         top: 0;
@@ -146,8 +146,8 @@
         transform: scale(1.02);
     }
 
-    body.mushaf-2❌ .ayat-card { background: #fffdf5; border: 1px solid #eaddc1; }
-    body.mushaf-2❌.dark-mode .ayat-card { background: #3d3a30; }
+    body.mushaf-2 .ayat-card { background: #fffdf5; border: 1px solid #eaddc1; }
+    body.mushaf-2.dark-mode .ayat-card { background: #3d3a30; }
 
     .card-hero-mini {
         background: linear-gradient(135deg, var(--primary), var(--primary-dark));
