@@ -1,48 +1,40 @@
   /* ============================================================
        1. FONTS (Lokal & External)
        ============================================================ */
+
     @font-face {
         font-family: 'LPMQ';
-        src: url('../font/LPMQ.ttf') format('truetype');
+        src: url('../font/LPMQ_Misbah.ttf') format('truetype');
         font-display: swap;
     }
     @font-face {
         font-family: 'Amiri';
-        src: url('../font/Amiri-Bold.ttf') format('truetype');
+        src: url('../font/UthmanicBold.ttf') format('truetype');
     }
     @font-face {
         font-family: 'Uthmani';
-        src: url('../font/hafs.ttf') format('truetype');
+        src: url('../font/UthmanTNB.ttf') format('truetype');
     }
     @font-face {
         font-family: 'Qalam';
-        src: url('../font/qalammajeed3.ttf') format('truetype');
+        src: url('../font/QalamRegular.ttf') format('truetype');
     }
 
     /* ============================================================
        2. VARIABEL WARNA & TEMA MUSHAF
        ============================================================ */
-    body❌ {
-            opacity: 0;
-            animation: fadeIn 2.5s forwards;
-        }
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-    :root {
+   :root {
         --primary: #f2a972;
-        --primary-dark: #219150;
+        --primary-dark: #1f1202;
         --bg: #ffffff;
         --text: #333333;
         --card-bg: #f9f9f9;
         --accent: #e67e22;
         --border: #eeeeee;
     }
-
+     
     /* Mushaf 1: Standar Hijau */
-    body.mushaf-1 { --primary: #b0540e; --bg: #ffffff; --card-bg: #ffffff; --text: #333; }
+    body.mushaf-1 { --primary: #093b13; --bg: #ffffff; --card-bg: #ffffff; --text: #333; }
 
     /* Mushaf 2: Madinah (Krem) - Dikunci agar tetap nyaman */
     body.mushaf-2 { 
@@ -71,13 +63,14 @@
         --card-bg: #1e1e1e;
         --text: #e0e0e0;
         --border: #333333;
-        --primary: #2ecc71;
+        --primary: #0dd434;
         --header-bg: #111111;
     }
 
     /* ============================================================
        3. BASE STYLING (BODY & LAYOUT)
        ============================================================ */
+    
     body {
         background-color: var(--bg);
         color: var(--text);
@@ -85,7 +78,7 @@
         margin: 0;
         padding-bottom: 120px;
         overflow-x: hidden;
-        transition: background-color 0.5s ease, color 0.5s ease;
+         
     }
 
     .header {
@@ -127,20 +120,20 @@
     body.hide-indo .teks-indo { display: none !important; }
 
     /* Warna Tajwid */
-    body.tajwid-on .ghunnah { color: #f44336 !important; }
-    body.tajwid-on .iqlab { color: #4caf50 !important; }
-    body.tajwid-on .idgham { color: #9c27b0 !important; }
-    body.tajwid-on .qalqalah { color: #2196f3 !important; }
-    body.tajwid-on .ikhfa { color: #ff9800 !important; }
-    body.tajwid-on .idzhar { color: inherit !important; font-weight: normal !important; }
+    body.tajwid-on .ghunnah🚫 { color: #f44336 !important; }
+    body.tajwid-on .iqlab🚫 { color: #4caf50 !important; }
+    body.tajwid-on .idgham🚫 { color: #9c27b0 !important; }
+    body.tajwid-on .qalqalah🚫 { color: #2196f3 !important; }
+    body.tajwid-on .ikhfa🚫 { color: #ff9800 !important; }
+    body.tajwid-on .idzhar🚫 { color: inherit !important; font-weight: normal !important; }
 
     /* ============================================================
        5. CARD STYLING (AYAT & HERO)
        ============================================================ */
     .ayat-card {
         background: var(--card-bg); 
-        margin: 15px; 
-        padding: 20px;
+        margin: 10px; 
+        padding: 8px 15px;
         border-radius: 16px; 
         border: 1px solid rgba(0,0,0,0.05); 
         transition: background 0.5s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -149,12 +142,12 @@
 
     .ayat-card.active { 
         border-left: 5px solid var(--primary); 
-        background: rgba(39, 174, 96, 0.08);
+        background: rgba(39, 174, 96, 0.09);
         transform: scale(1.02);
     }
 
-    body.mushaf-2 .ayat-card { background: #fffdf5; border: 1px solid #eaddc1; }
-    body.mushaf-2.dark-mode .ayat-card { background: #3d3a30; }
+    body.mushaf-2❌ .ayat-card { background: #fffdf5; border: 1px solid #eaddc1; }
+    body.mushaf-2❌.dark-mode .ayat-card { background: #3d3a30; }
 
     .card-hero-mini {
         background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -172,12 +165,12 @@
        ============================================================ */
     .menu-btn, .back-btn {
         position: absolute; width: 40px; height: 40px;
-        background: rgba(255,255,255,0.2); border: none; font-size: 20px; color: white; 
+        background: rgba(255,255,255,0.08); border: none; font-size: 20px; color: white; 
         cursor: pointer; border-radius: 12px; backdrop-filter: blur(5px);
-        transition: 0.3s; top: 15px;
+        transition: 0.3s; top: 5px;
     }
-    .menu-btn { left: 15px; }
-    .back-btn { right: 15px; }
+    .menu-btn { right: 15px; }
+    .back-btn { left: 15px; }
     .menu-btn:hover { background: rgba(255,255,255,0.3); }
 
     .btn-action {
@@ -215,7 +208,7 @@
 }
 
 .no-surah {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--primary);
     margin-right: 12px;
     min-width: 20px;
@@ -247,7 +240,7 @@
     .settings-panel {
         position: fixed; left: -320px; top: 0; width: 260px; height: 100%;
         background: var(--card-bg); z-index: 200; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 25px; visibility: hidden; font-size: 12px;
+        padding: 5px 25px; visibility: hidden; font-size: 12px;
     }
     .settings-panel.open { left: 0; visibility: visible; box-shadow: 10px 0 30px rgba(0,0,0,0.2); }
     
@@ -259,12 +252,12 @@
     /* Custom Select & Settings Items */
     .settings-item {
         display: flex; justify-content: space-between; align-items: center;
-        padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     .settings-item select {
         appearance: none; -webkit-appearance: none;
         background-color: var(--card-bg); color: var(--text);
-        padding: 8px 30px 8px 15px; border: 1.5px solid var(--primary);
+        padding: 6px 28px 6px 12px; border: 1.5px solid var(--primary);
         border-radius: 12px; font-size: 12px; cursor: pointer; outline: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23f2a972' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
         background-repeat: no-repeat; background-position: right 10px center;
@@ -282,16 +275,20 @@
 
     #toast {
         position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-        background: #333; color: white; padding: 12px 25px; border-radius: 30px;
+         color: white; padding: 12px 25px; border-radius: 30px;
         font-size: 14px; z-index: 1000; opacity: 0; transition: 0.4s; pointer-events: none;
         box-shadow: 0 5px 15px rgba(0,0,0,0.3); text-align: center; min-width: 200px;
     }
-    #toast.show { opacity: 1; bottom: 120px; }
+   #toast {
+   background: var(--primary); /* Warna hijau utama */
+    font-weight: bold;
+}
+    #toast.show { opacity: 1; bottom: 100px; }
 
     #btnBackToTop {
-        display: none; position: fixed; bottom: 25px; right: 25px; z-index: 1000;
+        display: none; position: fixed; bottom: 35px; right: 25px; z-index: 1000;
         border: none; outline: none; background-color: var(--primary); color: white;
-        cursor: pointer; width: 45px; height: 45px; border-radius: 50%;
+        cursor: pointer; width: 32px; height: 32px; border-radius: 50%;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 20px; font-weight: bold;
         transition: all 0.3s ease;
     }
@@ -307,3 +304,40 @@
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
+
+   .modal-custom {
+    display: none; /* Nanti diubah jadi flex via JS */
+    position: fixed;
+    /* Pastikan menutupi seluruh layar */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 10000; /* Pastikan di atas segalanya */
+    
+    /* Jurus Center Paling Ampuh */
+    display: none; 
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tambahan dikit biar kontennya gak kegedean di layar kecil */
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    width: 80%; /* Responsif buat HP */
+    max-width: 320px; /* Biar gak lebar banget di Tablet */
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    position: relative; /* Menjaga posisi tetap stabil */
+    animation: munculModal 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+   @keyframes munculModal {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
