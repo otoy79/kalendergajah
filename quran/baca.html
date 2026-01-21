@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Al-Qur'an Pro V.3</title>
-    <script>
+  <script>
     // CEK TEMA SECEPAT KILAT sebelum halaman digambar
     (function() {
       const tema = localStorage.getItem('theme') || 'light';
@@ -15,25 +12,13 @@
       }
     })();
   </script>
-   <script>
-    // Langsung tembak tema SEBELUM body digambar browser
-    (function() {
-        const savedMushaf = localStorage.getItem('tipeMushaf') || 'mushaf-1';
-        const savedDark = localStorage.getItem('userDark') === 'true';
-        
-        // Kita set class ke element HTML (induk paling atas)
-        document.documentElement.className = savedMushaf + (savedDark ? ' dark-mode' : '');
-        
-        // Pas body sudah siap, kita pindahkan class-nya ke body
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.className = document.documentElement.className;
-        });
-    })();
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Al-Qur'an Pro V.3</title>
     <link rel="stylesheet" href="css/style.css">
    <style>
     /* --- VARIABEL DASAR --- */
-    :root🚫 { 
+    :root { 
         --primary: #004d40; 
         --primary-dark: #00251a; 
         --bg: #ffffff; 
@@ -48,7 +33,6 @@
         --primary: #4db6ac; 
         --primary-dark: #004d40; 
         --border: rgba(255,255,255,0.1); 
-        --bg-color: #ffffff; 
     }
 
     /* --- RESET TOTAL --- */
@@ -301,7 +285,7 @@
 }
 </style>
 </head>
-<body>
+<body class="mushaf-1">
 
    <div id="modalReset" class="modal-custom">
     <div class="modal-content">
