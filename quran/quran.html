@@ -6,26 +6,49 @@
       <meta property="og:image" content="img/quran.png">
    <meta itemprop="image" content="img/quran.png">
     <title>Al-Qur'an Pro Ultimate</title>
+     <script>
+    // CEK TEMA SECEPAT KILAT sebelum halaman digambar
+    (function() {
+      const tema = localStorage.getItem('theme') || 'light';
+      if (tema === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        // Tambahkan style darurat biar body langsung item
+        document.documentElement.style.backgroundColor = '#121212'; 
+      }
+    })();
+  </script>
      <link rel="stylesheet" href="css/style.css"> 
     <style>
-  
+    
 </style>
 </head>
 <body class="tajwid-on mushaf-1">
 
+   <div id="modalReset" class="modal-custom">
+    <div class="modal-content">
+        <div style="font-size: 50px; margin-bottom: 15px;">⚠️</div>
+        <h3 style="margin: 0; color: #333;">Reset Pengaturan?</h3>
+        <p style="color: #666; font-size: 14px; line-height: 1.5; margin: 15px 0;">
+            Semua bookmark, riwayat baca, dan pengaturan font akan dihapus kembali ke pengaturan awal.
+        </p>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="tutupModalReset()" style="flex:1; padding: 12px; border: none; border-radius: 10px; background: #eee; color: #333; font-weight: bold; cursor: pointer;">Batal</button>
+            <button onclick="eksekusiReset()" style="flex:1; padding: 12px; border: none; border-radius: 10px; background: #e74c3c; color: white; font-weight: bold; cursor: pointer;">Ya, Reset!</button>
+        </div>
+    </div>
+</div>
+
   <div class="header">
-    <button class="menu-btn" onclick="toggleSettings()">⚙️</button>
-    
+    <button onclick="kembaliKeHome()" class="back-btn">❮</button>
     <div style="display: flex; flex-direction: column; flex-grow: 1; align-items: center;">
         <h2 id="judul-app" style="margin:0; cursor:pointer; font-size: 23px;" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
             Al-Qur'an Pro
         </h2>
-        <small id="sub-judul" style="opacity:0.8; font-size: 11px; margin-top: 2px;">
+        <small style="display:none" id="sub-judul" style="opacity:0.8; font-size: 11px; margin-top: 2px;">
             Memuat...
         </small>
     </div>
-
-    <button class="back-btn" onclick="kembaliKeHome()">📖</button>
+   <button class="menu-btn" onclick="toggleSettings()">⚙️</button>
 </div>
 
        <div id="dashboard-awal" style="padding:10px;">
@@ -80,16 +103,14 @@
 <div class="overlay" id="overlay" onclick="toggleSettings()"></div>
 
 <div class="settings-panel" id="settingsPanel">
-    <h3 style="margin-top:0; color:var(--primary);">Pengaturan</h3>
+    <h2 style="margin-top:10px; color:var(--primary);">Pengaturan</h2>
     <hr style="border:0; border-top:1px solid #ddd; margin-bottom:10px;">
 
     <div class="settings-item">
         <label>Pilih Font Arab</label>
         <select id="pilihFontArab" onchange="gantiFontArab(this.value)">
             <option value="'LPMQ', sans-serif">LPMQ (Standar Indo)</option>
-            <option value="'Uthmani', serif">Uthmanic (Madinah)</option>
             <option value="'Amiri', serif">Amiri (Klasik/Tebal)</option>
-           <option value="'Qalam', serif">Qalam Majed (Tebal)</option>
         </select>
     </div>
     
@@ -114,7 +135,7 @@
     </div>
 
     <div class="settings-item"><label>Mode Gelap</label><input type="checkbox" id="checkDark" onchange="toggleDarkMode(this.checked)"></div>
-    <div class="settings-item"><label>Tajwid Warna</label><input type="checkbox" id="checkTajwid" onchange="toggleTajwid(this.checked)"></div>
+ 
     <div class="settings-item"><label>Tampilkan Latin</label><input type="checkbox" id="checkLatin" onchange="toggleLatin(this.checked)"></div>
     <div class="settings-item"><label>Tampilkan Terjemah</label><input type="checkbox" id="checkIndo" onchange="toggleIndo(this.checked)"></div>
     
@@ -127,7 +148,18 @@
         </div>
     </div>
 
-    <button onclick="toggleSettings()" style="width:100%; margin-top:20px; padding:12px; background:#e74c3c; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Simpan & Tutup</button>
+   <hr style="border:0; border-top:1px solid #ddd; margin: 15px 0;">
+    
+    <div class="settings-item">
+        <label style="color: #e74c3c;">Reset Pengaturan</label>
+        <p style="font-size: 11px; color: #888; margin-top: 5px;">🗳</p>
+        <button onclick="resetAplikasi()" style="padding: 6px; background: #ffece8; color: white; border: none; border-radius: 8px; border: 2px solid #e74c3c; font-weight: bold; cursor: pointer; margin-top: 0px;">
+            🗑️
+        </button>
+    </div>
+
+   
+    <button onclick="toggleSettings()" style="width:100%; margin-top:30px; padding:12px; background:var(--primary);; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Simpan & Tutup</button>
 </div>
 
 <div id="toast" class="toast"></div>

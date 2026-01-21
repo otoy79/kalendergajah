@@ -4,10 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tahlil - Al-Qur'an Pro</title>
+     <script>
+    // CEK TEMA SECEPAT KILAT sebelum halaman digambar
+    (function() {
+      const tema = localStorage.getItem('theme') || 'light';
+      if (tema === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        // Tambahkan style darurat biar body langsung item
+        document.documentElement.style.backgroundColor = '#121212'; 
+      }
+    })();
+  </script>
     <link rel="stylesheet" href="css/style.css"> 
     <style>
-        :root { --primary: #008080; } /* Sesuaikan warna utama ente */
-        body { background: #f4f4f4; margin: 0; font-family: sans-serif; }
         
         .header-tahlil { 
             background: var(--primary); 
@@ -49,8 +58,9 @@
     background: var(--card-bg); /* Mengikuti tema kartu di style.css */
     color: var(--text);        /* Tulisan otomatis putih kalau Dark Mode */
     border-bottom: 1px solid var(--border);
-    padding: 20px;
+    padding: 0px 25px;
     transition: 0.3s;
+    margin: 0;
 }
 
 /* Khusus untuk pemisah Yasin & Doa agar tidak terlalu silau */
@@ -139,6 +149,20 @@
         wadah.innerHTML = html;
         scriptYasin.remove();
     };
+}
+
+  function keAngkaArab(angka) {
+    const map = {
+        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
+        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+    };
+    return angka.toString().split('').map(c => map[c] || c).join('');
+}
+
+  function keAngkaArab(n) {
+    if (!n) return '';
+    const map = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    return n.toString().split('').map(digit => map[digit] || digit).join('');
 }
 
 window.onload = muatHalamanTahlilLengkap;

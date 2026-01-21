@@ -9,6 +9,17 @@
     <title>Al-Qur'an Pro - Home</title>
     <link rel="stylesheet" href="css/style.css"> 
     <link rel="apple-touch-icon" href="img/quran.png">
+      <script>
+    // CEK TEMA SECEPAT KILAT sebelum halaman digambar
+    (function() {
+      const tema = localStorage.getItem('theme') || 'light';
+      if (tema === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        // Tambahkan style darurat biar body langsung item
+        document.documentElement.style.backgroundColor = '#121212'; 
+      }
+    })();
+  </script>
     <style>
         /* Styling khusus tambahan untuk Menu Utama */
         body { padding-bottom: 50px; } /* Reset padding bawah index */
@@ -20,7 +31,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
      .hero-menu h1 {      
-       font-size: 11vw;
+       font-size: 9.5vw;
         }
 
         .sholat-container {
@@ -86,7 +97,7 @@
 <body class="mushaf-1"> 
     <div class="hero-menu">
     <h1 style="margin:0; font-family: 'Amiri', serif;">Al-Qur'an Pro</h1>
-    <p id="greeting" style="opacity:0.9; font-size:14px; margin-top:5px;">Assalamu'alaikum</p>
+    <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 31px;">Salam</div>
     
     <div id="countdown-sholat" style="font-size: 13px; margin: 10px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 10px 0;">
         Menghitung waktu sholat...
@@ -114,6 +125,10 @@
         <span class="menu-icon">📖</span>
         <b>Al-Qur'an</b>
     </a>
+    <a href="baca.html" class="menu-item">
+        <span class="menu-icon">📖</span>
+        <b>Al-Qur'an Tajwid</b>
+    </a>
     <a href="tahlil.html" class="menu-item">
         <span class="menu-icon">📿</span>
         <b>Tahlil & Yasin</b>
@@ -129,7 +144,7 @@
     <a href="kalender.html" class="menu-item">
     <span class="menu-icon">📅</span> <b>Kalender Hijriah</b>
 </a>
-        <a href="asmaul-husna.html" class="menu-item">
+     <a href="asmaul-husna.html" class="menu-item">
     <span class="menu-icon">💎</span>
     <b>Asmaul Husna</b>
 </a>

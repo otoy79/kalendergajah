@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Sholat - Al-Qur'an Pro</title>
+      <script>
+    // CEK TEMA SECEPAT KILAT sebelum halaman digambar
+    (function() {
+      const tema = localStorage.getItem('theme') || 'light';
+      if (tema === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        // Tambahkan style darurat biar body langsung item
+        document.documentElement.style.backgroundColor = '#121212'; 
+      }
+    })();
+  </script>
     <link rel="stylesheet" href="css/style.css">
     <style>
         .container-jadwal { padding: 20px; }
@@ -61,7 +72,7 @@
             <p id="bln-tahun" style="margin:5px 0; font-size:14px; color:var(--text); opacity:0.8;">--</p>
             
             <div class="search-box">
-                <input type="text" id="input-kota" placeholder="Nama kota/kecamatan...">
+                <input type="text" id="input-kota" placeholder="Pilih kota/kecamatan...">
                 <button class="btn-cari" onclick="cariKotaManual()">🔍</button>
            </div>
         </div>
@@ -177,7 +188,7 @@
         console.error(e);
         wadahTabel.innerHTML = `<tr><td colspan="6" style="color:red; padding:20px;">
             Maaf, kota "<b>${kotaAktif}</b>" tidak ditemukan.<br>
-            Coba ketik nama Kota/Kabupaten saja.
+            (Koneksi Internet Terputus.)
         </td></tr>`;
     }
 }
