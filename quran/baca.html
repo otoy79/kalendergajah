@@ -50,7 +50,7 @@
     .header-pro, .header {
         position: fixed !important;
         top: 0; left: 0; right: 0;
-        height: 65px;
+        height: 55px;
         z-index: 99;
         background: var(--bg);
         border-bottom: 2px solid var(--primary);
@@ -65,7 +65,7 @@
     /* --- CONTAINER UTAMA --- */
     /* Pastikan Halaman Menu punya jarak dari atas karena Header-nya melayang (fixed) */
 #halaman-menu {
-    padding-top: 55px !important; /* Tinggi header 60px + jarak 10px */
+    padding-top: 50px !important; /* Tinggi header 60px + jarak 10px */
 }
 
 /* Rapikan Search Box agar presisi */
@@ -96,7 +96,7 @@
     pointer-events: none; /* Agar klik tembus ke input */
 }
    #container-ayat {
-        margin-top: 65px !important; /* Jarak agar tidak tertutup header */
+        margin-top: 55px !important; /* Jarak agar tidak tertutup header */
         width: 100%;
         box-sizing: border-box;
         padding-bottom: 100px;
@@ -377,7 +377,7 @@
 
      <div class="settings-item" style="flex-direction: column; align-items: flex-start; gap: 10px; display:none">
         <span>Ukuran Huruf Arab</span>
-        <select id="font-size-arab" onchange="simpanPengaturan()" style="width: 100%; padding: 8px; border-radius: 8px; background❌: var(--bg); color: var(--text); border: 1px solid var(--primary);">
+        <select id="font-size-arab" onchange="simpanPengaturan()" style="width: 100%; padding: 8px; border-radius: 8px; background: var(--bg); color: var(--text); border: 1px solid var(--primary);">
             <option value="28px">Kecil</option>
             <option value="36px" selected>Sedang</option>
             <option value="48px">Besar</option>
