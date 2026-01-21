@@ -24,7 +24,7 @@
        2. VARIABEL WARNA & TEMA MUSHAF
        ============================================================ */
    :root {
-        --primary: #f2a972;
+        --primary: white;
         --primary-dark: #1f1202;
         --bg: #ffffff;
         --text: #333333;
@@ -235,6 +235,10 @@
 .hasilCari button:active .no-surah {
     color: white;
 }
+   .spinner {
+    background: red;
+    color: white !important;
+ }
 
     /* Settings Side Panel */
     .settings-panel {
