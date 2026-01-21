@@ -9,10 +9,22 @@
     let listSurah = [];
     let surahSekarang = 1;
     let indexBerjalan = 0;
-    let fontSizeArab = parseInt(localStorage.getItem('userFontSize')) || 30;
+    let fontSizeArab = parseInt(localStorage.getItem('userFontSize')) || 28;
     let qariAktif = localStorage.getItem('userQari') || 'Alafasy';
     let gudangSurah = {}; 
+    let fontAktif = localStorage.getItem('fontArabPilihan') || 'font-qalam';
 
+    function gantiFontArab(className) {
+    fontAktif = className;
+    localStorage.setItem('fontArabPilihan', className);
+
+    const elemenArab = document.querySelectorAll('.teks-arab');
+    elemenArab.forEach(el => {
+        el.classList.remove('font-qalam', 'font-uthmani', 'font-lpmq');
+        el.classList.add(className);
+    });
+}
+  
     // =========================================
     // 2. FUNGSI UTILITY (TOAST & UI)
     // =========================================
@@ -85,7 +97,7 @@
         const noAyat = parseInt(input.value);
 
         if (!noAyat || noAyat < 1 || noAyat > dataAyatAktif.length) {
-            tampilkanPesan(`❌ Ayat tidak tersedia (1 - ${dataAyatAktif.length})`);
+            tampilkanPesan(`🚫 Ayat tidak tersedia (1 - ${dataAyatAktif.length})`);
             return;
         }
 
@@ -107,7 +119,6 @@
         
         console.log("Font Arab diubah ke:", fontName);
     }
-  
    // =========================================
 // 6. FUNGSI NAVIGASI (KEMBALI KE HOME)
 // =========================================
@@ -182,11 +193,10 @@ function kembaliKeHome() {
 
     scriptSurah.onerror = () => {
         if(wadahAyat) {
-            wadahAyat.innerHTML = `<div style="text-align:center; padding:20px;">❌ File data/${surahSekarang}.js tidak ditemukan.</div>`;
+            wadahAyat.innerHTML = `<div style="text-align:center; padding:20px;">🚫 File data Surah ${surahSekarang} tidak ditemukan.</div>`;
         }
     };
-
-    document.head.appendChild(scriptSurah);
+ document.head.appendChild(scriptSurah);
 }
 // =========================================
 // 8. FUNGSI RENDER LAYOUT MUSHAF
@@ -221,7 +231,7 @@ function kembaliKeHome() {
                     style="padding: 5px 12px; border-radius: 4px; background: var(--primary); color: white; border: none; cursor:pointer;">GO</button>
         </div>
         
-        <p style="font-size: 24px; font-family: 'LPMQ', serif; margin: 15px;">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+        <p class="teks-arab" style="margin: 15px; text-align: center; font-size:${fontSizeArab}px;">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
     `;
 
     // 4. Jalankan Render List Ayat
@@ -331,7 +341,7 @@ function renderAyat(namaSurah) {
         }
 
         card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom: 15px; align-items: center; font-size:12px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom: 20px; align-items: center; font-size:12px;">
                 <span style="background:var(--primary); text-align: center; color:white; padding:5px 12px; border-radius:10px; font-weight:bold;">
                     Ayat ${item.nomorAyat}
                 </span>
@@ -341,9 +351,9 @@ function renderAyat(namaSurah) {
                 </div>
             </div>
             
-            <div class="teks-arab" onclick="putarAudio(${index})" style="font-size:${fontSizeArab}px;">
-                ${beriWarna(item.teksArab)}
-            </div>
+            <div class="teks-arab ${fontAktif}" onclick="putarAudio(${index})" style="font-size:${fontSizeArab}px;">
+        ${beriWarna(item.teksArab)}     <span class="nomor-ayat-arab">${keAngkaArab(item.nomorAyat)}</span>
+    </div>
             
             <div class="teks-latin" style="color:var(--primary); margin-top:15px; font-style:italic; font-size:14px;">
                 ${item.teksLatin}
@@ -358,32 +368,48 @@ function renderAyat(namaSurah) {
 }
 
 // =========================================
-// 11. SISTEM AUDIO (PLAYER)
-// =========================================
-function putarAudio(index) {
-    if (index >= dataAyatAktif.length) {
-        document.getElementById('btnPlay').innerText = "Selesai ✨";
+    // 11. SISTEM AUDIO (PLAYER) - VERSI AUTO-ESTAFET
+    // =========================================
+    function putarAudio(index) {
+    // 1. AMBIL DATA DULU
+    const daftarAyat = (typeof dataAyatAktif !== 'undefined') ? dataAyatAktif : (window.dataAlquran ? window.dataAlquran.ayat : null);
+    const noSurat = (typeof noSuratAktif !== 'undefined') ? noSuratAktif : (typeof surahSekarang !== 'undefined' ? surahSekarang : null);
+
+    if (!daftarAyat || !noSurat) return;
+
+    // 2. HITUNG TOTAL AYAT
+    const totalAyat = Array.isArray(daftarAyat) ? daftarAyat.length : Object.keys(daftarAyat).length;
+
+    // 3. LOGIKA PINDAH SURAH (Taruh di atas simpanBookmark)
+    if (index >= totalAyat) {
+        let suratSelanjutnya = parseInt(noSurat) + 1;
+        if (suratSelanjutnya <= 114) {
+            tampilkanToast(` Surah Berikutnya : ${suratSelanjutnya}...`);
+            bukaSurat(suratSelanjutnya);
+
+            let timer = setInterval(() => {
+                let checkNo = (typeof noSuratAktif !== 'undefined') ? noSuratAktif : surahSekarang;
+                if (parseInt(checkNo) === suratSelanjutnya) {
+                    clearInterval(timer);
+                    // Reset data agar fresh
+                    setTimeout(() => putarAudio(0), 2500); 
+                }
+            }, 500);
+            return;
+        }
         return;
     }
-    
-    indexBerjalan = index;
-    const item = dataAyatAktif[index];
-    
-    // 1. Highlight Ayat Aktif & Auto Scroll
-    document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
-    const activeCard = document.getElementById(`card-${index}`);
-    
-    if (activeCard) {
-        activeCard.classList.add('active');
-        const headerHeight = 80; // Sesuaikan dengan tinggi header sticky
-        const offsetPosition = (activeCard.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+
+    // 4. BARU SIMPAN BOOKMARK (Hanya jika index valid/belum pindah surah)
+    if (typeof simpanBookmark === "function") {
+        simpanBookmark(index, false); 
     }
+    
+    // 5. AMBIL DATA AYAT (Support V.1 & V.3)
+    const ayatSekarang = Array.isArray(daftarAyat) ? daftarAyat[index] : daftarAyat[Object.keys(daftarAyat)[index]];
+    const nomorAyatReal = ayatSekarang.nomorAyat || Object.keys(daftarAyat)[index];
 
-    // 2. Setup ID Audio (Format 3 digit)
-    const s = surahSekarang.toString().padStart(3, '0');
-    const a = item.nomorAyat.toString().padStart(3, '0');
-
+    // 6. SETUP QORIMAP (KEMBALI HADIR!)
     const qariMap = {
         'Alafasy': 'Alafasy_128kbps',
         'Abdurrahmaan_As-Sudais': 'Abdurrahmaan_As-Sudais_192kbps',
@@ -392,39 +418,39 @@ function putarAudio(index) {
     };
 
     const folderQari = qariMap[qariAktif] || 'Alafasy_128kbps';
-    
-    // 3. Playback & Optimasi
+    const s = parseInt(noSurat).toString().padStart(3, '0');
+    const a = nomorAyatReal.toString().padStart(3, '0');
+
+    // 7. EKSEKUSI PEMUTARAN
     player.src = `https://www.everyayah.com/data/${folderQari}/${s}${a}.mp3`;
-    player.preload = "auto";
-
+    
     player.play().then(() => {
-        document.getElementById('btnPlay').innerText = "Pause Audio";
+        if(document.getElementById('btnPlay')) document.getElementById('btnPlay').innerText = "Pause Audio";
         
-        // TRICK: Pre-load ayat berikutnya saat ayat sekarang diputar
-        if (index + 1 < dataAyatAktif.length) {
-            const nextNo = dataAyatAktif[index + 1].nomorAyat.toString().padStart(3, '0');
-            const prefetch = new Image(); // Trik ringan untuk trigger cache browser
-            prefetch.src = `https://www.everyayah.com/data/${folderQari}/${s}${nextNo}.mp3`;
+        // Update UI Highlight
+        document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
+        const card = document.getElementById(`card-${index}`);
+        if(card) {
+            card.classList.add('active');
+            // Auto Scroll
+            const headerHeight = 65; 
+            const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
-    }).catch(e => {
-        tampilkanPesan("Gagal memutar audio. Cek koneksi.");
-    });
+    }).catch(e => console.log("Menunggu klik user..."));
 
-    // Handle Error (Auto switch ke Alafasy jika qari lain error)
-    player.onerror = function() {
-        tampilkanPesan("Audio bermasalah, mencoba server Alafasy...");
+    // 8. AUTO NEXT & ERROR HANDLING
+    player.onended = () => {
+        setTimeout(() => putarAudio(index + 1), 800);
+    };
+
+    player.onerror = () => {
         if (qariAktif !== 'Alafasy') {
-            qariAktif = 'Alafasy';
+            qariAktif = 'Alafasy'; // Switch ke cadangan
             setTimeout(() => putarAudio(index), 1000);
         }
     };
-
-    // Otomatis lanjut ke ayat berikutnya
-    player.onended = () => {
-        setTimeout(() => putarAudio(index + 1), 600); // Jeda 0.6 detik biar natural
-    };
 }
-
     // =========================================
 // 12. KONTROL AUDIO (QARI & PLAYBACK)
 // =========================================
@@ -441,6 +467,7 @@ function gantiQari(nama) {
 
 function handlePlayPause() {
     // Jika belum ada lagu yang disetel tapi sudah klik play
+     if (!player) player = document.getElementById('mainPlayer');
     if (!player.src && dataAyatAktif.length > 0) {
         return putarAudio(0);
     }
@@ -479,15 +506,28 @@ function gantiTipeMushaf(tipe) {
 
 function toggleDarkMode(isDark) {
     const tipeAktif = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+    const checkDark = document.getElementById('checkDark'); // Kita simpan di variabel dulu
     
-    // Jika user di Mushaf Madinah/Hafalan, dilarang pakai Dark Mode (karena warnanya paten)
+    // 1. Jika user di Mushaf Madinah/Hafalan, dilarang pakai Dark Mode
     if (isDark && (tipeAktif === 'mushaf-2' || tipeAktif === 'mushaf-3')) {
-        tampilkanPesan("⚠️ Tema ini sudah punya warna khusus (Mode Gelap tidak tersedia)");
-        document.getElementById('checkDark').checked = false;
+        // Cek dulu: apa fungsi tampilkanPesan dan elemen checkDark sudah siap?
+        if (typeof tampilkanPesan === "function") {
+            tampilkanPesan("⚠️ Tema ini sudah punya warna khusus");
+        }
+        if (checkDark) checkDark.checked = false;
         return;
     }
     
-    document.body.classList.toggle('dark-mode', isDark);
+    // 2. PENGAMAN UTAMA: Cek apakah document.body sudah ada?
+    if (document.body) {
+        document.body.classList.toggle('dark-mode', isDark);
+    }
+
+    // 3. Update status centang kalau elemennya sudah nongol
+    if (checkDark) {
+        checkDark.checked = isDark;
+    }
+
     localStorage.setItem('userDark', isDark);
 }
 
@@ -562,12 +602,12 @@ function tampilkanToast(pesan) {
     if (!toast) {
         toast = document.createElement('div');
         toast.id = 'toast-notif';
-        toast.style = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.85); color:white; padding:10px 20px; border-radius:30px; font-size:12px; z-index:9999; transition:opacity 0.3s; pointer-events:none; font-family:sans-serif;";
+        toast.style = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%);  color:white; padding:10px 20px; background: var(--primary); border-radius:30px; font-size:12px; z-index:9999; transition:opacity 0.3s; pointer-events:none; font-family:sans-serif;";
         document.body.appendChild(toast);
     }
     toast.innerText = pesan;
     toast.style.opacity = '1';
-    setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+    setTimeout(() => { toast.style.opacity = '0'; }, 3000);
 }
 
 function scrollKeAyat(no) {
@@ -697,52 +737,102 @@ function updateTabelJadwal(timings) {
 // =========================================
 // 19. INISIALISASI PENGATURAN (PATEN)
 // =========================================
-function muatPengaturanPaten() {
-    muatJadwalSholat();
+   function muatPengaturanPaten() {
+    // 1. Jalankan fungsi pendukung
+    if (typeof muatJadwalSholat === "function") muatJadwalSholat();
     
+    // 2. Ambil semua data dari Bagasi (LocalStorage)
     const isDark = localStorage.getItem('userDark') === 'true';
     const isTajwid = localStorage.getItem('userTajwid') !== 'false';
     const isLatin = localStorage.getItem('userLatin') !== 'false';
     const isIndo = localStorage.getItem('userIndo') !== 'false';
     const tipeSaved = localStorage.getItem('tipeMushaf') || 'mushaf-1';
     const savedFont = localStorage.getItem('pilihan_font_arab') || "'LPMQ', sans-serif";
-
-    // Terapkan semua setting
-    document.documentElement.style.setProperty('--font-arab', savedFont);
-    toggleDarkMode(isDark); 
-    toggleTajwid(isTajwid); 
-    toggleLatin(isLatin); 
-    toggleIndo(isIndo); 
-    gantiTipeMushaf(tipeSaved);
-
-    // Sinkronkan UI Form
-    if (document.getElementById('pilihFontArab')) document.getElementById('pilihFontArab').value = savedFont;
-    if (document.getElementById('checkDark')) document.getElementById('checkDark').checked = isDark;
-    if (document.getElementById('checkTajwid')) document.getElementById('checkTajwid').checked = isTajwid;
-    if (document.getElementById('checkLatin')) document.getElementById('checkLatin').checked = isLatin;
-    if (document.getElementById('checkIndo')) document.getElementById('checkIndo').checked = isIndo;
-    if (document.getElementById('pilihMushaf')) document.getElementById('pilihMushaf').value = tipeSaved;
-    if (document.getElementById('pilihQari')) document.getElementById('pilihQari').value = qariAktif;
-    if (document.getElementById('fontLabel')) document.getElementById('fontLabel').innerText = fontSizeArab + 'px';
     
-    updateTampilanBookmark();
+    // 3. TERAPKAN LOGIKA (Ini yang bikin tampilan berubah)
+    // Kita gunakan documentElement biar lebih aman jika body belum siap
+    document.documentElement.style.setProperty('--font-arab', savedFont);
+    
+    // Panggil fungsi toggle dengan aman
+    toggleDarkMode(isDark); 
+    if (typeof toggleTajwid === "function") toggleTajwid(isTajwid); 
+    if (typeof toggleLatin === "function") toggleLatin(isLatin); 
+    if (typeof toggleIndo === "function") toggleIndo(isIndo); 
+    if (typeof gantiTipeMushaf === "function") gantiTipeMushaf(tipeSaved);
+    
+    // 4. SINKRONKAN UI (Ini yang sering bikin eror kalau elemennya belum ada)
+    const uiElements = {
+        'pilihFontArab': savedFont,
+        'checkDark': isDark,
+        'checkTajwid': isTajwid,
+        'checkLatin': isLatin,
+        'checkIndo': isIndo,
+        'pilihMushaf': tipeSaved,
+        'pilihQari': typeof qariAktif !== 'undefined' ? qariAktif : '1',
+    };
+
+    // Kita looping biar kodenya rapi dan gak menuh-menuhin tempat
+    for (let id in uiElements) {
+        let el = document.getElementById(id);
+        if (el) {
+            if (el.type === 'checkbox') {
+                el.checked = uiElements[id];
+            } else {
+                el.value = uiElements[id];
+            }
+        }
+    }
+
+    // Khusus Label Font Size
+    const fontLabel = document.getElementById('fontLabel');
+    if (fontLabel) {
+        fontLabel.innerText = (typeof fontSizeArab !== 'undefined' ? fontSizeArab : '28') + 'px';
+    }
+    
+    if (typeof updateTampilanBookmark === "function") updateTampilanBookmark();
 }
 
 // =========================================
 // 20. EVENT LISTENERS (SWIPE & SCROLL)
 // =========================================
-let xStart = null;
-document.addEventListener('touchstart', e => xStart = e.touches[0].clientX, {passive:true});
+
+   let xStart = null;
+
+document.addEventListener('touchstart', e => {
+    xStart = e.touches[0].clientX;
+}, {passive: true});
+
 document.addEventListener('touchend', e => {
-    if (!xStart) return;
-    let xDiff = xStart - e.changedTouches[0].clientX;
-    if (Math.abs(xDiff) > 120) {
+    if (!xStart || typeof surahSekarang === 'undefined') return;
+
+    let xUp = e.changedTouches[0].clientX;
+    let xDiff = xStart - xUp; 
+
+    // Syarat geser minimal 100 pixel biar nggak gampang kepencet
+    if (Math.abs(xDiff) > 100) {
         let cur = parseInt(surahSekarang);
-        if (xDiff > 0 && cur < 114) gantiSurah(cur + 1);
-        else if (xDiff < 0 && cur > 1) gantiSurah(cur - 1);
+
+        if (xDiff < 0) {
+            // TANGAN GESER KE KANAN (xDiff Negatif)
+            // MAJU ke surah selanjutnya (Al-Fatihah -> Al-Baqarah)
+            if (cur < 114) {
+                gantiSurah(cur + 1);
+            } else {
+                gantiSurah(1); // Balik ke awal kalau sudah di ujung
+            }
+        } else if (xDiff > 0) {
+            // TANGAN GESER KE KIRI (xDiff Positif)
+            // MUNDUR ke surah sebelumnya (Al-Fatihah -> An-Nas)
+            if (cur > 1) {
+                gantiSurah(cur - 1);
+            } else {
+                gantiSurah(114); // Kalau di awal, lompat ke akhir
+            }
+        }
     }
-    xStart = null;
-}, {passive:true});
+    xStart = null; // Reset
+}, {passive: true});
+   
 
 window.onscroll = function() {
     const btn = document.getElementById("btnBackToTop");
@@ -767,3 +857,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 });
+
+  function keAngkaArab(angka) {
+    const map = {
+        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
+        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+    };
+    return angka.toString().split('').map(c => map[c] || c).join('');
+}
+
+  function keAngkaArab(n) {
+    if (!n) return '';
+    const map = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+    return n.toString().split('').map(digit => map[digit] || digit).join('');
+}
+  // Clear cache data
+     function resetAplikasi() {
+    // Tutup panel settings dulu biar gak numpuk
+    toggleSettings(); 
+    // Tampilkan modal custom
+    document.getElementById('modalReset').style.display = 'flex';
+}
+
+function tutupModalReset() {
+    document.getElementById('modalReset').style.display = 'none';
+}
+
+function eksekusiReset() {
+    // 1. Bersihkan semua
+    localStorage.clear();
+    
+    // 2. Kasih efek visual dikit
+    const content = document.querySelector('.modal-content');
+    content.innerHTML = `
+        <div class="spinner" style="margin: 20px auto;"></div>
+        <p>Sedang membersihkan data...</p>
+    `;
+    
+    // 3. Reload total
+    setTimeout(() => {
+        window.location.reload(true);
+    }, 1500);
+}
+  
+  function noHistory(aObj) {
+  window.location.replace(aObj.href);
+  return false; // Prevents the default href navigation
+}
+   
+    window.addEventListener('DOMContentLoaded', () => {
+    muatPengaturanPaten();
+});
+
+
+   
