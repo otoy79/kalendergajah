@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arah Kiblat - Al-Qur'an Pro</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { text-align: center; background: var(--bg); color: var(--text); overflow: hidden; }
+        .header-nav { background: var(--primary); color: white; padding: 15px; }
+        
+        .compass-container {
+            position: relative; width: 270px; height: 270px;
+            margin: 50px auto; display: flex; align-items: center; justify-content: center;
+        }
+
+.compass-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* Layer luar: Lingkaran abu-abu gelap dan toska */
+    border: 15px solid #4a4a4a; 
+    outline: 8px solid #009688; /* Warna Toska */
+    border-radius: 50%;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+/* Gambar Masjid Transparan di Tengah */
+.compass-ring::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 135px; height: 135px;
+    background: url('img/masjid-nabawi.png') no-repeat center;
+    background-size: contain;
+    opacity: 0.4; /* Bikin transparan kayak di screenshot */
+    z-index: 0;
+}
+
+/* Jarum Kiblat Merah */
+.compass-arrow {
+    position: absolute;
+    width: 100%; height: 100%;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.needle-red {
+    width: 0; 
+    height: 0; 
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 85px solid #f44336; /* Merah Lancip */
+    position: absolute;
+    bottom: 50%;
+    transform-origin: bottom center;
+}
+
+.kaaba-icon-small {
+    width: 35px;
+    position: absolute;
+    top: 15px; /* Nempel di ujung jarum merah */
+    z-index: 5;
+}
+
+
+        .kaaba-icon {
+            width: 50px; margin-top: -10px; z-index: 10;
+        }
+
+        .needle {
+            width: 4px; height: 50%; background: var(--primary);
+            position: absolute; bottom: 50%; left: calc(50% - 2px);
+            border-radius: 4px;
+        }
+
+        .status-info { margin-top: 20px; padding: 20px; font-weight: bold; }
+        .btn-permission {
+            background: var(--primary); color: white; border: none;
+            padding: 12px 25px; border-radius: 25px; cursor: pointer; display: none;
+        }
+
+
+   .btn-permission {
+    background: var(--primary); 
+    color: white; 
+    border: none;
+    padding: 12px 25px; 
+    border-radius: 25px; 
+    cursor: pointer;
+    display: block; /* Ganti dari none ke block biar muncul dulu */
+    margin: 20px auto;
+}
+
+   #kompas {
+    transition: transform 0.2s cubic-bezier(0.1, 0.5, 0.1, 1);
+    transform-origin: center center; /* Pastikan muternya tepat di tengah */
+}
+    </style>
+</head>
+<body>
+
+    <div class="header-nav">
+        <h2 style="margin:0; font-size:18px;">Penunjuk Kiblat 🕋</h2>
+    </div>
+
+   <div class="compass-container">
+    <div class="compass-ring">
+        <b style="position:absolute; top:10px; left:50%; transform:translateX(-50%); color:#f44336; font-size:20px;">N</b>
+        <b style="position:absolute; bottom:10px; left:50%; transform:translateX(-50%); font-size:18px;">S</b>
+        <b style="position:absolute; right:15px; top:50%; transform:translateY(-50%); font-size:18px;">E</b>
+        <b style="position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:18px;">W</b>
+        
+        <small style="position:absolute; top:55px; left:60px; opacity:0.5;">NW</small>
+        <small style="position:absolute; top:55px; right:60px; opacity:0.5;">NE</small>
+        <small style="position:absolute; bottom:55px; left:60px; opacity:0.5;">SW</small>
+        <small style="position:absolute; bottom:55px; right:60px; opacity:0.5;">SE</small>
+    </div>
+
+    <div class="compass-arrow" id="kompas">
+        <img src="img/kabah-icon.png" class="kaaba-icon-small">
+        <div class="needle-red"></div>
+    </div>
+</div>
+
+    <div class="status-info">
+        <div id="derajat">--°</div>
+        <small id="keterangan">Mencari Lokasi...</small>
+        <br><br>
+        <button id="btn-izin" class="btn-permission" onclick="mintaIzin()">Aktifkan Kompas</button>
+    </div>
+
+    <script>
+  // 1. Sinkron Tema
+        const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+        const isDark = localStorage.getItem('userDark') === 'true';
+        document.body.className = tipe;
+        if (isDark) document.body.classList.add('dark-mode');
+        let qiblaDir = 0;
+
+        // 1. Ambil Lokasi untuk hitung Sudut Kiblat
+        navigator.geolocation.getCurrentPosition(pos => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            
+            // Rumus perhitungan sudut kiblat dari koordinat Ka'bah
+            const latK = 21.422487;
+            const lngK = 39.826206;
+            
+            const y = Math.sin(Math.toRadians(lngK - lng));
+            const x = Math.cos(Math.toRadians(lat)) * Math.tan(Math.toRadians(latK)) -
+                      Math.sin(Math.toRadians(lat)) * Math.cos(Math.toRadians(lngK - lng));
+            
+            qiblaDir = Math.toDegrees(Math.atan2(y, x));
+            document.getElementById('keterangan').innerText = "Putar HP Sesuaikan arah N-S sampai Ka'bah di atas";
+        }, err => {
+            document.getElementById('keterangan').innerText = "Akses Lokasi Ditolak";
+        });
+
+        // 2. Fungsi Kompas (Magnetometer)
+        function initKompas() {
+            window.addEventListener('deviceorientationabsolute', handlerKompas, true);
+            // Untuk iPhone lama/browser tertentu
+            window.addEventListener('deviceorientation', handlerKompas, true);
+        }
+
+        function handlerKompas(e) {
+            let compass = e.webkitCompassHeading || e.alpha;
+            if (compass === null) return;
+
+            // Logika: Putar gambar Ka'bah sesuai arah Utara & Sudut Kiblat
+            let result = (qiblaDir - compass);
+            document.getElementById('kompas').style.transform = `rotate(${result}deg)`;
+            document.getElementById('derajat').innerText = Math.floor(compass) + "°";
+        }
+
+        // 3. Izin Khusus buat iPhone (iOS 13+)
+        function mintaIzin() {
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(response => {
+                        if (response == 'granted') {
+                            initKompas();
+                            document.getElementById('btn-izin').style.display = 'none';
+                        }
+                    })
+                    .catch(console.error);
+            } else {
+                initKompas();
+            }
+        }
+
+        // Tampilkan tombol izin jika di iPhone
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            document.getElementById('btn-izin').style.display = 'inline-block';
+        } else {
+            initKompas();
+        }
+
+        // Helper Math
+        Math.toRadians = function(deg) { return deg * (Math.PI / 180); };
+        Math.toDegrees = function(rad) { return rad * (180 / Math.PI); };
+    </script>
+</body>
+</html>

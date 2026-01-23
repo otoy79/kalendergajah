@@ -36,7 +36,7 @@
 
         /* List Puasa Sunnah */
         .info-puasa {
-            background: var(--card-bg); border-radius: 20px; padding: 20px;
+            background: var(--card-bg); border-radius: 20px; padding: 5px 15px;
             border: 1px solid var(--border);
         }
         .info-puasa h3 { margin-top: 0; font-size: 16px; color: var(--primary); display: flex; align-items: center; }
@@ -64,14 +64,109 @@
     line-height: 1; /* Hapus line-height bawaan */
 }
     </style>
-</head>
-<body>
 
-    <div class="header-nav">
-        <h2 style="margin:0; font-size:18px; padding: 0px 25px; text-align: center;">Kalender Hijriah</h2>
+   <style>
+    /* Navigasi Bulan */
+    .nav-bulan {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 15px; background: var(--card-bg); padding: 10px;
+        border-radius: 15px; border: 1px solid var(--border);
+    }
+    .btn-nav {
+        background: var(--primary); color: white; border: none;
+        padding: 5px 15px; border-radius: 10px; cursor: pointer; font-weight: bold;
+    }
+    .nama-bulan-fokus { font-weight: bold; color: var(--primary); font-size: 18px; }
+    
+    /* Animasi Swipe */
+    .swipe-area { transition: transform 0.3s ease; }
+    /* Update CSS dikit di bagian ini */
+.card-hijri {
+    padding: 20px 10px; /* Kurangi padding biar gak sempit */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Kasih jarak antar elemen biar gak numpuk */
+}
+
+#hari-ini {
+    font-size: 18px; /* Kecilin dikit biar gak balapan sama tanggal */
+    background: rgba(0,0,0,0.05); /* Kasih background tipis biar keren */
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    display: inline-block; /* Biar ukurannya pas sama teks */
+}
+
+.tgl-islam {
+    line-height: 1; /* Biar gak narik spasi ke atas/bawah terlalu banyak */
+    margin: 5px 0;
+}
+
+   /* Container buat Grid Kalender */
+.grid-kalender {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7 Hari: Minggu-Sabtu */
+    gap: 8px;
+    padding: 10px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border);
+}
+
+.hari-nama { 
+    text-align: center; 
+    font-size: 10px; 
+    font-weight: bold; 
+    opacity: 0.5; 
+    color: var(--text);
+}
+.kotak-tgl {
+    aspect-ratio: 1 / 1; /* Biar kotaknya kotak sempurna */
+    background: var(--bg);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 1px solid var(--border);
+    transition: 0.3s;
+}
+
+/* TANGGAL HIJRIAH (JADI UTAMA) */
+.tgl-hijri-utama {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+/* TANGGAL MASEHI (JADI KECIL DI POJOK) */
+.tgl-masehi-kecil {
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+    font-size: 9px;
+    opacity: 0.6;
+    color: var(--text);
+}
+
+/* Tandai Tanggal Hari Ini */
+.tgl-skrg {
+    border: 2px solid var(--primary) !important;
+    background: rgba(242, 169, 114, 0.1);
+}
+</style>
+
+<div class="container-kalender">
+    <div class="nav-bulan">
+        <button class="btn-nav" onclick="gantiBulan(-1)">❮</button>
+        <div class="nama-bulan-fokus" id="display-bulan">Memuat...</div>
+        <button class="btn-nav" onclick="gantiBulan(1)">❯</button>
     </div>
 
-    <div class="container-kalender">
+    <div id="area-kalender" class="swipe-area">
+   <button onclick="resetKalender()" class="btn-nav">Hari Ini</button>
         <div class="card-hijri">
             <div id="hari-ini" style="font-weight: bold; opacity: 0.8; color: var(--text);">--</div>
             <div class="tgl-islam" id="h-tgl">--</div>
@@ -80,87 +175,218 @@
         </div>
 
         <div class="info-puasa">
-            <h3>✨ Agenda Terdekat</h3>
+      <p id="judul-agenda"></p>      
             <div id="list-agenda">
                 <div class="puasa-item"><span>Memuat data...</span></div>
             </div>
         </div>
     </div>
+</div>
 
+ 
     <script>
-        // 1. Sinkron Tema
+      // 1. Sinkron Tema
         const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
         const isDark = localStorage.getItem('userDark') === 'true';
         document.body.className = tipe;
         if (isDark) document.body.classList.add('dark-mode');
 
-        // 2. Ambil Data Tanggal dari API Aladhan
-        async function muatKalender() {
-            try {
-                // API Tanggal hari ini
-                const r = await fetch('https://api.aladhan.com/v1/gToH?date=' + new Date().getDate() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getFullYear());
-                const res = await r.json();
-                const d = res.data;
+       
+       let offsetBulan = 0; // 0 = Bulan sekarang, 1 = Bulan depan, dst.
+let xDown = null;
 
-                // Tampilkan ke layar
-                document.getElementById('hari-ini').innerText = d.hijri.weekday.en + " / " + d.hijri.weekday.ar;
-                document.getElementById('h-tgl').innerText = d.hijri.day;
-                document.getElementById('h-bln').innerText = d.hijri.month.en + " " + d.hijri.year + " H";
-                document.getElementById('h-masehi').innerText = d.gregorian.day + " " + d.gregorian.month.en + " " + d.gregorian.year + " M";
-
-                generateAgenda(d.hijri);
-            } catch (e) {
-                document.getElementById('h-tgl').innerText = "Offline";
-            }
+async function muatKalender(offset = 0) {
+    const gridArea = document.getElementById('list-agenda'); // Kita pakai area agenda atau buat id baru 'area-grid'
+    
+    try {
+        let tglSkrg = new Date();
+        
+        // 1. LOGIKA MAGHRIB (Hijriah lompat duluan)
+        if (offset === 0 && tglSkrg.getHours() >= 18) {
+            tglSkrg.setDate(tglSkrg.getDate() + 1);
         }
 
-        function generateAgenda(hijri) {
+        // Hitung pindah bulan
+        tglSkrg.setMonth(tglSkrg.getMonth() + offset);
+        const d = tglSkrg.getDate();
+        const m = tglSkrg.getMonth() + 1;
+        const y = tglSkrg.getFullYear();
+
+        // 2. AMBIL DATA DARI API (Satu bulan penuh)
+        // Kita pakai API Calendar supaya bisa dapet grid sebulan
+        const r = await fetch(`https://api.aladhan.com/v1/gToHCalendar/${m}/${y}`);
+        const res = await r.json();
+        const days = res.data;
+
+        // Cari data hari ini (atau hari yang fokus sesuai tgl masehi)
+        const dataFokus = days.find(day => parseInt(day.gregorian.day) === d) || days[0];
+
+        // 3. UPDATE CARD UTAMA (Yang Gede)
+        document.getElementById('display-bulan').innerText = dataFokus.hijri.month.en + " " + dataFokus.hijri.year + " H";
+        document.getElementById('h-tgl').innerText = dataFokus.hijri.day;
+        document.getElementById('h-bln').innerText = dataFokus.hijri.month.en;
+        document.getElementById('hari-ini').innerText = dataFokus.hijri.weekday.en;
+        
+        // Tampilkan masehi kecil
+        let teksMasehi = dataFokus.gregorian.day + " " + dataFokus.gregorian.month.en + " " + dataFokus.gregorian.year + " M";
+        if (offset === 0 && new Date().getHours() >= 18) teksMasehi += " (Malam)";
+        document.getElementById('h-masehi').innerText = teksMasehi;
+
+        // 4. GENERATE GRID KALENDER (Inovasi: Hijriah Gede, Masehi Kecil)
+       // 4. GENERATE GRID KALENDER
+        let htmlGrid = `
+            <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 20px; background: var(--card-bg); padding: 10px; border-radius: 15px; border: 1px solid var(--border);">
+                <div class="hari-nama">Min</div><div class="hari-nama">Sen</div><div class="hari-nama">Sel</div>
+                <div class="hari-nama">Rab</div><div class="hari-nama">Kam</div><div class="hari-nama">Jum</div>
+                <div class="hari-nama">Sab</div>
+        `;
+
+        // JURUS KUNCI: Tentukan hari apa tanggal 1 dimulai (0=Minggu, 1=Senin, dst)
+        const tgl1Masehi = days[0].gregorian;
+        const startDay = new Date(tgl1Masehi.year, tgl1Masehi.month.number - 1, tgl1Masehi.day).getDay();
+
+        // Tambah kotak kosong biar tanggal 1 pas di bawah nama harinya
+        for (let i = 0; i < startDay; i++) { 
+            htmlGrid += `<div></div>`; 
+        }
+
+        // Isi Kotakan Tanggal (Gunakan logika warna yang kemarin)
+        days.forEach(day => {
+            const dMasehi = new Date(day.gregorian.year, day.gregorian.month.number - 1, day.gregorian.day);
+            const hariApa = dMasehi.getDay(); 
+
+            let warnaTeks = 'color: var(--primary);'; 
+            if (hariApa === 0) warnaTeks = 'color: #e74c3c !important;'; // Minggu Merah
+            if (hariApa === 5) warnaTeks = 'color: #27ae60 !important;'; // Jumat Hijau
+
+            const skrg = new Date();
+            const isToday = (skrg.getDate() == day.gregorian.day && (skrg.getMonth() + 1) == day.gregorian.month.number && skrg.getFullYear() == day.gregorian.year);
+            const styleToday = isToday ? 'border: 2px solid var(--primary); background: rgba(242, 169, 114, 0.1);' : 'border: 1px solid var(--border);';
+
+            htmlGrid += `
+                <div style="aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-radius: 10px; ${styleToday}">
+                    <b style="font-size: 17px; ${warnaTeks} margin-top: -5px;">${day.hijri.day}</b>
+                    <div style="position: absolute; bottom: 2px; right: 4px; font-size: 9px; font-weight: bold; opacity: 0.5; color: var(--text);">${day.gregorian.day}</div>
+                </div>
+            `;
+        });
+        htmlGrid += `</div>`;
+
+        // Tampilkan Grid di bawah Agenda (atau ganti isi agenda)
+        generateAgenda(dataFokus.hijri); 
+        // Masukkan grid sebelum daftar agenda
+        document.getElementById('list-agenda').innerHTML = htmlGrid + `<h3 style="margin-top:20px">✨ Agenda Bulan Ini</h3>` + document.getElementById('list-agenda').innerHTML;
+
+    } catch (e) {
+        console.error("Gagal muat kalender:", e);
+    }
+}
+
+function gantiBulan(n) {
+    offsetBulan += n;
+    // Efek visual loading sebentar
+    document.getElementById('area-kalender').style.opacity = '0.5';
+    muatKalender(offsetBulan).then(() => {
+        document.getElementById('area-kalender').style.opacity = '1';
+    });
+}
+
+// JURUS SWIPE UNTUK KALENDER
+document.addEventListener('touchstart', e => xDown = e.touches[0].clientX, false);
+document.addEventListener('touchend', e => {
+    if (!xDown) return;
+    let xUp = e.changedTouches[0].clientX;
+    let xDiff = xDown - xUp;
+
+    if (Math.abs(xDiff) > 100) {
+        if (xDiff > 0) gantiBulan(1);  // Swipe Kiri -> Bulan Depan
+        else gantiBulan(-1);           // Swipe Kanan -> Bulan Lalu
+    }
+    xDown = null;
+}, false);
+
+  
+                // Tampilkan ke layar
+                function generateAgenda(hijri) {
     const tglSekarang = parseInt(hijri.day);
-    const bln = hijri.month.en;
+    const blnEn = hijri.month.en;
+    const blnNo = hijri.month.number; // Ambil angka bulan (1-12)
     let html = '';
 
-    // 1. Logika Puasa Ayyamul Bidh
-    // Kita cek: Ayyamul Bidh gak ada di bulan Ramadan & Dzulhijjah (karena beda aturan)
-    if (bln !== "Ramadan" && bln !== "Dzul Hijjah") {
+    // 1. Logika Puasa Ayyamul Bidh (Otomatis muncul di semua bulan)
+    // Kecuali Ramadan (sudah wajib) dan Dzulhijjah (ada hari Tasyrik)
+    if (blnEn !== "Ramadan" && blnEn !== "Dzul Hijjah") {
         const tglBidh = [13, 14, 15];
-        tglBidh.forEach(t => {
-            let status = t < tglSekarang ? "Sudah Lewat" : (t == tglSekarang ? "HARI INI" : "Akan Datang");
-            let warna = t == tglSekarang ? "background:var(--accent);" : "";
-            
-            html += `<div class="puasa-item">
-                        <div style="display:flex; flex-direction:column">
-                            <b>Puasa Ayyamul Bidh (${t} ${bln})</b>
-                            <small style="opacity:0.7">${status}</small>
-                        </div>
-                        <span class="tag-puasa" style="${warna}">Sunnah</span>
-                    </div>`;
-        });
+         tglBidh.forEach(t => {
+    let labelNya = "Sunnah";
+    let infoNya = status;
+
+    // Spesial case: Tanggal 13 Dzulhijjah itu HARAM puasa
+    if (blnNo === 12 && t === 13) {
+        labelNya = "Haram";
+        infoNya = "Hari Tasyrik";
     }
 
-    // 2. Tambahan Otomatis buat Bulan Spesial
-    if (bln === "Ramadan") {
-        html += itemAgenda("Bulan Ramadan", "Wajib Puasa Sebulan Penuh", "Wajib");
-    } else if (bln === "Dzul Hijjah") {
-        html += itemAgenda("Puasa Arafah (9 Dzul Hijjah)", "Sangat Dianjurkan", "Sunnah");
-        html += itemAgenda("Idul Adha (10 Dzul Hijjah)", "Haram Berpuasa", "Haram");
+    html += itemAgenda(`Puasa Ayyamul Bidh (${t} ${blnEn})`, infoNya, labelNya);
+});        
     }
+
+    // 2. Daftar Agenda Besar Islam (Otomatis muncul sesuai bulan yang dibuka)
+    const dataAgenda = [
+        { bln: 1, tgl: 1, judul: "Tahun Baru Islam", info: "1 Muharram", tipe: "Penting" },
+        { bln: 1, tgl: 10, judul: "Puasa Asyura", info: "Menghapus dosa setahun lalu", tipe: "Sunnah" },
+        { bln: 3, tgl: 12, judul: "Maulid Nabi", info: "Kelahiran Nabi Muhammad SAW", tipe: "Penting" },
+        { bln: 7, tgl: 27, judul: "Isra Mi'raj", info: "Perjalanan menjemput Shalat", tipe: "Penting" },
+        { bln: 9, tgl: 1, judul: "Awal Ramadan", info: "Wajib Puasa Sebulan Penuh", tipe: "Wajib" },
+        { bln: 10, tgl: 1, judul: "Idul Fitri", info: "1 Syawal (Haram Berpuasa)", tipe: "Haram" },
+        { bln: 12, tgl: 9, judul: "Puasa Arafah", info: "9 Dzul Hijjah (Sangat Dianjurkan)", tipe: "Sunnah" },
+        { bln: 12, tgl: 10, judul: "Idul Adha", info: "Hari Raya Qurban (Haram Puasa)", tipe: "Haram" },
+        { bln: 12, tgl: 11, judul: "Hari Tasyrik", info: "Haram Berpuasa", tipe: "Haram" },
+        { bln: 12, tgl: 12, judul: "Hari Tasyrik", info: "Haram Berpuasa", tipe: "Haram" },
+        { bln: 12, tgl: 13, judul: "Hari Tasyrik", info: "Haram Berpuasa", tipe: "Haram" }
+    ];
+
+    // Filter agenda yang sesuai dengan bulan yang sedang dilihat
+    const agendaBulanIni = dataAgenda.filter(a => a.bln === blnNo);
+    
+    agendaBulanIni.forEach(a => {
+        html += itemAgenda(a.judul, a.info, a.tipe);
+    });
 
     document.getElementById('list-agenda').innerHTML = html || '<div class="puasa-item">Tidak ada agenda khusus bulan ini.</div>';
 }
 
-// Fungsi pembantu biar gak ngetik div panjang-panjang
-function itemAgenda(judul, info, label) {
-    let warnaLabel = label === 'Wajib' ? 'background:red' : (label === 'Haram' ? 'background:black' : '');
-    return `<div class="puasa-item">
-                <div style="display:flex; flex-direction:column">
-                    <b>${judul}</b>
-                    <small style="opacity:0.7">${info}</small>
-                </div>
-                <span class="tag-puasa" style="${warnaLabel}">${label}</span>
-            </div>`;
+// Fungsi pembantu (Versi Upgrade: Bisa ganti warna otomatis)
+    function itemAgenda(judul, info, label, warnaCustom = "") {
+    let bgLabel = "var(--primary)"; 
+    if (label === 'Wajib') bgLabel = "#e74c3c";    
+    if (label === 'Haram') bgLabel = "#2c3e50";    
+    if (label === 'Penting') bgLabel = "#f39c12";  
+    if (label === 'Sunnah') bgLabel = "#27ae60";   
+    
+    const styleFinal = warnaCustom ? warnaCustom : `background:${bgLabel}`;
+
+    // Ditambah padding & border-bottom biar gak dempet
+    return `
+    <div class="puasa-item" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px dashed var(--border); width: 100%;">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+            <b style="font-size: 14px; color: var(--text);">${judul}</b>
+            <small style="opacity: 0.7; color: var(--text);">${info}</small>
+        </div>
+        <span class="tag-puasa" style="${styleFinal}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 11px; font-weight: bold; min-width: 60px; text-align: center;">
+            ${label}
+        </span>
+    </div>`;
 }
 
-        window.onload = muatKalender;
+        
+  function resetKalender() {
+    offsetBulan = 0;
+    muatKalender(0);
+}
+
+// Inisialisasi awal
+window.onload = () => muatKalender(0);
     </script>
 </body>
 </html>

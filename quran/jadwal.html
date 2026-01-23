@@ -48,16 +48,54 @@
             background: var(--card-bg); border-radius: 20px; overflow: hidden;
             border: 1px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        table { width: 100%; border-collapse: collapse; font-size: 13px; color: var(--text); }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; color: var(--text); }
         th { background: var(--primary); color: white; padding: 12px 5px; }
         td { padding: 15px 5px; text-align: center; border-bottom: 1px solid var(--border); }
         
         tr.hari-ini { background: var(--primary); color: white !important; font-weight: bold; }
         tr.hari-ini td { color: white !important; }
         .loading { text-align: center; padding: 50px; opacity: 0.6; }
+
+   #countdown-box {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Kasih efek kilatan cahaya tipis */
+#countdown-box::after {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: rgba(255,255,255,0.05);
+    transform: rotate(30deg);
+}
+
+#timer-sholat {
+    font-family: 'Courier New', Courier, monospace; /* Biar angka detiknya stabil gak goyang-goyang */
+    letter-spacing: 2px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
     </style>
 </head>
 <body>
+
+   <audio id="audioAdzan" preload="auto">
+    <source src="https://alquran.pages.dev/quran/audio/adzan.mp3" type="audio/mpeg">
+</audio>
+
+<div style="text-align:center; margin-bottom: 20px;">
+    <button id="btn-suara" onclick="aktifkanSuara()" style="background:#27ae60; color:white; border:none; padding:8px 15px; border-radius:10px; font-size:12px; cursor:pointer;">
+        🔔 Aktifkan Suara Adzan
+    </button>
+</div>
+  <div style="text-align:center; margin-top: 10px;">
+    <button onclick="testSuara()" style="background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 5px 15px; border-radius: 20px; font-size: 11px; cursor: pointer;">
+        🔊 Test Suara Adzan
+    </button>
+</div>
 
     <div class="header-nav" style="background:var(--primary); color:white; padding:15px; text-align: center; position:sticky; top:0; z-index:100;">
         <h2 style="margin:0; font-size:18px;">Jadwal Sholat</h2>
@@ -65,6 +103,12 @@
 
     <div class="container-jadwal">
         <div class="info-lokasi">
+   <div id="countdown-box" style="background: var(--primary); color: white; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <div style="font-size: 14px; opacity: 0.9;" id="label-next">Menuju Waktu...</div>
+    <div style="font-size: 24px; font-weight: bold; margin: 5px 0;" id="timer-sholat">00:00:00</div>
+    <div style="font-size: 12px; opacity: 0.8;" id="nama-sholat-next">--</div>
+</div>
+
    <div class="info-gps">
          <h2 id="nama-kota">Jakarta</h2>
    <button class="btn-loc" style="background:var(--primary-dark)" onclick="pakeGPS()">GPS📍</button>
@@ -80,15 +124,15 @@
         <div class="table-wrapper">
             <table>
                 <thead>
-                    <tr>
-                        <th>Tgl</th>
-                        <th>Subuh</th>
-                        <th>Dzuhur</th>
-                        <th>Ashar</th>
-                        <th>Maghrib</th>
-                        <th>Isya</th>
-                    </tr>
-                </thead>
+    <tr>
+        <th>Tgl</th>
+        <th style="background:#e67e22">Imsak</th> <th>Subuh</th>
+        <th>Dzuhur</th>
+        <th>Ashar</th>
+        <th>Maghrib</th>
+        <th>Isya</th>
+    </tr>
+</thead>
                 <tbody id="isi-jadwal">
                     <tr><td colspan="6" class="loading">Memuat jadwal...</td></tr>
                 </tbody>
@@ -97,17 +141,37 @@
     </div>
 
     <script>
-        // 1. Sinkron Tema & Kota Terakhir
+   // 1. Taruh Variabel Global di paling atas script
         let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
+        let suaraAktif = false;
+        let adzanSudahBunyi = false; 
         
+    function aktifkanSuara() {
+        const adzanPlayer = document.getElementById('audioAdzan');
+        
+        if (!adzanPlayer) {
+            alert("Error: Elemen audio tidak ditemukan!");
+            return;
+        }
+
+        adzanPlayer.play().then(() => {
+            adzanPlayer.pause();
+            adzanPlayer.currentTime = 0;
+            suaraAktif = true;
+            document.getElementById('btn-suara').innerText = "✅ Adzan Aktif";
+            document.getElementById('btn-suara').style.background = "#bdc3c7";
+            alert("Suara Adzan sudah diaktifkan, Bossku!");
+        }).catch(e => alert("Gagal aktifkan suara. Pastikan HP tidak mode senyap!"));
+    }
+
         function terapkanTema() {
             const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
             const isDark = localStorage.getItem('userDark') === 'true';
             document.body.className = tipe;
             if (isDark) document.body.classList.add('dark-mode');
         }
-
-        // 2. Fungsi Cari Kota
+  
+        // 3. Fungsi Cari Kota
         function cariKotaManual() {
             const val = document.getElementById('input-kota').value;
             if (val) {
@@ -139,7 +203,7 @@
     const namaKotaTampil = document.getElementById('nama-kota');
     
     namaKotaTampil.innerText = kotaAktif;
-    wadahTabel.innerHTML = '<tr><td colspan="6" class="loading">Sedang mencari jadwal di ' + kotaAktif + '...</td></tr>';
+    wadahTabel.innerHTML = '<tr><td colspan="7" class="loading">Sedang mencari jadwal di ' + kotaAktif + '...</td></tr>';
 
     const skr = new Date();
     const bulan = skr.getMonth() + 1;
@@ -147,10 +211,9 @@
     const tglSkr = skr.getDate();
 
     try {
-        // Kita pakai endpoint 'timingsByCity' tapi untuk kalender sebulan
-        // Kita tambahkan parameter ?address agar API lebih pintar mencari teks kota
         const url = `https://api.aladhan.com/v1/calendarByAddress?address=${kotaAktif},Indonesia&method=11&month=${bulan}&year=${tahun}`;
         
+        // 1. Ambil data dari internet dulu
         const r = await fetch(url);
         const res = await r.json();
         
@@ -158,27 +221,38 @@
             throw new Error("Kota tidak ditemukan");
         }
 
+        // 2. Definisi variabel data SETELAH fetch berhasil
         const data = res.data;
         let html = '';
         
+        // 3. JALANKAN COUNTDOWN DI SINI (Setelah data ada)
+        const hariIniData = data.find(h => parseInt(h.date.gregorian.day) === tglSkr);
+        if (hariIniData) {
+            updateCountdown(hariIniData.timings);
+        }
+
+          // 4. Gambar Tabel
         data.forEach(hari => {
             const tgl = parseInt(hari.date.gregorian.day);
             const isToday = (tgl === tglSkr) ? 'class="hari-ini"' : '';
             
+            // Format waktu biar bersih (tanpa timezone)
+            const f = (waktu) => waktu.split(' ')[0];
+
             html += `<tr ${isToday}>
                 <td>${tgl}</td>
-                <td>${hari.timings.Fajr.split(' ')[0]}</td>
-                <td>${hari.timings.Dhuhr.split(' ')[0]}</td>
-                <td>${hari.timings.Asr.split(' ')[0]}</td>
-                <td>${hari.timings.Maghrib.split(' ')[0]}</td>
-                <td>${hari.timings.Isha.split(' ')[0]}</td>
+                <td style="font-weight:bold; color:#e67e22">${f(hari.timings.Imsak)}</td>
+                <td>${f(hari.timings.Fajr)}</td>
+                <td>${f(hari.timings.Dhuhr)}</td>
+                <td>${f(hari.timings.Asr)}</td>
+                <td>${f(hari.timings.Maghrib)}</td>
+                <td>${f(hari.timings.Isha)}</td>
             </tr>`;
         });
 
         wadahTabel.innerHTML = html;
         document.getElementById('bln-tahun').innerText = data[0].date.gregorian.month.en + " " + tahun;
 
-        // Auto scroll ke hari ini
         setTimeout(() => {
             const el = document.querySelector('.hari-ini');
             if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -186,9 +260,8 @@
 
     } catch (e) {
         console.error(e);
-        wadahTabel.innerHTML = `<tr><td colspan="6" style="color:red; padding:20px;">
-            Maaf, kota "<b>${kotaAktif}</b>" tidak ditemukan.<br>
-            (Koneksi Internet Terputus.)
+        wadahTabel.innerHTML = `<tr><td colspan="7" style="color:red; padding:20px;">
+            Maaf, kota "<b>${kotaAktif}</b>" tidak ditemukan.
         </td></tr>`;
     }
 }
@@ -198,6 +271,94 @@
             terapkanTema();
             muatJadwal();
         };
+
+    function updateCountdown(timings) {
+    const timerEl = document.getElementById('timer-sholat');
+     const adzanPlayer = document.getElementById('audioAdzan');
+    const labelEl = document.getElementById('nama-sholat-next');
+    const labelUtama = document.getElementById('label-next');
+
+    // Fungsi kecil untuk buang (WIB) atau (GMT)
+    const bersihkanJam = (jamApi) => jamApi.split(' ')[0];
+
+    setInterval(() => {
+        const sekarang = new Date();
+        // Format jam sekarang ke HH:mm
+        const jamSkr = sekarang.getHours().toString().padStart(2, '0') + ":" + 
+                       sekarang.getMinutes().toString().padStart(2, '0');
+
+        const daftarSholat = [
+            { nama: 'Imsak', jam: bersihkanJam(timings.Imsak) },
+            { nama: 'Subuh', jam: bersihkanJam(timings.Fajr) },
+            { nama: 'Dzuhur', jam: bersihkanJam(timings.Dhuhr) },
+            { nama: 'Ashar', jam: bersihkanJam(timings.Asr) },
+            { nama: 'Maghrib', jam: bersihkanJam(timings.Maghrib) },
+            { nama: 'Isya', jam: bersihkanJam(timings.Isha) }
+        ];
+
+        // Cari sholat yang jam-nya lebih besar dari jam sekarang
+        let sholatNext = daftarSholat.find(s => s.jam > jamSkr);
+        
+        // Kalau sudah lewat Isya, berarti sholat berikutnya Imsak besok pagi
+        let besok = false;
+        if (!sholatNext) {
+            sholatNext = daftarSholat[0];
+            besok = true;
+        }
+
+        const [h, m] = sholatNext.jam.split(':');
+        let target = new Date();
+        target.setHours(parseInt(h), parseInt(m), 0);
+
+        if (besok) target.setDate(target.getDate() + 1);
+
+        const selisih = target - sekarang;
+        
+        // Pastikan selisih tidak negatif
+        if (selisih > 0) {
+            const jam = Math.floor(selisih / 3600000);
+            const menit = Math.floor((selisih % 3600000) / 60000);
+            const detik = Math.floor((selisih % 60000) / 1000);
+
+            labelUtama.innerText = "Menuju Waktu " + sholatNext.nama;
+            labelEl.innerText = "Pukul " + sholatNext.jam;
+            timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
+
+            // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 0)
+            if (jam === 0 && menit === 0 && detik === 0) {
+                if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
+                    adzanPlayer.play();
+                    adzanSudahBunyi = true; // Kunci biar gak bunyi berulang di detik yang sama
+                    alert("Allahu Akbar! Waktunya Sholat " + sholatNext.nama);
+                    
+                    // Reset kunci setelah 1 menit biar sholat berikutnya bisa bunyi lagi
+                    setTimeout(() => { adzanSudahBunyi = false; }, 60000);
+                }
+            }
+        } // Penutup if (selisih > 0)
+    }, 1000); // Penutup setInterval
+} // Penutup fungsi updateCountdown
+
+   function testSuara() {
+    const adzanPlayer = document.getElementById('audioAdzan');
+    
+    if (adzanPlayer) {
+        // Balikin ke detik 0
+        adzanPlayer.currentTime = 0;
+        
+        // Putar
+        adzanPlayer.play().then(() => {
+            alert("Suara Adzan sedang diputar... (Klik OK untuk hentikan test)");
+            adzanPlayer.pause(); // Berhenti setelah user klik OK
+            adzanPlayer.currentTime = 0;
+        }).catch(e => {
+            alert("Waduh, audionya gak mau jalan! Pastikan sudah klik 'Aktifkan Suara Adzan' dulu ya.");
+        });
+    } else {
+        alert("Elemen audio tidak ditemukan!");
+    }
+}
+   
     </script>
 </body>
 </html>

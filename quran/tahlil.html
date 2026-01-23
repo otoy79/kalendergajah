@@ -58,7 +58,7 @@
     background: var(--card-bg); /* Mengikuti tema kartu di style.css */
     color: var(--text);        /* Tulisan otomatis putih kalau Dark Mode */
     border-bottom: 1px solid var(--border);
-    padding: 0px 25px;
+    padding: 5px 25px;
     transition: 0.3s;
     margin: 0;
 }
@@ -75,8 +75,77 @@
 </head>
 <body>
 
+  <div class="overlay" id="overlay" onclick="toggleSettings()"></div>
+
+<div class="settings-panel" id="settingsPanel">
+    <h2 style="margin-top:10px; color:var(--primary);">Pengaturan</h2>
+    <hr style="border:0; border-top:1px solid #ddd; margin-bottom:10px;">
+
+    <div class="settings-item">
+        <label>Pilih Font Arab</label>
+        <select id="pilihFontArab" onchange="gantiFontArab(this.value)">
+            <option value="'LPMQ', sans-serif">LPMQ (Standar Indo)</option>
+            <option value="'Amiri', serif">Amiri (Klasik/Tebal)</option>
+        </select>
+    </div>
+    
+    <div class="settings-item">
+        <label>Tipe Mushaf</label>
+        <select id="pilihMushaf" onchange="gantiTipeMushaf(this.value)">
+            <option value="mushaf-1">Standar</option>
+            <option value="mushaf-4">Hafalan (Arab Saja)</option>
+            <option value="mushaf-2">Madinah (Krem)</option>
+            <option value="mushaf-3">Minimalis</option>
+        </select>
+    </div>
+
+    <div class="settings-item">
+        <label>Pilih Qari</label>
+        <select id="pilihQari" onchange="gantiQari(this.value)">
+            <option value="Alafasy">M. Rashid Alafasy</option>
+            <option value="Abdurrahmaan_As-Sudais">As-Sudais</option>
+            <option value="Muhammad_Jibreel">Muhammad_Jibreel</option>
+            <option value="Abdul_Basit_Murattal">Abdul Basit</option>
+        </select>
+    </div>
+
+    <div class="settings-item"><label>Mode Gelap</label><input type="checkbox" id="checkDark" onchange="toggleDarkMode(this.checked)"></div>
+ 
+    <div class="settings-item"><label>Tampilkan Latin</label><input type="checkbox" id="checkLatin" onchange="toggleLatin(this.checked)"></div>
+    <div class="settings-item"><label>Tampilkan Terjemah</label><input type="checkbox" id="checkIndo" onchange="toggleIndo(this.checked)"></div>
+    
+    <div class="settings-item">
+        <label>Ukuran Font</label>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <button onclick="ubahFont(-2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➖</button>
+            <b id="fontLabel" style="min-width:40px; text-align:center;">30px</b>
+            <button onclick="ubahFont(2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➕</button>
+        </div>
+    </div>
+
+   <hr style="border:0; border-top:1px solid #ddd; margin: 15px 0;">
+    
+    <div class="settings-item">
+        <label style="color: #e74c3c;">Reset Pengaturan</label>
+        <p style="font-size: 11px; color: #888; margin-top: 5px;">🗳</p>
+        <button onclick="resetAplikasi()" style="padding: 6px; background: #ffece8; color: white; border: none; border-radius: 8px; border: 2px solid #e74c3c; font-weight: bold; cursor: pointer; margin-top: 0px;">
+            🗑️
+        </button>
+    </div>
+
+   
+    <button onclick="toggleSettings()" style="width:100%; margin-top:30px; padding:12px; background:var(--primary);; color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Simpan & Tutup</button>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<button id="btnBackToTop" onclick="keAtas()" title="Kembali ke atas">
+    ↑
+</button>
+
     <div class="header-tahlil">
         <h2 style="margin:0; font-size:18px;">Tahlil & Doa Arwah</h2>
+       <button class="menu-btn" onclick="toggleSettings()">⚙️</button>
     </div>
 
    
@@ -128,7 +197,7 @@
             dataSurah.ayat.forEach(ayat => {
                 // HAPUS background:#f9f9f9 agar tidak nutup saat dark mode
                 html += `<div class="tahlil-item">
-                            <p class="arab">${ayat.teksArab} <span style="font-size:18px; color:var(--primary);">(${ayat.nomorAyat})</span></p>
+                            <p class="arab">${ayat.teksArab} <span style="color:var(--primary);">(${ayat.nomorAyat})</span> </p>
                             <p class="latin ${statusLatin}">${ayat.teksLatin}</p>
                             <p class="arti ${statusArti}">${ayat.teksIndonesia}</p>
                         </div>`;
@@ -151,7 +220,7 @@
     };
 }
 
-  function keAngkaArab(angka) {
+  function kenomorAyat(angka) {
     const map = {
         '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
         '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
@@ -159,7 +228,7 @@
     return angka.toString().split('').map(c => map[c] || c).join('');
 }
 
-  function keAngkaArab(n) {
+  function kenomorAyat(n) {
     if (!n) return '';
     const map = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     return n.toString().split('').map(digit => map[digit] || digit).join('');
