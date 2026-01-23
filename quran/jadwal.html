@@ -325,16 +325,18 @@
             timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
 
             // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 0)
-            if (jam === 0 && menit === 0 && detik === 0) {
-                if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
-                    adzanPlayer.play();
-                    adzanSudahBunyi = true; // Kunci biar gak bunyi berulang di detik yang sama
-                    alert("Allahu Akbar! Waktunya Sholat " + sholatNext.nama);
-                    
-                    // Reset kunci setelah 1 menit biar sholat berikutnya bisa bunyi lagi
-                    setTimeout(() => { adzanSudahBunyi = false; }, 60000);
-                }
-            }
+            // TEST INSTAN: Bunyi di setiap detik ke-10 (Gak perlu nunggu lama)
+if (detik === 10) {
+    if (suaraAktif && !adzanSudahBunyi) {
+        adzanPlayer.play();
+        adzanSudahBunyi = true; 
+        alert("TEST: Adzan Mekkah Berhasil!");
+        
+        // Reset 2 detik aja biar bisa test lagi tiap menit
+        setTimeout(() => { adzanSudahBunyi = false; }, 2000);
+    }
+}
+
         } // Penutup if (selisih > 0)
     }, 1000); // Penutup setInterval
 } // Penutup fungsi updateCountdown
