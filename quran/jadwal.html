@@ -107,7 +107,7 @@ input:checked + .slider:before { transform: translateX(23px); }
     <div style="background: var(--card-bg); color: var(--text); padding: 30px; border-radius: 20px; text-align:center; width:85%; max-width:400px; border: 1px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
         <div style="font-size: 50px; margin-bottom: 15px;">🔊</div>
         <h3 style="margin:0 0 10px 0;">Aktifkan Adzan?</h3>
-        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 25px;">Izin browser diperlukan agar suara Adzan Mekkah bisa berkumandang otomatis.</p>
+        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 25px;">Pengaturan Global suara Adzan Mekkah hanya bisa berkumandang saat Halaman ini di buka.</p>
         
         <div style="display: flex; gap: 10px;">
             <button onclick="pancingAudio()" style="flex:1; background: var(--primary); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; cursor:pointer;">Ya, Aktifkan</button>
@@ -344,16 +344,16 @@ input:checked + .slider:before { transform: translateX(23px); }
             timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
 
             // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 0)
-            // TEST INSTAN: Bunyi di setiap detik ke-10 (Gak perlu nunggu lama)
-if (detik === 10) {
-    if (suaraAktif && !adzanSudahBunyi) {
-        adzanPlayer.play();
-        adzanSudahBunyi = true; 
-        
-        // Reset 2 detik aja biar bisa test lagi tiap menit
-        setTimeout(() => { adzanSudahBunyi = false; }, 2000);
-    }
-}
+            if (jam === 0 && menit === 0 && detik === 0) {
+                if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
+                    adzanPlayer.play();
+                    adzanSudahBunyi = true; // Kunci biar gak bunyi berulang di detik yang sama
+                    alert("Allahu Akbar! Waktunya Sholat " + sholatNext.nama);
+                    
+                    // Reset kunci setelah 1 menit biar sholat berikutnya bisa bunyi lagi
+                    setTimeout(() => { adzanSudahBunyi = false; }, 60000);
+                }
+            }
 
         } // Penutup if (selisih > 0)
     }, 1000); // Penutup setInterval
