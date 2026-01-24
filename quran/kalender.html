@@ -110,13 +110,13 @@
     gap: 8px;
     padding: 10px;
     background: var(--card-bg);
-    border-radius: 15px;
+    border-radius: 4px;
     border: 1px solid var(--border);
 }
 
 .hari-nama { 
     text-align: center; 
-    font-size: 10px; 
+    font-size: 12px; 
     font-weight: bold; 
     opacity: 0.5; 
     color: var(--text);
@@ -146,7 +146,7 @@
     position: absolute;
     bottom: 4px;
     right: 6px;
-    font-size: 9px;
+    font-size: 11px;
     opacity: 0.6;
     color: var(--text);
 }
@@ -233,7 +233,6 @@ async function muatKalender(offset = 0) {
         document.getElementById('h-masehi').innerText = teksMasehi;
 
         // 4. GENERATE GRID KALENDER (Inovasi: Hijriah Gede, Masehi Kecil)
-       // 4. GENERATE GRID KALENDER
         let htmlGrid = `
             <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 20px; background: var(--card-bg); padding: 10px; border-radius: 15px; border: 1px solid var(--border);">
                 <div class="hari-nama">Min</div><div class="hari-nama">Sen</div><div class="hari-nama">Sel</div>
@@ -266,7 +265,7 @@ async function muatKalender(offset = 0) {
             htmlGrid += `
                 <div style="aspect-ratio: 1/1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-radius: 10px; ${styleToday}">
                     <b style="font-size: 17px; ${warnaTeks} margin-top: -5px;">${day.hijri.day}</b>
-                    <div style="position: absolute; bottom: 2px; right: 4px; font-size: 9px; font-weight: bold; opacity: 0.5; color: var(--text);">${day.gregorian.day}</div>
+                    <div style="position: absolute; bottom: 1px; right: 4px; font-size: 10px; font-weight: bold; opacity: 0.5; color: var(--text);">${day.gregorian.day}</div>
                 </div>
             `;
         });
