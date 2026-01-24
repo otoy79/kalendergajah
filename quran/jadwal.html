@@ -344,7 +344,7 @@ input:checked + .slider:before { transform: translateX(23px); }
             timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
 
             // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 0)
-            if (jam === 0 && menit === 0 && detik === 0) {
+            if (jam === 0 && menit === 10 && detik === 0) {
                 if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
                     adzanPlayer.play();
                     adzanSudahBunyi = true; // Kunci biar gak bunyi berulang di detik yang sama
