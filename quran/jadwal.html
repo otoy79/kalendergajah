@@ -343,21 +343,20 @@ input:checked + .slider:before { transform: translateX(23px); }
             labelEl.innerText = "Pukul " + sholatNext.jam;
             timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
 
-            // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 0)
-            if (jam === 0 && menit === 20 && detik === 0) {
-                if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
-                    adzanPlayer.play();
-                    adzanSudahBunyi = true; // Kunci biar gak bunyi berulang di detik yang sama
-                    alert("Allahu Akbar! Waktunya Sholat " + sholatNext.nama);
-                    
-                    // Reset kunci setelah 1 menit biar sholat berikutnya bisa bunyi lagi
-                    setTimeout(() => { adzanSudahBunyi = false; }, 60000);
-                }
-            }
+            // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 08 detik)
+           if (jam === 00 && menit === 00 && detik === 08) {
+    if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
+        adzanPlayer.play();
+        adzanSudahBunyi = true; 
+        
+        // Reset 2 detik aja biar bisa test lagi tiap menit
+        setTimeout(() => { adzanSudahBunyi = false; }, 60000);
+    }
+}
 
-        } // Penutup if (selisih > 0)
-    }, 1000); // Penutup setInterval
-} // Penutup fungsi updateCountdown
+        } 
+    }, 1000); 
+} 
 
    function testSuara() {
     const adzanPlayer = document.getElementById('audioAdzan');
