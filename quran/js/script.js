@@ -697,8 +697,8 @@ function muatJadwalSholat() {
 }
 
 function updateTabelJadwal(timings) {
-    const ids = ['shubuh', 'dhuhr', 'asr', 'maghrib', 'isha'];
-    const keys = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+    const ids = ['imsak', 'shubuh', 'dhuhr', 'asr', 'maghrib', 'isha'];
+    const keys = ['Imsak', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
     
     ids.forEach((id, i) => {
         const el = document.getElementById(`${id}-val`);
@@ -714,6 +714,7 @@ function updateTabelJadwal(timings) {
     };
 
     const daftarWaktu = [
+        { nama: 'Imsak', waktu: jamMenit(timings.Imsak) },
         { nama: 'Subuh', waktu: jamMenit(timings.Fajr) },
         { nama: 'Dzuhur', waktu: jamMenit(timings.Dhuhr) },
         { nama: 'Ashar', waktu: jamMenit(timings.Asr) },
