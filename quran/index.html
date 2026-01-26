@@ -27,7 +27,7 @@
         .hero-menu { 
             background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
             color: white; padding: 25px 20px; 
-            text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px;
+            text-align: center; border-bottom-left-radius: 4px; border-bottom-right-radius: 40px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
      .hero-menu h1 {      
@@ -37,7 +37,7 @@
         .sholat-container {
             background: var(--card-bg); margin: -30px 20px 20px; border-radius: 20px;
             padding: 15px; display: flex; justify-content: space-around;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid var(--border);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid var(--border); text-align: center;"
         }
 
         .sholat-box { text-align: center; font-size: 11px; }
@@ -97,25 +97,55 @@
 <body class="mushaf-1"> 
     <div class="hero-menu">
     <h1 style="margin:0; font-family: 'Amiri', serif;">Al-Qur'an Pro</h1>
-    <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 31px;">Salam</div>
-    
-    <div id="countdown-sholat" style="font-size: 13px; margin: 10px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 10px 0;">
+    <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 38px;">Salam</div>
+ 
+   
+    <div id="jkt-countdown-sholat" style="font-size: 13px; margin: 5px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 5px 0;">
         Menghitung waktu sholat...
 </div>
-  <div style="font-size: 11px; opacity: 0.8; margin: 5px; text-align: right;">
+      <div style="font-size: 11px; opacity: 0.8; margin: 8px; text-align: right;">
         GPS    📍 Jadwal Sholat Otomatis
         </div>
-  </div>
-    <div class="sholat-container">
+       </div>
+
+    <div class="sholat-container" style="display:none">
+        <div class="sholat-box">Imsak<b id="s-imsak" style="color:#e67e22">--:--</b></div>
         <div class="sholat-box">Subuh<b id="s-subuh">--:--</b></div>
         <div class="sholat-box">Dzuhur<b id="s-dzuhur">--:--</b></div>
         <div class="sholat-box">Ashar<b id="s-ashar">--:--</b></div>
         <div class="sholat-box">Maghrib<b id="s-maghrib">--:--</b></div>
-        <div class="sholat-box">Isya<b id="s-isya">--:--</b></div>
+        <div class="sholat-box">Isya`<b id="s-isya">--:--</b></div>
     </div>
-  
 
-    <div id="resume-home" class="resume-card-home" onclick="bukaTerakhir()" style="display:none;">
+      <div class="sholat-container">
+        <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Imsak</span>
+                <b id="imsak-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Subuh</span>
+                <b id="shubuh-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Dzuhur</span>
+                <b id="dhuhr-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Ashar</span>
+                <b id="asr-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Maghrib</span>
+                <b id="maghrib-val" style="font-size:13px;">--:--</b>
+            </div>
+            <div class="waktu-item" style="flex:1;">
+                <span style="font-size:11px; opacity:0.8; display:block;">Isya</span>
+                <b id="isha-val" style="font-size:13px;">--:--</b>
+            </div>
+        </div>
+   
+
+   <div id="resume-home" class="resume-card-home" onclick="bukaTerakhir()">
     <span style="font-size:13px; opacity:0.9;">📌 Terakhir Dibaca:</span>
     <span id="resume-info-home" style="font-weight:bold; margin-top:5px; font-size:14px;">--</span>
 </div>
@@ -211,6 +241,7 @@ async function ambilJadwal() {
         jadwalSholatGlobal = data.data.timings;
         
         // Update angka di kartu kecil
+  document.getElementById('s-imsak').innerText = jadwalSholatGlobal.Imsak;
         document.getElementById('s-subuh').innerText = jadwalSholatGlobal.Fajr;
         document.getElementById('s-dzuhur').innerText = jadwalSholatGlobal.Dhuhr;
         document.getElementById('s-ashar').innerText = jadwalSholatGlobal.Asr;
@@ -220,12 +251,13 @@ async function ambilJadwal() {
         // Jalankan countdown
         mulaiCountdown();
     } catch (e) { 
-        document.getElementById('countdown-sholat').innerText = "Gagal memuat jadwal";
+        document.getElementById('jkt-countdown-sholat').innerText = "Gagal memuat jadwal";
     }
 }
 
 function mulaiCountdown() {
     const listNama = {
+        'Imsak': 'Imsak',
         'Fajr': 'Subuh',
         'Dhuhr': 'Dzuhur',
         'Asr': 'Ashar',
@@ -268,7 +300,7 @@ function mulaiCountdown() {
         const sMenit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
         const sDetik = Math.floor((selisih % (1000 * 60)) / 1000);
 
-        document.getElementById('countdown-sholat').innerHTML = 
+        document.getElementById('jkt-countdown-sholat').innerHTML = 
             `⏳ <b>${sJam}j ${sMenit}m ${sDetik}s</b> lagi menuju <b>${namaSholat}</b>`;
     }, 1000);
 }
