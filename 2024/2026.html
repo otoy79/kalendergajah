@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html>
- <title>Kalender-GT 2026</title>
+ <title>Kalender-GT</title>
 <head>
     <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
  <meta http-equiv="X-UA-Compatible" content="IE=7,9,10" >
+      <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="format-detection" content="telephone=no" />
-    <link href="style.css" rel="stylesheet" />
  <link rel="stylesheet" href="css/swiper.css">
+  <link href="style.css" rel="stylesheet" />
+  
+ <link rel="stylesheet" href="https://kalendergajah.pages.dev/musik/iframe.css">
+  
   <style>
     html, body {
       position: relative;
       height: 100%;
+      background: rgb(255, 255, 255, 0.9);
     }
     body {
       background: #eee;
@@ -40,34 +45,13 @@
     }
   </style>
 <style>
- .fd-out {
-  background: #fff; 
-  position: fixed;
-	font-family: Arial, Helvetica, sans-serif;
-  top:10px;
-	right: 15px;
-  border-radius: 20px;
-  border: 4px solid #888;
-  padding: 1px;
-  z-index: 999;
-}
-.bln-out {
-  background: red; 
-  border-radius: 15px 15px 0 0;
-  font-size: 1.6rem;
-  padding: 6px;
-  font-weight: bold;
-  color: #fff;
-  display: block;
-  text-align: center;
-}
 .mgg {
   font-size: 1.2rem;
   border-top: 2px solid #bbb;
   padding-left: 20px;
   padding-right: 20px;
 }
-.tgl {
+.tglll{
   font-weight: bold;
   font-size: 4rem;
   padding-top: 0px;
@@ -87,57 +71,222 @@
   z-index: 999;
   color: #fff;
 }
+
+#jam {
+  font-family: Georgia, serif;
+  font-weight: Bold;
+  font-size: 20px;
+  text-align: center;
+  animation: fadeIn 4.5s ease-in; 
+  z-index: 99;
+}
+ table {
+  font-family: Georgia, serif;
+  font-weight: Bold;
+  font-size: 11px;
+  text-align: center;
+  padding: 0px;
+  margin-bottom: 5px;
+}
+table p {
+  margin: 0;
+}
+   #txt {
+  font-family: Georgia, serif;
+  font-weight: Bold;
+  font-size: 18px;
+  text-align: center;
+  height: 22px;
+  }
+
+  .adbox {
+  position: fixed;
+  top:0px;
+   border-bottom: 12px solid rgb(145, 152, 170);
+   width: 100%;
+   margin:0 auto;
+   text-align: center;
+   z-index: 999;
+
+ }
+  .adcontainer {
+  padding-top: 12px;
+  text-align: center;
+  background: rgb(255, 255, 255, 0.88);
+ 
+}
+ .adboxclosed {
+   height: 30px;
+   border-top: 8px solid rgb(145, 152, 170, 0.2);
+   border-bottom: none;
+ }
+
+ .adhandle {
+   height: 30px;
+   width: 50px;
+   margin: 0 auto -45px auto;
+   border-bottom-left-radius: 8px;
+   border-bottom-right-radius: 8px;
+   background: rgb(48, 5, 97, 0.9);
+   border-style: solid;
+  border-color: red green blue yellow;
+  border: 1.5px solid #ddd;
+ }
+
+ .adhandleclosed {
+   margin: -15px auto 0 auto;
+ }
+
+ .adarrow {
+   width: 15px;
+   height: 15px;
+   margin: 15px;
+   border-color: red;
+   display: inline-block;
+   border-bottom: 4px solid #eee;
+   ;
+   border-left: 4px solid #eee;
+   ;
+   -webkit-transition: all 0.5s ease;
+   -moz-transition: all 0.5s ease;
+   -o-transition: all 0.5s ease;
+   -ms-transition: all 0.5s ease;
+   transition: all 0.5s ease;
+   cursor: pointer;
+   margin: 11px auto 0 auto;
+   -ms-transform: rotate(135deg);
+   -webkit-transform: rotate(135deg);
+   transform: rotate(135deg);
+ }
+
+ .down {
+   margin: 5px auto 0 auto;
+   -ms-transform: rotate(-45deg);
+   -webkit-transform: rotate(-45deg);
+   transform: rotate(-45deg);
+ }
+
+ .displaynone {
+   display: none;
+ }
+  .showHL {
+   position: fixed;
+  top: 15px;
+   left: 20px;
+   width: 20px;
+   height: 20px;
+   z-index: 999;
+   background-image: url(css/iconC.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+   padding: 0px;
+   border-radius: 50%;
+   border: 1px solid #666;
+   font-weight: Bold;
+  font-size: 12px;
+}
+ .hariL {
+  position: fixed;
+  top: 0px;
+   border: 4px solid rgb(48, 5, 97);
+   width: 98%;
+   height: 100%;
+   text-align: center;
+   z-index: 99999;
+   display: none;
+}
+ #iframeShow {
+  width: 100%;
+   height: 100%;
+}
+  .tutup {
+   position: fixed;
+   left: 15px;
+   left: 20px;
+   width: 20px;
+   height: 20px;
+   z-index: 999;
+   background-image: url(css/close.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+   padding: ppx;
+   border-radius: 50%;
+   border: 1px solid #666;
+   font-weight: Bold;
+  font-size: 12px;
+  color: #eee;
+}
 </style>
 </head>
-<body>
-  
-  <div style="display:none">  
-  <div class="fd-out">  
-  <div class="bln-out">
-  <span id="bln-out"></span>
+<body onload="startTime()">
+   
+   
+    <div class="hariL">
+    <p class="tutup"></p>
+    <iframe id="iframeShow" src="https://kalendergajah.pages.dev/musik/liburNas.html"></iframe>
+   </div>
+
+  <div class="adbox">
+    <div class="adcontainer">
+      <!-- your ad here -->
+   <div class="showHL"></div>
+   <div id="txt"> </div>
+   <center><table><tr>
+  <td><p id="mgg"></p></td>
+    <td><p id="tgl"></p></td>
+    <td><p id="bln-out"></p></td>
+    <td><p id="tahun"></p></td>
+  </tr></table></center>
+    <iframe id="iframeM" src="https://kalendergajah.pages.dev/musik/musikbg.html"></iframe>
+
+    <iframe id="iframeS" src="https://kalendergajah.pages.dev/musik/ifreme1.html"></iframe>
+      <!-- your ad here -->
+    </div>
+    <div class="adhandle">
+      <span class="adarrow up"></span>
+    </div>
   </div>
-  <center id="tgl" class="tgl"></center>
-   <center id="mgg" class="mgg"></center>
-</div>
-</div>
+
 
 <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide">
-     <img src="2026/1.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+     <span id="bln-1"></span>
 </div>
       <div class="swiper-slide">
-    <img src="2026/2.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-2"></span>
 </div>
       <div class="swiper-slide">
-   <img src="2026/3.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+   <span id="bln-3"></span>
 </div>
       <div class="swiper-slide"> 
-   <img src="2026/4.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+   <span id="bln-4"></span>
 </div>
       <div class="swiper-slide">
-    <img src="2026/5.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-5"></span>
 </div>
       <div class="swiper-slide"> 
-    <img src="2026/6.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-6"></span>
 </div>
       <div class="swiper-slide">
-    <img src="2026/7.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-7"></span>
 </div>
       <div class="swiper-slide">
-   <img src="2026/8.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+   <span id="bln-8"></span>
 </div>
       <div class="swiper-slide">
-    <img src="2026/9.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-9"></span>
 </div>
       <div class="swiper-slide">
-    <img src="2026/10.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-10"></span>
 </div>
       <div class="swiper-slide">
-   <img src="2026/11.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-11"></span>
 </div>
       <div class="swiper-slide">
-    <img src="2026/12.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>
+    <span id="bln-12"></span>
 </div>
     </div>
     <!-- Add Pagination -->
@@ -199,64 +348,103 @@ document.getElementById("bln-out").innerHTML = months[d.getMonth()];
 
 
  <script>
-document.getElementById("jan").innerHTML = ' <img src="2025/1.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("jan").innerHTML = ' <img src="2026/1.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("feb").innerHTML = ' <img src="2025/2.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("feb").innerHTML = ' <img src="2026/2.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("mar").innerHTML = ' <img src="2025/3.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("mar").innerHTML = ' <img src="2026/3.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("apr").innerHTML = ' <img src="2025/4.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("apr").innerHTML = ' <img src="2026/4.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("mei").innerHTML = ' <img src="2025/5.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("mei").innerHTML = ' <img src="2026/5.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("jun").innerHTML = ' <img src="2025/6.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("jun").innerHTML = ' <img src="2026/6.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("jul").innerHTML = ' <img src="2025/7.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("jul").innerHTML = ' <img src="2026/7.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("ags").innerHTML = ' <img src="2025/8.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("ags").innerHTML = ' <img src="2026/8.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("sep").innerHTML = ' <img src="2025/9.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("sep").innerHTML = ' <img src="2026/9.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("okt").innerHTML = ' <img src="2025/10.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("okt").innerHTML = ' <img src="2026/10.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("nov").innerHTML = ' <img src="2025/11.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("nov").innerHTML = ' <img src="2026/11.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 <script>
-document.getElementById("des").innerHTML = ' <img src="2025/12.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
+document.getElementById("des").innerHTML = ' <img src="2026/12.webp" alt="GT LoGo" style="width:97%;height:98%;border: 2px solid #ccc;"><br><br><br>';
  </script>
 
 <script>
 var d = new Date();
-var days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum`at", "Sabtu"];
+var days = ["Minggu : ", "Senin : ", "Selasa : ", "Rabu : ", "Kamis : ", "Jum`at : ", "Sabtu : "];
 document.getElementById("mgg").innerHTML = days[d.getDay()];
 </script>
 <script>
 var d = new Date();
 document.getElementById("tgl").innerHTML = d.getDate();
 </script>
+<script>
+let year = d.getFullYear();
+document.getElementById("tahun").innerHTML = year;
+</script>
+
+ <script>
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById('txt').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 1000);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+</script>
 
 <script src="css/jquery-1.7.1.min.js">
 </script>
+
 <script>
-$(document).ready(function(){
-    $(".fd-out").fadeOut(3000);
-  });
+var adHandle = document.querySelector('.adhandle')
+var adBox = document.querySelector('.adbox')
+var adContainer = document.querySelector('.adcontainer')
+var adArrow = document.querySelector('.adarrow')
+
+adHandle.onclick = function () {
+  adContainer.classList.toggle('displaynone')
+  adBox.classList.toggle('adboxclosed')
+  adArrow.classList.toggle('down')
+  this.classList.toggle('adhandleclosed')
+}
 </script>
 
 <script>
 $(".swiper-slide").hide().fadeIn(9000
 </script>
-
+  <script>
+$( ".showHL" ).on( "click", function() {
+  $( ".hariL" ).show(500);
+});
+  $( ".tutup" ).on( "click", function() {
+  $( ".hariL" ).hide( "slow" );
+});
+ 
+</script>
 <script src="css/swiper.min.js"></script>
 
   <!-- Initialize Swiper -->
