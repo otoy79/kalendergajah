@@ -4,6 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arah Kiblat - Al-Qur'an Pro</title>
+    <script>
+    // SCRIPT ANTI-KEDIP (Mata Genit)
+    (function() {
+        const isDark = localStorage.getItem('userDark') === 'true';
+        const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+        
+        // Cek batasan Mushaf 2 & 3 (gak boleh dark mode)
+        const bolehDark = isDark && tipe !== 'mushaf-2' && tipe !== 'mushaf-3';
+
+        if (bolehDark) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            // 'color-scheme' ini sakti, bikin scrollbar & background bawaan lgsg item
+            document.documentElement.style.colorScheme = 'dark';
+            document.documentElement.style.backgroundColor = '#121212';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+            document.documentElement.style.backgroundColor = '#ffffff';
+        }
+    })();
+</script>
     <link rel="stylesheet" href="css/style.css">
     <style>
         body { text-align: center; background: var(--bg); color: var(--text); overflow: hidden; }

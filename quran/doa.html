@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doa Pilihan - Al-Qur'an Pro</title>
      <script>
-    // CEK TEMA SECEPAT KILAT sebelum halaman digambar
+    // SCRIPT ANTI-KEDIP (Mata Genit)
     (function() {
-      const tema = localStorage.getItem('theme') || 'light';
-      if (tema === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        // Tambahkan style darurat biar body langsung item
-        document.documentElement.style.backgroundColor = '#121212'; 
-      }
+        const isDark = localStorage.getItem('userDark') === 'true';
+        const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+        
+        // Cek batasan Mushaf 2 & 3 (gak boleh dark mode)
+        const bolehDark = isDark && tipe !== 'mushaf-2' && tipe !== 'mushaf-3';
+
+        if (bolehDark) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            // 'color-scheme' ini sakti, bikin scrollbar & background bawaan lgsg item
+            document.documentElement.style.colorScheme = 'dark';
+            document.documentElement.style.backgroundColor = '#121212';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+            document.documentElement.style.backgroundColor = '#ffffff';
+        }
     })();
-  </script>
+</script>
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* Reset Dasar agar tidak geser */
@@ -104,6 +114,7 @@ body {
     </div>
 
   <script src="data/doa.js"></script>
+  <script src="https://alquran-pro.pages.dev/data/doa.js"></script>
 
 <script>
     // 1. Sinkron Tema (Seperti biasa)
