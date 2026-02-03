@@ -43,5 +43,15 @@ const dataDoa = [
         judul: "Doa Ketetapan Iman",
         arab: "يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ",
         arti: "Wahai Dzat yang membolak-balikkan hati, tetapkanlah hatiku di atas agama-Mu."
-    }
+    },
+    {
+        judul: " Doa Mengenakan Pakain Baru ",
+        arab: "  اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ كَسَوْتَنِيْهِ، أَسْأَلُكَ مِنْ خَيْرِهِ وَخَيْرِ مَا صُنِعَ لَهُ، وَأَعُوْذُ بِكَ مِنْ شَرِّهِ وَشَرِّ مَا صُنِعَ لَهُ ",
+        arti: " Ya Allah, segala puji hanya untuk-Mu. Engkau telah memakaikan pakaian ini kepadaku. Aku meminta kepada-Mu akan kebaikannya dan kebaikan yang dibuat untuknya. Dan aku berlindung kepada-Mu dari kejelekannya dan kejelekan yang dibuat untuknya. (HR. Abu Dawud, At-Tirmidziy dan Al-Baghawiy) "
+    },
+     {
+        judul: " Doa Melepas Pakaian  ",
+        arab: " بِسْمِ اللهِ الَّذِيْ لاَ إِلَهَ إِلَّا هُوَ ",
+        arti: " Dengan nama Allah yang tiada Tuhan selain-Nya. "
+    },
 ];
