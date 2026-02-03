@@ -901,14 +901,7 @@ function eksekusiReset() {
     }, 1500);
 }
   
-  function noHistory(aObj) {
-  window.location.replace(aObj.href);
-  return false; // Prevents the default href navigation
-}
-   
+  
     window.addEventListener('DOMContentLoaded', () => {
     muatPengaturanPaten();
 });
-
-
-   
