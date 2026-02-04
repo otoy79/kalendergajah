@@ -98,16 +98,57 @@
         font-weight: 600;
         margin-top: 8px;
     }
+
+   #notif-sholat {
+    position: fixed;
+    top: -100px; /* Sembunyi di atas */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 400px;
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#notif-sholat.tampil {
+    top: 20px; /* Meluncur ke bawah */
+}
+
+.btn-tutup-notif {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
     </style>
 </head>
-   <body onclick="aktifkanAsisten()" class="mushaf-1">
+   <body class="mushaf-1" onclick="aktifkanAsisten()">
+   
+    <div id="notif-sholat">
+    <div style="font-size: 24px;">🔔</div>
+    <div style="flex: 1;">
+        <b id="judul-notif" style="display: block;">Pengingat Sholat</b>
+        <small id="pesan-notif">10 Menit lagi waktu Subuh</small>
+    </div>
+    <button class="btn-tutup-notif" onclick="tutupNotif()">OK</button>
+</div>
 
     <div class="hero-menu">
     <h1 style="margin:0; font-family: 'Amiri', serif;">Al-Qur'an Pro</h1>
     <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 38px;">Salam</div>
  
 
-    <button onclick="asistenNgomong('Halo Bossku, suara saya sudah masuk belum?')">Tes Suara</button>
+    <button class="menu-btn" onclick="asistenNgomong('Halo Bossku, suara saya sudah masuk belum?')">🔊</button>
    
     <div id="jkt-countdown-sholat" style="font-size: 13px; margin: 5px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 5px 0;">
         Menghitung waktu sholat...
@@ -172,6 +213,7 @@
   
     <script>
         let asistenStandBy = false;
+        let suaraAsisten = new Audio();
 
         function sinkronTema() {
     // 1. Ambil data tipe mushaf
@@ -319,7 +361,10 @@ async function ambilJadwal() {
         const f = (w) => w.split(' ')[0];
         const jamSekarang = sekarang.getHours().toString().padStart(2,'0') + ":" + sekarang.getMinutes().toString().padStart(2,'0');
         
-        let targetWaktu = null; let namaSholat = "";
+        let targetWaktu = null; 
+        let namaSholat = "";
+
+        // 1. Cari target sholat
         for (let key in listNama) {
             if (f(jadwalSholatGlobal[key]) > jamSekarang) {
                 targetWaktu = f(jadwalSholatGlobal[key]);
@@ -329,6 +374,7 @@ async function ambilJadwal() {
         }
         if (!targetWaktu) { targetWaktu = f(jadwalSholatGlobal['Fajr']); namaSholat = "Subuh"; }
 
+        // 2. Hitung selisih
         const [h, m] = targetWaktu.split(':');
         const waktuTarget = new Date();
         waktuTarget.setHours(h, m, 0);
@@ -339,21 +385,30 @@ async function ambilJadwal() {
         const sMenit = Math.floor((selisih % (1000 * 60 * 60)) / (1000 * 60));
         const sDetik = Math.floor((selisih % (1000 * 60)) / 1000);
 
-        // --- NOTIFIKASI TULISAN (BIAR KELIHATAN) ---
         const el = document.getElementById('jkt-countdown-sholat');
-        
-        // JIKA TEPAT 10 MENIT
-       if (sJam === 0 && sMenit === 0 && sDetik === 0) {
-            // Tampilan Visual (Pasti Muncul)
-            if(el) {
-                el.innerHTML = `<div style="background:red; color:white; padding:10px; border-radius:10px; animation:blink 0.5s infinite;">
-                               ⚠️ 10 MENIT LAGI ${namaSholat.toUpperCase()}!
-                               </div>`;
+
+        // 3. LOGIKA NOTIFIKASI (Tepat 10 Menit)
+        if (sJam === 0 && sMenit === 10 && sDetik === 0) {
+            // Jalankan Visual Banner & Suara MP3
+            tampilkanNotif(
+                `Waktu ${namaSholat}`, 
+                `Bossku, 10 menit lagi masuk waktu ${namaSholat}. Persiapan yuk!`, 
+                "pengingat_sholat"
+            );
+        }
+
+        // 4. UPDATE TAMPILAN TIMER DI LAYAR
+        if (el) {
+            if (sJam === 0 && sMenit < 10) {
+                // Jika sudah dibawah 10 menit, kasih warna merah & kedap-kedip
+                el.innerHTML = `
+                    <div style="background:red; color:white; padding:10px; border-radius:10px; animation:blink 0.8s infinite;">
+                        ⚠️ ${sMenit}m ${sDetik}s LAGI ${namaSholat.toUpperCase()}!
+                    </div>`;
+            } else {
+                // Tampilan normal
+                el.innerHTML = `⏳ <b>${sJam}j ${sMenit}m ${sDetik}s</b> lagi menuju <b>${namaSholat}</b>`;
             }
-            // Suara (Hanya bunyi kalau sudah klik layar sebelumnya)
-            asistenNgomong(`Bossku, sepuluh menit lagi masuk waktu ${namaSholat}. Persiapan yuk.`);
-        } else if (el) {
-            el.innerHTML = `⏳ <b>${sJam}j ${sMenit}m ${sDetik}s</b> lagi menuju <b>${namaSholat}</b>`;
         }
 
     }, 1000);
@@ -385,7 +440,6 @@ async function muatTanggalHeader() {
     audioAsisten.play().catch(e => console.log("Gagal muter suara: ", e));
 }
 
-    
     function cekAgendaHariIni() {
     const mskr = new Date();
     const cacheKey = `kalender_${mskr.getMonth() + 1}_${mskr.getFullYear()}`;
@@ -436,6 +490,35 @@ style.innerHTML = `
 document.head.appendChild(style);
    
 
+    function tampilkanNotif(judul, pesan) {
+    // 1. TEMBAK LANGSUNG KE LINK MP3 BOSS
+    suaraAsisten.src = "https://alquran-pro.pages.dev/audio/belt.mp3"; 
+    
+    // Paksa Play
+    suaraAsisten.play().catch(e => {
+        console.log("Suara butuh klik user dulu baru mau bunyi");
+    });
+
+    // 2. JALANKAN VISUAL BANNER
+    const notif = document.getElementById('notif-sholat');
+    if (notif) {
+        document.getElementById('judul-notif').innerText = judul;
+        document.getElementById('pesan-notif').innerText = pesan;
+        notif.classList.add('tampil');
+    }
+
+    // 3. Otomatis tutup setelah 15 detik
+    setTimeout(() => {
+        tutupNotif();
+    }, 25000);
+}
+
+function tutupNotif() {
+    const notif = document.getElementById('notif-sholat');
+    if (notif) notif.classList.remove('tampil');
+    suaraAsisten.pause(); 
+    suaraAsisten.currentTime = 0; // Balikin ke detik 0
+}
 
   // Pakai pageshow biar pas di-BACK langsung berubah warnanya
 window.addEventListener('pageshow', () => {
