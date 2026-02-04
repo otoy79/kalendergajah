@@ -43,7 +43,7 @@
                         localStorage.setItem('userKota', kota);
                         muatJadwal();
                      asistenNgomong("Asisten diaktifkan");
-                    } catch (e) { alert("GPS Berhasil, tapi gagal ambil nama kota."); }
+                    } catch (e) { pesan("GPS Berhasil, tapi gagal ambil nama kota."); }
                 });
             }
         }
@@ -239,14 +239,14 @@ function renderTabel(data, tglSkr, tahun) {
         
         // Putar
         adzanPlayer.play().then(() => {
-            alert("Suara Adzan sedang diputar... (Klik OK untuk hentikan test)");
+            pesan("Suara Adzan sedang diputar... (Klik OK untuk hentikan test)");
             adzanPlayer.pause(); // Berhenti setelah user klik OK
             adzanPlayer.currentTime = 0;
         }).catch(e => {
-            alert("Waduh, audionya gak mau jalan! Pastikan sudah klik 'Aktifkan Suara Adzan' dulu ya.");
+            pesan("Waduh, audionya gak mau jalan! Pastikan sudah klik 'Aktifkan Suara Adzan' dulu ya.");
         });
     } else {
-        alert("Elemen audio tidak ditemukan!");
+        pesan("Elemen audio tidak ditemukan!");
     }
 }
    
