@@ -43,7 +43,7 @@
                         localStorage.setItem('userKota', kota);
                         muatJadwal();
                      asistenNgomong("Asisten diaktifkan");
-                    } catch (e) { pesan("GPS Berhasil, tapi gagal ambil nama kota."); }
+                    } catch (e) { pesan("GPS Berhasil, tapi gagal ambil nama kota. (Ketik di pencarian nama Kota/daerah anda.!) "); }
                 });
             }
         }

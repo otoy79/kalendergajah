@@ -35,6 +35,21 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
+  function toggleModeKitab(isOn) {
+    // 1. Sinkronkan checkbox
+    const chk = document.getElementById('hanya-arab');
+    if (chk) chk.checked = isOn;
+
+    // 2. Mainkan class di body
+    if (isOn) {
+        document.body.classList.add('mode-kitab');
+    } else {
+        document.body.classList.remove('mode-kitab');
+    }
+    
+    // 3. Simpan ke permanen
+    localStorage.setItem('userModeKitab', isOn);
+}
     // =========================================
     // 3. INISIALISASI DATA (OFFLINE FIRST)
     // =========================================
@@ -428,12 +443,27 @@ function renderAyat(namaSurah) {
         if(document.getElementById('btnPlay')) document.getElementById('btnPlay').innerText = "Pause Audio";
         
         // Update UI Highlight
+
+   document.querySelectorAll('.teks-arab').forEach(el => {
+        el.classList.remove('sedang-dibaca');
+    });
+
+    // 2. Pasang tanda di ayat yang sekarang diputar
+    const ayatAktif = document.querySelector(`#card-${index} .teks-arab`);
+    if (ayatAktif) {
+        ayatAktif.classList.add('sedang-dibaca');
+        
+        // 3. Auto-scroll: Biar layar ngikutin ayat kalau kepanjangan
+        if (document.body.classList.contains('mode-kitab')) {
+            ayatAktif.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
         document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
         const card = document.getElementById(`card-${index}`);
         if(card) {
             card.classList.add('active');
             // Auto Scroll
-            const headerHeight = 55; 
+            const headerHeight = 75; 
             const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
@@ -743,6 +773,8 @@ function updateTabelJadwal(timings) {
     if (typeof muatJadwalSholat === "function") muatJadwalSholat();
     
     // 2. Ambil semua data dari Bagasi (LocalStorage)
+    const isKitab = localStorage.getItem('userModeKitab') === 'true';
+toggleModeKitab(isKitab);
     const isDark = localStorage.getItem('userDark') === 'true';
     const isTajwid = localStorage.getItem('userTajwid') !== 'false';
     const isLatin = localStorage.getItem('userLatin') !== 'false';
@@ -858,14 +890,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }
 });
-
-  function keAngkaArab(angka) {
-    const map = {
-        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
-        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
-    };
-    return angka.toString().split('').map(c => map[c] || c).join('');
-}
 
   function keAngkaArab(n) {
     if (!n) return '';
