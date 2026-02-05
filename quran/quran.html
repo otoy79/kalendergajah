@@ -19,7 +19,87 @@
   </script>
      <link rel="stylesheet" href="css/style.css"> 
     <style>
+    /* Sembunyikan container tombol & nomor ayat atas */
+.mode-kitab .ayat-card > div:first-child {
+    display: none !important;
+}
+
+  /* Update Mode Kitab agar Rata Kanan */
+.mode-kitab #area-list-ayat {
+    direction: rtl; 
+    text-align: justify; 
+    padding: 20px;
+    line-height: 2.8; 
+}
+
+/* Pastikan card ayat tidak merusak aliran teks */
+.mode-kitab .ayat-card {
+    display: inline !important;
+    direction: rtl;
+}
+
+/* Tambahan: Biar nomor ayat Arab ada jarak dikit */
+.mode-kitab .nomor-ayat-arab {
+    display: inline-block;
+    margin-right: -7px;
+    margin-left: -25px;
+    color: var(--primary);
+    font-size: 1em;
+    vertical-align: middle;
+}
+/* Mode Kitab: Ayat menyambung seperti paragraf */
+.mode-kitab .ayat-card {
+    display: inline; /* Biar menyambung ke samping */
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Sembunyikan elemen yang tidak perlu di Mode Kitab */
+.mode-kitab .teks-latin, 
+.mode-kitab .teks-indo, 
+.mode-kitab .btn-kecil,
+.mode-kitab br {
+    display: none !important;
+}
+  .mode-kitab .teks-arab:hover {
+    background: rgba(var(--primary-rgb), 0.1) !important;
+    border-radius: 5px;
+}
+   
+/* Biar tetap RTL meskipun sedang Glow */
+.mode-kitab .teks-arab {
+    display: inline !important;
+    cursor: pointer;
+}
+  
+.mode-kitab .teks-arab {
+    border-bottom: 0.1px solid rgba(0, 0, 0, 0.1) !important; /* Border tipis */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03); /* Shadow sangat tipis */
+    padding: 0px 3px !important;
+    margin: 0px !important;
     
+}
+
+/* 2. KHUSUS MODE GELAP (Dark Mode) */
+[data-theme="dark"] .mode-kitab .teks-arab {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1) !important; /* Border putih tipis */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Shadow lebih gelap */
+}
+
+/* 3. Warna saat Ayat sedang Dibaca (Glow) di Mode Gelap */
+[data-theme="dark"] .mode-kitab .teks-arab.sedang-dibaca {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border-bottom: 0.5px solid #ffcc80 !important;
+}
+
+/* Warna saat Ayat sedang Dibaca di Mode Terang */
+.mode-kitab .teks-arab.sedang-dibaca {
+    background-color: rgba(0, 77, 64, 0.05) !important;
+    border-bottom: 0.5px solid var(--primary) !important;
+}
 </style>
 </head>
 <body class="tajwid-on mushaf-1">
@@ -106,6 +186,11 @@
     <h2 style="margin-top:10px; color:var(--primary);">Pengaturan</h2>
     <hr style="border:0; border-top:1px solid #ddd; margin-bottom:10px;">
 
+ <div class="settings-item">
+    <label>Tampilkan Hanya Arab (Mode Kitab)</label>
+    <input type="checkbox" id="hanya-arab" onchange="toggleModeKitab(this.checked)">
+</div>
+
     <div class="settings-item">
         <label>Pilih Font Arab</label>
         <select id="pilihFontArab" onchange="gantiFontArab(this.value)">
@@ -172,6 +257,10 @@
     <button id="btnPlay" class="btn-action" onclick="handlePlayPause()">Play Audio</button>
 </div>
     <script src="js/script.js"></script>
+
+ <script>
+  
+</script>
 
 </body>
 </html>

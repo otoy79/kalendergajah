@@ -293,6 +293,7 @@
    body.no-tajwid .teks-arab font {
     color: inherit !important; /* Paksa ikut warna teks utama */
 }
+  
 </style>
 </head>
 <body class="mushaf-1">
@@ -379,9 +380,9 @@
      <div class="settings-item">
         <label>Ukuran Font</label>
         <div style="display:flex; align-items:center; gap:10px;">
-            <button onclick="ubahFont(-2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➖</button>
+            <button onclick="ubahFont(-2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">🔻</button>
             <b id="fontLabel" style="min-width:40px; text-align:center;">30px</b>
-            <button onclick="ubahFont(2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">➕</button>
+            <button onclick="ubahFont(2)" style="width:30px; height:30px; border-radius:50%; border:1px solid #ccc; cursor:pointer;">🔺</button>
         </div>
     </div>
 
@@ -708,12 +709,12 @@ for (let n in data.ayat) {
     <div id="card-${idx}" class="ayat-card" style="border-bottom: 1px solid var(--border); padding: 5px 25px; box-sizing: border-box; background: var(--bg);">
         <div class="container-share">  
       <div class="no-ayat"  style="padding:0;">
-                <span style="background:rgba(255,255,255,0.2); width:24px; height:24px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px;">${n}</span>                    
+                <span style="background:rgba(255,255,255,0.2); width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px;">${n}</span>                    
           </div>               
             <div style="display: flex; gap: 25px; align-items:center;">
-             <span onclick="putarAudio(${idx}); simpanBookmark(${idx}, true)" style="cursor:pointer; font-size:12px; opacity:0.7;">▶️ PUTAR</span>
-                <span onclick="copyAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7;">📋</span>
-                <span onclick="shareAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7;">🔗</span>
+             <span onclick="putarAudio(${idx}); simpanBookmark(${idx}, true)" style="cursor:pointer; font-size:18px; opacity:0.7; border: 0.5px solid var(--text); border-radius: 5px; padding: 0 6px;"> ▶</span>
+                <span onclick="copyAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7; border: 0.5px solid var(--text); border-radius: 5px; padding: 4px 6px;">📋</span>
+                <span onclick="shareAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7;border: 0.5px solid var(--text); border-radius: 5px; padding: 4px 6px;">🔗</span>
             </div>
         </div>
      <div class="teks-arab ${fontAktif}" style="font-size:${fontSizeArab}px; line-height:2.1; direction: rtl; cursor.: none; text-align: right;"> 
@@ -1065,19 +1066,12 @@ function filterTajwid(teks) {
     }
 })();
 
-   function keAngkaArab(angka) {
-    const map = {
-        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
-        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
-    };
-    return angka.toString().split('').map(c => map[c] || c).join('');
-}
-   function keAngkaArab(n) {
+
+  function keAngkaArab(n) {
     if (!n) return '';
     const map = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-    return n.toString().split('').map(digit => map[digit]).join('');
+    return n.toString().split('').map(digit => map[digit] || digit).join('');
 }
-
     </script>
     
 </body>
