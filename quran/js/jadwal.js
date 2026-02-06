@@ -1,6 +1,6 @@
- // 1. Taruh Variabel Global di paling atas script
-        let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
+let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
         let suaraAktif = false;
+        let wakeLock = null;
         let adzanSudahBunyi = false; 
         
     function aktifkanSuara() {
@@ -21,6 +21,13 @@
         }).catch(e => alert("Gagal aktifkan suara. Pastikan HP tidak mode senyap!"));
     }
 
+        function terapkanTema() {
+            const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+            const isDark = localStorage.getItem('userDark') === 'true';
+            document.body.className = tipe;
+            if (isDark) document.body.classList.add('dark-mode');
+        }
+  
         // 3. Fungsi Cari Kota
         function cariKotaManual() {
             const val = document.getElementById('input-kota').value;
@@ -42,8 +49,7 @@
                         kotaAktif = kota;
                         localStorage.setItem('userKota', kota);
                         muatJadwal();
-                     asistenNgomong("Asisten diaktifkan");
-                    } catch (e) { pesan("GPS Berhasil, tapi gagal ambil nama kota. (Ketik di pencarian nama Kota/daerah anda.!) "); }
+                    } catch (e) { alert("GPS Berhasil, tapi gagal ambil nama kota."); }
                 });
             }
         }
@@ -144,33 +150,21 @@ function renderTabel(data, tglSkr, tahun) {
         if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 500);
 }
-    
 
         // Jalankan saat startup
         window.onload = () => {
             terapkanTema();
             muatJadwal();
         };
-       
-   
+
     function updateCountdown(timings) {
     const timerEl = document.getElementById('timer-sholat');
-    const adzanPlayer = document.getElementById('audioAdzan');
+     const adzanPlayer = document.getElementById('audioAdzan');
     const labelEl = document.getElementById('nama-sholat-next');
     const labelUtama = document.getElementById('label-next');
 
-    // Fungsi untuk membersihkan format jam dan MENAMBAH 2 MENIT
-    const prosesWaktu = (jamApi) => {
-        let waktuMurni = jamApi.split(' ')[0]; // Ambil "04:30"
-        let [h, m] = waktuMurni.split(':').map(Number);
-        
-        let d = new Date();
-        d.setHours(h);
-        d.setMinutes(m + 0); // TAMBAH 2 MENIT DI SINI BOSKU
-        
-        return d.getHours().toString().padStart(2, '0') + ":" + 
-               d.getMinutes().toString().padStart(2, '0');
-    };
+    // Fungsi kecil untuk buang (WIB) atau (GMT)
+    const bersihkanJam = (jamApi) => jamApi.split(' ')[0];
 
     setInterval(() => {
         const sekarang = new Date();
@@ -179,12 +173,12 @@ function renderTabel(data, tglSkr, tahun) {
                        sekarang.getMinutes().toString().padStart(2, '0');
 
         const daftarSholat = [
-            { nama: 'Imsak', jam: prosesWaktu(timings.Imsak) },
-            { nama: 'Subuh', jam: prosesWaktu(timings.Fajr) },
-            { nama: 'Dzuhur', jam: prosesWaktu(timings.Dhuhr) },
-            { nama: 'Ashar', jam: prosesWaktu(timings.Asr) },
-            { nama: 'Maghrib', jam: prosesWaktu(timings.Maghrib) },
-            { nama: 'Isya', jam: prosesWaktu(timings.Isha) }
+            { nama: 'Imsak', jam: bersihkanJam(timings.Imsak) },
+            { nama: 'Subuh', jam: bersihkanJam(timings.Fajr) },
+            { nama: 'Dzuhur', jam: bersihkanJam(timings.Dhuhr) },
+            { nama: 'Ashar', jam: bersihkanJam(timings.Asr) },
+            { nama: 'Maghrib', jam: bersihkanJam(timings.Maghrib) },
+            { nama: 'Isya', jam: bersihkanJam(timings.Isha) }
         ];
 
         // Cari sholat yang jam-nya lebih besar dari jam sekarang
@@ -215,20 +209,20 @@ function renderTabel(data, tglSkr, tahun) {
             labelEl.innerText = "Pukul " + sholatNext.jam;
             timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
 
-            // LOGIKA ADZAN
-            if (jam === 00 && menit === 00 && detik === 00) {
-                // Pastikan variabel suaraAktif dan adzanSudahBunyi sudah didefinisikan di luar fungsi ini
-                if (typeof suaraAktif !== 'undefined' && suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
-                    adzanPlayer.play();
-                    adzanSudahBunyi = true; 
-                    
-                    // Reset setelah 1 menit agar tidak bunyi terus menerus di detik yang sama
-                    setTimeout(() => { adzanSudahBunyi = false; }, 60000);
-                }
-            }
+            // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 08 detik)
+           if (jam === 00 && menit === 00 && detik === 00) {
+    if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
+        adzanPlayer.play();
+        adzanSudahBunyi = true; 
+        
+        // Reset 2 detik aja biar bisa test lagi tiap menit
+        setTimeout(() => { adzanSudahBunyi = false; }, 60000);
+    }
+}
+
         } 
     }, 1000); 
-}
+} 
 
    function testSuara() {
     const adzanPlayer = document.getElementById('audioAdzan');
@@ -239,14 +233,14 @@ function renderTabel(data, tglSkr, tahun) {
         
         // Putar
         adzanPlayer.play().then(() => {
-            pesan("Suara Adzan sedang diputar... (Klik OK untuk hentikan test)");
+            alert("Suara Adzan sedang diputar... (Klik OK untuk hentikan test)");
             adzanPlayer.pause(); // Berhenti setelah user klik OK
             adzanPlayer.currentTime = 0;
         }).catch(e => {
-            pesan("Waduh, audionya gak mau jalan! Pastikan sudah klik 'Aktifkan Suara Adzan' dulu ya.");
+            alert("Waduh, audionya gak mau jalan! Pastikan sudah klik 'Aktifkan Suara Adzan' dulu ya.");
         });
     } else {
-        pesan("Elemen audio tidak ditemukan!");
+        alert("Elemen audio tidak ditemukan!");
     }
 }
    
@@ -272,18 +266,30 @@ function simpanPengaturanAdzan() {
 // Fungsi Pancingan (Wajib ada klik user)
    function pancingAudio() {
     const adzanPlayer = document.getElementById('audioAdzan');
+    
+    // 1. Langsung eksekusi PLAY tanpa ba-bi-bu
     adzanPlayer.play().then(() => {
+        // Kalau berhasil play, baru kita atur sisanya
         adzanPlayer.pause();
         adzanPlayer.currentTime = 0;
         suaraAktif = true;
+        
         document.getElementById('modalAudio').style.display = 'none';
         console.log("Audio Adzan Ready, Bossku!");
+
+        // 2. Kunci Layar (Wake Lock) taruh belakangan, jangan ganggu audio
+        if ('wakeLock' in navigator) {
+            navigator.wakeLock.request('screen').then((lock) => {
+                wakeLock = lock;
+                console.log("Layar dikunci! 🛡️");
+            }).catch(err => console.log("WakeLock gagal, tapi audio aman."));
+        }
     }).catch(e => {
-        alert("Waduh, gagal pancing audio. Pastikan HP tidak dalam mode hening ya!");
-        tutupModal();
+        console.error(e);
+        alert("Gagal pancing audio! Cek volume HP atau koneksi internet, Bossku!");
     });
-}
- 
+  }
+        
    function simpanPengaturanAdzan() {
     const isChecked = document.getElementById('checkAdzan').checked;
     if (isChecked) {
