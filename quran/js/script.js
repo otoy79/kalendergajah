@@ -463,7 +463,7 @@ function renderAyat(namaSurah) {
         if(card) {
             card.classList.add('active');
             // Auto Scroll
-            const headerHeight = 75; 
+            const headerHeight = 82; 
             const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
             window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
         }
