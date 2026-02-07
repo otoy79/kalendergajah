@@ -27,6 +27,15 @@
 </script>
     <link rel="stylesheet" href="css/style.css">
     <style>
+      body {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+    
         body { text-align: center; background: var(--bg); color: var(--text); overflow: hidden; }
         .header-nav { background: var(--primary); color: white; padding: 15px; }
         

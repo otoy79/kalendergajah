@@ -130,9 +130,21 @@
     border-radius: 8px;
     font-size: 12px;
 }
+   
+body {
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide-mode {
+  transform: translateX(310px); /* Atur lebar slide */
+  transition: transform 0.3s ease-in-out;
+}
+
     </style>
 </head>
-   <body class="mushaf-1" onclick="aktifkanAsisten()">
+   <body class="mushaf-1">
+     <div id="konten">
    
     <div id="notif-sholat">
     <div style="font-size: 24px;">🔔</div>
@@ -207,6 +219,8 @@
 </a>
 </div>
 
+    </div>
+   
   <script src="js/kalender.js"></script>
   <script src="js/jadwal.js"></script>
    <script src="js/script.js"></script>
@@ -392,7 +406,7 @@ async function ambilJadwal() {
             // Jalankan Visual Banner & Suara MP3
             tampilkanNotif(
                 `Waktu ${namaSholat}`, 
-                `Bossku, 10 menit lagi masuk waktu ${namaSholat}. Persiapan yuk!`, 
+                `🕌, 10 menit lagi masuk waktu ${namaSholat}. Persiapan yuk!`, 
                 "pengingat_sholat"
             );
         }
@@ -507,10 +521,10 @@ document.head.appendChild(style);
         notif.classList.add('tampil');
     }
 
-    // 3. Otomatis tutup setelah 15 detik
+    // 3. Otomatis tutup setelah 10 menit
     setTimeout(() => {
         tutupNotif();
-    }, 25000);
+    }, 100000);
 }
 
 function tutupNotif() {
@@ -532,8 +546,17 @@ setTimeout(() => {
     cekAgendaHariIni(); 
     // asistenNgomong("Tes suara asisten Bossku sudah aktif!"); // Buka komen ini buat tes suara pas startup
 }, 2000);
-
     
     </script>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+  document.body.style.transform = "translateX(350px)";
+  setTimeout(function() {
+    document.body.style.transform = "translateX(0)";
+  }, 500);
+});
+  
+</script>
 </body>
 </html>

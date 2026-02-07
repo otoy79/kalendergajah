@@ -19,6 +19,14 @@
   </script>
      <link rel="stylesheet" href="css/style.css"> 
     <style>
+   body {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
     /* Sembunyikan container tombol & nomor ayat atas */
 .mode-kitab .ayat-card > div:first-child {
     display: none !important;
@@ -100,6 +108,10 @@
     background-color: rgba(0, 77, 64, 0.05) !important;
     border-bottom: 0.5px solid var(--primary) !important;
 }
+  .ayat-card.active .teks-arab {
+    border-radius: 8px;
+}
+
 </style>
 </head>
 <body class="tajwid-on mushaf-1">
@@ -187,7 +199,7 @@
     <hr style="border:0; border-top:1px solid #ddd; margin-bottom:10px;">
 
  <div class="settings-item">
-    <label>Tampilkan Hanya Arab (Mode Kitab)</label>
+    <label>Mode Kitab (Hanya Arab) </label>
     <input type="checkbox" id="hanya-arab" onchange="toggleModeKitab(this.checked)">
 </div>
 
@@ -257,10 +269,6 @@
     <button id="btnPlay" class="btn-action" onclick="handlePlayPause()">Play Audio</button>
 </div>
     <script src="js/script.js"></script>
-
- <script>
-  
-</script>
 
 </body>
 </html>

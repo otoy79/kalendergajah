@@ -27,6 +27,14 @@
 </script>
     <link rel="stylesheet" href="css/style.css">
     <style>
+    body {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
         .audio-player {
             background: var(--primary); color: white;
             padding: 20px; border-radius: 20px; text-align: center;
@@ -60,7 +68,7 @@
 
 <div class="audio-player">
     <div id="status-play">Dengarkan Lantunan Merdu</div>
-    <audio id="audioHusna" src="audio/asmaul-husna.mp3"></audio>
+    <audio id="audioHusna" src="https://alquran-pro.pages.dev/audio/asmaul-husna.mp3"></audio>
     <button class="play-btn" id="btnPlay" onclick="toggleAudio()">▶️ Putar Audio</button>
 </div>
 

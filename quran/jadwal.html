@@ -17,6 +17,14 @@
   </script>
     <link rel="stylesheet" href="css/style.css">
     <style>
+   body {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
         .container-jadwal { padding: 20px; }
         .info-lokasi {
             background: var(--card-bg); padding: 20px; border-radius: 20px;
