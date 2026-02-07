@@ -49,7 +49,7 @@ let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
                         kotaAktif = kota;
                         localStorage.setItem('userKota', kota);
                         muatJadwal();
-                    } catch (e) { alert("GPS Berhasil, tapi gagal ambil nama kota."); }
+                    } catch (e) { pesan("GPS Berhasil, tapi gagal ambil nama kota. (atau Ketik nama Kota/Kecamatan di daerah anda!.)"); }
                 });
             }
         }

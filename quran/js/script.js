@@ -407,7 +407,7 @@ function renderAyat(namaSurah) {
                 if (parseInt(checkNo) === suratSelanjutnya) {
                     clearInterval(timer);
                     // Reset data agar fresh
-                    setTimeout(() => putarAudio(0), 2500); 
+                    setTimeout(() => putarAudio(0), 2000); 
                 }
             }, 500);
             return;
@@ -459,16 +459,35 @@ function renderAyat(namaSurah) {
         }
     }
         document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
-        const card = document.getElementById(`card-${index}`);
-        if(card) {
-            card.classList.add('active');
-            // Auto Scroll
-            const headerHeight = 82; 
-            const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
-            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-        }
-    }).catch(e => console.log("Menunggu klik user..."));
+    const card = document.getElementById(`card-${index}`);
+    
+    if(card) {
+        card.classList.add('active');
+        // Hitung posisi scroll
+        const headerHeight = 85; // Sesuaikan tinggi header Bossku
+        const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
+        
+        window.scrollTo({ 
+            top: offsetPosition, 
+            behavior: 'smooth' 
+        });
+    }
+   
+     const item = dataAyatAktif[index];
+    const urlAudio = formatUrlAudio(qariAktif, surahSekarang, item.nomorAyat);
 
+       player.src = urlAudio;
+      setTimeout(() => {
+        player.play().catch(e => {
+            console.log("Menunggu klik user untuk audio...");
+            // Kalau di Android jadul macet, tampilkan toast
+            tampilkanPesan("Klik layar untuk putar audio");
+        });
+    }, 500); 
+
+     }).catch(e => console.log("Menunggu klik user..."));
+
+    
     // 8. AUTO NEXT & ERROR HANDLING
     player.onended = () => {
         setTimeout(() => putarAudio(index + 1), 800);
@@ -632,7 +651,7 @@ function tampilkanToast(pesan) {
     if (!toast) {
         toast = document.createElement('div');
         toast.id = 'toast-notif';
-        toast.style = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%);  color:white; padding:10px 20px; background: var(--primary); border-radius:30px; font-size:12px; z-index:9999; transition:opacity 0.3s; pointer-events:none; font-family:sans-serif;";
+        toast.style = "position:fixed; bottom:80px; left:50%; transform:translateX(-50%);  color:white; padding:10px 20px; min-width: 140px; background: var(--primary); border-radius:30px; font-size:12px; z-index:9999; transition:opacity 0.3s; pointer-events:none; text-align: center; font-family:sans-serif;";
         document.body.appendChild(toast);
     }
     toast.innerText = pesan;
@@ -924,8 +943,11 @@ function eksekusiReset() {
         window.location.reload(true);
     }, 1500);
 }
-  
-  
     window.addEventListener('DOMContentLoaded', () => {
     muatPengaturanPaten();
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById("container");
+  container.classList.add("slide-mode");
 });
