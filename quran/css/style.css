@@ -115,12 +115,19 @@
         text-align: right; 
         line-height: 2.2; 
         direction: rtl; 
-        cursor: pointer;
         word-spacing: 5px;
         margin-bottom: 15px;
+        cursor: none;
+        transition: transform .2s;
     }
-
-    .teks-arab span { color: inherit; }
+  .teks-arab:hover {
+    background-color: rgba(222, 64, 29, 0.02) !important;
+    border-bottom: 0.5px solid var(--primary) !important;
+    border-radius: 8px;
+    -ms-transform: scale(1.05); /* IE 9 */
+  -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+}
 
     /* Visibilitas Terjemahan */
     body.hide-latin .teks-latin { display: none !important; }
