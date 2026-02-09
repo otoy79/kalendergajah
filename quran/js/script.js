@@ -95,9 +95,10 @@
         const btn = document.createElement('button');
         // s.nama adalah kolom dari JSON yang isinya tulisan Arab surah
         btn.innerHTML = `
-            <span class="no-surah">${s.nomor}.</span> 
+            <span class="no-surah">${s.nomor}</span> 
             <span class="nama-surah">${s.namaLatin}</span>
-            <span class="nama-arab">${s.nama}</span>
+            <span class="nama-arab">${s.nama}</span> 
+             <span class="no-surahArab">${keAngkaArab(s.nomor)}</span>
         `;
         
         btn.onclick = () => gantiSurah(s.nomor);
@@ -246,7 +247,8 @@ function kembaliKeHome() {
                     style="padding: 5px 12px; border-radius: 4px; background: var(--primary); color: white; border: none; cursor:pointer;">GO</button>
         </div>
         
-        <p class="teks-arab" style="margin: 15px; text-align: center; font-size:${fontSizeArab}px;">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+        <p class="teks-arab" style="margin: 15px; text-align: center; font-size:${fontSizeArab}px;">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p> 
+   
     `;
 
     // 4. Jalankan Render List Ayat
@@ -357,8 +359,8 @@ function renderAyat(namaSurah) {
 
         card.innerHTML = `
             <div style="display:flex; justify-content:space-between; margin-bottom: 20px; align-items: center; font-size:12px;">
-                <span style="background:var(--primary); text-align: center; color:white; padding:5px 12px; border-radius:10px; font-weight:bold;">
-                    Ayat ${item.nomorAyat}
+                  <span style="background:none; border:0.5px solid var(--text); color:var(--text);width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px; font-weight: 800;">
+                    ${item.nomorAyat}
                 </span>
                 <div style="display:flex; gap:8px;">
                     <button class="btn-kecil" onclick="simpanBmark(${surahSekarang}, ${item.nomorAyat}, '${namaAman}')">🔖 Simpan</button>
@@ -376,7 +378,7 @@ function renderAyat(namaSurah) {
             
             <div class="teks-indo" style="margin-top:10px; line-height:1.6; font-size:15px; opacity:0.9;">
                 ${item.teksIndonesia}
-            </div>
+            </div> 
         `;
         wadahAyat.appendChild(card);
     });
@@ -386,120 +388,100 @@ function renderAyat(namaSurah) {
     // 11. SISTEM AUDIO (PLAYER) - VERSI AUTO-ESTAFET
     // =========================================
     function putarAudio(index) {
-    // 1. AMBIL DATA DULU
-    const daftarAyat = (typeof dataAyatAktif !== 'undefined') ? dataAyatAktif : (window.dataAlquran ? window.dataAlquran.ayat : null);
-    const noSurat = (typeof noSuratAktif !== 'undefined') ? noSuratAktif : (typeof surahSekarang !== 'undefined' ? surahSekarang : null);
+        // 1. AMBIL DATA & VALIDASI
+        const daftarAyat = dataAyatAktif;
+        const noSurat = surahSekarang;
 
-    if (!daftarAyat || !noSurat) return;
+        if (!daftarAyat || !noSurat || daftarAyat.length === 0) return;
 
-    // 2. HITUNG TOTAL AYAT
-    const totalAyat = Array.isArray(daftarAyat) ? daftarAyat.length : Object.keys(daftarAyat).length;
+        // 2. LOGIKA PINDAH SURAH (ESTAFET)
+        if (index >= daftarAyat.length) {
+            let suratSelanjutnya = parseInt(noSurat) + 1;
+            if (suratSelanjutnya <= 114) {
+                tampilkanToast(`Surah Berikutnya: Surah ke-${suratSelanjutnya}...`);
+                
+                // Panggil gantiSurah (fungsi utama navigasi Anda)
+                gantiSurah(suratSelanjutnya);
 
-    // 3. LOGIKA PINDAH SURAH (Taruh di atas simpanBookmark)
-    if (index >= totalAyat) {
-        let suratSelanjutnya = parseInt(noSurat) + 1;
-        if (suratSelanjutnya <= 114) {
-            tampilkanToast(` Surah Berikutnya : ${suratSelanjutnya}...`);
-            bukaSurat(suratSelanjutnya);
-
-            let timer = setInterval(() => {
-                let checkNo = (typeof noSuratAktif !== 'undefined') ? noSuratAktif : surahSekarang;
-                if (parseInt(checkNo) === suratSelanjutnya) {
-                    clearInterval(timer);
-                    // Reset data agar fresh
-                    setTimeout(() => putarAudio(0), 2000); 
-                }
-            }, 500);
-            return;
+                // Tunggu data surah baru dimuat ke RAM, lalu putar ayat 1
+                let cekDataBaru = setInterval(() => {
+                    if (surahSekarang === suratSelanjutnya && dataAyatAktif.length > 0) {
+                        clearInterval(cekDataBaru);
+                        setTimeout(() => putarAudio(0), 1500); 
+                    }
+                }, 500);
+                return;
+            } else {
+                tampilkanPesan("Khatam! Shadaqallahul 'adzim.");
+                return;
+            }
         }
-        return;
-    }
 
-    // 4. BARU SIMPAN BOOKMARK (Hanya jika index valid/belum pindah surah)
-    if (typeof simpanBookmark === "function") {
-        simpanBookmark(index, false); 
-    }
-    
-    // 5. AMBIL DATA AYAT (Support V.1 & V.3)
-    const ayatSekarang = Array.isArray(daftarAyat) ? daftarAyat[index] : daftarAyat[Object.keys(daftarAyat)[index]];
-    const nomorAyatReal = ayatSekarang.nomorAyat || Object.keys(daftarAyat)[index];
+        // 3. UPDATE STATE INDEX
+        indexBerjalan = index;
 
-    // 6. SETUP QORIMAP (KEMBALI HADIR!)
-    const qariMap = {
-        'Alafasy': 'Alafasy_128kbps',
-        'Abdurrahmaan_As-Sudais': 'Abdurrahmaan_As-Sudais_192kbps',
-        'Muhammad_Jibreel': 'Muhammad_Jibreel_128kbps',
-        'Abdul_Basit_Murattal' : 'Abdul_Basit_Murattal_192kbps'
-    };
+        // 4. AMBIL DATA AYAT
+        const ayatSekarang = daftarAyat[index];
+        const nomorAyatReal = ayatSekarang.nomorAyat;
 
-    const folderQari = qariMap[qariAktif] || 'Alafasy_128kbps';
-    const s = parseInt(noSurat).toString().padStart(3, '0');
-    const a = nomorAyatReal.toString().padStart(3, '0');
+        // 5. SETUP QARI & URL
+        const qariMap = {
+            'Alafasy': 'Alafasy_128kbps',
+            'Abdurrahmaan_As-Sudais': 'Abdurrahmaan_As-Sudais_192kbps',
+            'Muhammad_Jibreel': 'Muhammad_Jibreel_128kbps',
+            'Abdul_Basit_Murattal' : 'Abdul_Basit_Murattal_192kbps'
+        };
 
-    // 7. EKSEKUSI PEMUTARAN
-    player.src = `https://www.everyayah.com/data/${folderQari}/${s}${a}.mp3`;
-    
-    player.play().then(() => {
-        if(document.getElementById('btnPlay')) document.getElementById('btnPlay').innerText = "Pause Audio";
+        const folderQari = qariMap[qariAktif] || 'Alafasy_128kbps';
+        const s = noSurat.toString().padStart(3, '0');
+        const a = nomorAyatReal.toString().padStart(3, '0');
+
+        // 6. EKSEKUSI PEMUTARAN
+        player.src = `https://www.everyayah.com/data/${folderQari}/${s}${a}.mp3`;
         
-        // Update UI Highlight
+        player.play().then(() => {
+        // --- TAMBAHKAN INI ---
+        const btnUtama = document.getElementById('btnPlay');
+        if(btnUtama) btnUtama.innerText = "⏸️ Pause Audio";
+            
+            // 7. UI HIGHLIGHT & AUTO SCROLL
+            // Bersihkan sisa highlight lama
+            document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.teks-arab').forEach(el => el.classList.remove('sedang-dibaca'));
 
-   document.querySelectorAll('.teks-arab').forEach(el => {
-        el.classList.remove('sedang-dibaca');
-    });
+            const card = document.getElementById(`card-${index}`);
+            if(card) {
+                card.classList.add('active');
+                const teksArab = card.querySelector('.teks-arab');
+                if(teksArab) teksArab.classList.add('sedang-dibaca');
 
-    // 2. Pasang tanda di ayat yang sekarang diputar
-    const ayatAktif = document.querySelector(`#card-${index} .teks-arab`);
-    if (ayatAktif) {
-        ayatAktif.classList.add('sedang-dibaca');
-        
-        // 3. Auto-scroll: Biar layar ngikutin ayat kalau kepanjangan
-        if (document.body.classList.contains('mode-kitab')) {
-            ayatAktif.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
-        document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
-    const card = document.getElementById(`card-${index}`);
-    
-    if(card) {
-        card.classList.add('active');
-        // Hitung posisi scroll
-        const headerHeight = 85; // Sesuaikan tinggi header Bossku
-        const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
-        
-        window.scrollTo({ 
-            top: offsetPosition, 
-            behavior: 'smooth' 
+                // Scroll ke ayat yang sedang diputar
+                const headerHeight = 83; 
+                const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+            }
+        }).catch(e => {
+            console.log("Audio play diblokir browser, menunggu interaksi user.");
+            tampilkanPesan("Klik layar untuk memutar audio");
         });
+
+        // 8. EVENT AUTO-NEXT & ERROR HANDLING
+        player.onended = () => {
+            setTimeout(() => putarAudio(index + 1), 800);
+        };
+
+        player.onerror = () => {
+            // Jika qari pilihan error, coba switch ke Alafasy sebagai cadangan
+            if (qariAktif !== 'Alafasy') {
+                qariAktif = 'Alafasy';
+                tampilkanPesan("Audio bermasalah, mencoba server cadangan...");
+                setTimeout(() => putarAudio(index), 1000);
+            } else {
+                tampilkanPesan("Gagal memuat audio ayat ini.");
+                setTimeout(() => putarAudio(index + 1), 2000); // Skip ke ayat depan
+            }
+        };
     }
-   
-     const item = dataAyatAktif[index];
-    const urlAudio = formatUrlAudio(qariAktif, surahSekarang, item.nomorAyat);
-
-       player.src = urlAudio;
-      setTimeout(() => {
-        player.play().catch(e => {
-            console.log("Menunggu klik user untuk audio...");
-            // Kalau di Android jadul macet, tampilkan toast
-            tampilkanPesan("Klik layar untuk putar audio");
-        });
-    }, 500); 
-
-     }).catch(e => console.log("Menunggu klik user..."));
-
-    
-    // 8. AUTO NEXT & ERROR HANDLING
-    player.onended = () => {
-        setTimeout(() => putarAudio(index + 1), 800);
-    };
-
-    player.onerror = () => {
-        if (qariAktif !== 'Alafasy') {
-            qariAktif = 'Alafasy'; // Switch ke cadangan
-            setTimeout(() => putarAudio(index), 1000);
-        }
-    };
-}
     // =========================================
 // 12. KONTROL AUDIO (QARI & PLAYBACK)
 // =========================================
@@ -515,19 +497,21 @@ function gantiQari(nama) {
 }
 
 function handlePlayPause() {
-    // Jika belum ada lagu yang disetel tapi sudah klik play
-     if (!player) player = document.getElementById('mainPlayer');
-    if (!player.src && dataAyatAktif.length > 0) {
-        return putarAudio(0);
+    const btn = document.getElementById('btnPlay');
+    if (!player.src) {
+        // Jika belum ada yang diputar, mulai dari ayat pertama
+        if (typeof dataAyatAktif !== 'undefined' && dataAyatAktif.length > 0) {
+            return putarAudio(0);
+        }
+        return;
     }
 
-    const btn = document.getElementById('btnPlay');
     if (player.paused) {
         player.play();
-        btn.innerText = "⏸️ Pause Audio";
+        if(btn) btn.innerText = "⏸️ Pause Audio";
     } else {
         player.pause();
-        btn.innerText = "▶️ Lanjut Audio";
+        if(btn) btn.innerText = "▶️ Lanjut Audio";
     }
 }
 
