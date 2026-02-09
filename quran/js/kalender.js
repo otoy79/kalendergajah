@@ -146,27 +146,29 @@ document.addEventListener('touchend', e => {
   
                 // Tampilkan ke layar
                 function generateAgenda(hijri) {
+    // 1. AMBIL DATA BULAN & TAHUN
     const blnEn = hijri.month.en;
-    const blnNo = hijri.month.number; 
+    const blnNo = parseInt(hijri.month.number); 
     let html = '';
 
-    // 1. Logika Puasa Ayyamul Bidh
-    if (blnEn !== "Ramadan" && blnEn !== "Dzul Hijjah") {
+    // 2. LOGIKA PUASA AYYAMUL BIDH
+    // Jangan munculkan kalau sedang bulan Ramadan (karena sudah puasa wajib)
+    if (blnEn !== "Ramadan") {
         const tglBidh = [13, 14, 15];
         tglBidh.forEach(t => {
             let labelNya = "Sunnah";
-            let infoNya = "Puasa Sunnah Pertengahan Bulan"; // Kasih keterangan tetap
+            let infoNya = "Puasa Sunnah Pertengahan Bulan";
 
-            // Spesial case: Tanggal 13 Dzulhijjah (jika diakses lewat index bulan 12)
+            // Jika bulan Dzulhijjah, tanggal 13 adalah Hari Tasyrik (Haram Puasa)
             if (blnNo === 12 && t === 13) {
                 labelNya = "Haram";
-                infoNya = "Hari Tasyrik";
+                infoNya = "Hari Tasyrik (Dilarang Puasa)";
             }
             html += itemAgenda(`Puasa Ayyamul Bidh (${t} ${blnEn})`, infoNya, labelNya);
         });        
     }
 
-    // 2. Daftar Agenda Besar Islam
+    // 3. DAFTAR AGENDA BESAR ISLAM
     const dataAgenda = [
         { bln: 1, tgl: 1, judul: "Tahun Baru Islam", info: "1 Muharram", tipe: "Penting" },
         { bln: 1, tgl: 10, judul: "Puasa Asyura", info: "Menghapus dosa setahun lalu", tipe: "Sunnah" },
@@ -181,13 +183,18 @@ document.addEventListener('touchend', e => {
         { bln: 12, tgl: 13, judul: "Hari Tasyrik", info: "Haram Berpuasa", tipe: "Haram" }
     ];
 
-    const agendaBulanIni = dataAgenda.filter(a => a.bln === blnNo);
+    // 4. FILTER AGENDA (Pastikan tipe data sama-sama Integer)
+    const agendaBulanIni = dataAgenda.filter(a => parseInt(a.bln) === blnNo);
+    
     agendaBulanIni.forEach(a => {
         html += itemAgenda(a.judul, a.info, a.tipe);
     });
 
-    // Masukkan ke elemen
-    document.getElementById('list-agenda').innerHTML = html || '<div class="puasa-item" style="padding:20px; opacity:0.6;">Tidak ada agenda khusus bulan ini.</div>';
+    // 5. RENDER KE LAYAR
+    const listEl = document.getElementById('list-agenda');
+    if (listEl) {
+        listEl.innerHTML = html || '<div class="puasa-item" style="padding:20px; opacity:0.6;">Tidak ada agenda khusus bulan ini.</div>';
+    }
 }
 
 // Fungsi pembantu (Versi Upgrade: Bisa ganti warna otomatis)
