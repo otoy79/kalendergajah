@@ -111,8 +111,8 @@
     top: -100px; /* Sembunyi di atas */
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
-    max-width: 400px;
+    width: 85%;
+    max-width: 360px;
     background: linear-gradient(135deg, #e67e22, #d35400);
     color: white;
     padding: 15px;
@@ -164,11 +164,8 @@ body {
 
     <div class="hero-menu">
     <h1 style="margin:0; font-family: 'Amiri', serif;">Al-Qur'an Pro</h1>
-    <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 38px;">Salam</div>
+    <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 38px;">Assalamu'alaikum</div>
  
-
-    <button class="menu-btn" onclick="asistenNgomong('Halo Bossku, suara saya sudah masuk belum?')">🔊</button>
-   
     <div id="jkt-countdown-sholat" style="font-size: 13px; margin: 5px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 5px 0;">
         Menghitung waktu sholat...
 </div>
@@ -409,7 +406,7 @@ async function ambilJadwal() {
         const el = document.getElementById('jkt-countdown-sholat');
 
         // 3. LOGIKA NOTIFIKASI (Tepat 10 Menit)
-        if (sJam === 0 && sMenit === 10 && sDetik === 0) {
+        if (sJam === 0 && sMenit === 00 && sDetik === 0) {
             // Jalankan Visual Banner & Suara MP3
             tampilkanNotif(
                 `Waktu ${namaSholat}`, 
@@ -445,71 +442,97 @@ async function muatTanggalHeader() {
     } catch (e) { }
 }
 
- 
-   function asistenNgomong(tipe) {
-    // Kita buat objek audio baru
-    let audioAsisten = new Audio();
-    
-    // Boss bisa ganti URL ini dengan file suara asli (MP3)
-    // Untuk ngetes, saya pake suara ping/notif dulu
-    if (tipe === "pengingat") {
-        audioAsisten.src = "https://alquran-pro.pages.dev/audio/belt.mp3"; 
-    } else {
-        audioAsisten.src = "https://alquran-pro.pages.dev/audio/belt.mp3";
-    }
-
-    audioAsisten.play().catch(e => console.log("Gagal muter suara: ", e));
-}
-
     function cekAgendaHariIni() {
     const mskr = new Date();
+    const jamSekarang = mskr.getHours();
+
+    // 1. FILTER JAM (Hanya muncul jam 18:00 - 06:00)
+     if (!(jamSekarang >= 18 || jamSekarang <= 6)) return;
+
+    // 2. TENTUKAN "TARGET HARI"
+    // Jika jam 18.00-23.59, berarti kita ingatkan untuk BESOK
+    // Jika jam 00.00-06.00, berarti kita ingatkan untuk HARI INI
+    let targetDina; 
+    if (jamSekarang >= 18) {
+        targetDina = (mskr.getDay() + 1) % 7; // Hari besok
+    } else {
+        targetDina = mskr.getDay(); // Hari ini (karena masih dini hari)
+    }
+
+    // 3. AMBIL DATA KALENDER (Untuk Hijriyah)
     const cacheKey = `kalender_${mskr.getMonth() + 1}_${mskr.getFullYear()}`;
     const dataKalender = JSON.parse(localStorage.getItem(cacheKey));
 
     if (dataKalender) {
-        const hariIni = dataKalender.find(d => parseInt(d.gregorian.day) === mskr.getDate());
-        if (hariIni) {
-            const h = hariIni.hijri;
+        // Cari data hijriyah (kalau jam > 18, cari tanggal masehi besok)
+        const tglCari = (jamSekarang >= 18) ? mskr.getDate() + 1 : mskr.getDate();
+        const infoHari = dataKalender.find(d => parseInt(d.gregorian.day) === tglCari);
+        
+        if (infoHari) {
             let infoPuasa = "";
-            const hariMasehi = mskr.getDay(); 
-            const tglH = parseInt(h.day);
+            const tglH = parseInt(infoHari.hijri.day);
 
-            // Logika info
-            if (hariMasehi === 1) infoPuasa = "Besok Puasa Senin, Bossku!";
-            else if (hariMasehi === 4) infoPuasa = "Besok Puasa Kamis, Bossku!";
-            else if (tglH === 12) infoPuasa = "Besok mulai Puasa Ayyamul Bidh, siapkan sahur ya!";
+            // CEK TARGET HARI (Senin=1, Kamis=4)
+            if (targetDina === 1) infoPuasa = "Besok Puasa Sunah Senin, jangan lupa sahur!";
+            else if (targetDina === 4) infoPuasa = "Besok Puasa Sunah Kamis, jangan lupa sahur!";
+            
+            // CEK TANGGAL HIJRIYAH (Ayyamul Bidh 13, 14, 15)
+            // Kalau besok tanggal 13, 14, atau 15, ingatkan!
+            if (tglH === 13 || tglH === 14 || tglH === 15) {
+                infoPuasa = `Besok Puasa Ayyamul Bidh Tanggal ${tglH} Hijriyah.`;
+            }
 
             if (infoPuasa) {
-                // Tampilkan teks di bawah countdown
-                const infoEl = document.getElementById('jkt-countdown-sholat');
-                if (infoEl) {
-                    // Cek biar gak double nambah div-nya
-                    if(!document.getElementById('notif-puasa-index')){
-                        const divBaru = document.createElement('div');
-                        divBaru.id = "notif-puasa-index";
-                        divBaru.innerHTML = `📢 <span style="color: #e67e22; font-weight: bold; animation: blink 1s infinite;">${infoPuasa}</span>`;
-                        divBaru.style.marginTop = "10px";
-                        infoEl.appendChild(divBaru);
-                    }
-                }
+                tampilkanNotifFloating(infoPuasa);
                 
-                // Suara sapaan (hanya sekali)
-                if (!window.sudahSapa) {
+                // Suara Sapaan (Cukup 1x saja per sesi pengingat)
+                const keySapa = `sapa_pengingat_${tglCari}`;
+                if (localStorage.getItem(keySapa) !== 'true') {
                     asistenNgomong("Assalamu'alaikum Bossku. " + infoPuasa);
-                    window.sudahSapa = true;
+                    localStorage.setItem(keySapa, 'true');
                 }
             }
         }
     }
 }
-
-// 3. LOGIKA CSS BIAR KEDAP KEDIP (Opsional)
-const style = document.createElement('style');
-style.innerHTML = `
-    @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
+// Tambahkan CSS Animasi ke Head
+const styleSlide = document.createElement('style');
+styleSlide.innerHTML = `
+    @keyframes slideUp {
+        from { bottom: -100px; opacity: 0; }
+        to { bottom: 20px; opacity: 1; }
+    }
 `;
-document.head.appendChild(style);
-   
+document.head.appendChild(styleSlide);
+
+     function tampilkanNotifFloating(pesan) {
+    if (document.getElementById('notif-puasa-floating')) return;
+
+    const divBaru = document.createElement('div');
+    divBaru.id = "notif-puasa-floating";
+    divBaru.innerHTML = `
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div style="font-size:24px;">🌙</div>
+            <div style="flex:1; font-size:14px; line-height:1.4;">
+                <b style="color:#ffcb8e; display:block; margin-bottom:2px;">Agenda Puasa</b>
+                ${pesan}
+            </div>
+            <button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">&times;</button>
+        </div>
+    `;
+    
+    // Style Melayang di Bawah
+    Object.assign(divBaru.style, {
+        position: "fixed", bottom: "85px", left: "50%",
+        transform: "translateX(-50%)", width: "88%", maxWidth: "400px",
+        backgroundColor: "rgba(0, 77, 64, 0.95)", // Hijau gelap botol
+        color: "white", padding: "15px", borderRadius: "15px",
+        zIndex: "10000", boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
+        border: "1px solid rgba(255,255,255,0.1)", animation: "slideUp 0.5s ease-out"
+    });
+    
+    document.body.appendChild(divBaru);
+}
 
     function tampilkanNotif(judul, pesan) {
     // 1. TEMBAK LANGSUNG KE LINK MP3 BOSS

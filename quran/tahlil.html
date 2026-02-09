@@ -152,7 +152,7 @@
             dataSurah.ayat.forEach(ayat => {
                 // HAPUS background:#f9f9f9 agar tidak nutup saat dark mode
                 html += `<div class="tahlil-item">
-                            <p class="arab">${ayat.teksArab} <span style="color:var(--primary);">(${ayat.nomorAyat})</span> </p>
+                            <p class="arab">${ayat.teksArab} <span style="color:var(--primary); font-size:32px;">${keAngkaArab(ayat.nomorAyat)}</span> </p>
                             <p class="latin ${statusLatin}">${ayat.teksLatin}</p>
                             <p class="arti ${statusArti}">${ayat.teksIndonesia}</p>
                         </div>`;
@@ -175,13 +175,6 @@
     };
 }
 
-  function kenomorAyat(angka) {
-    const map = {
-        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤', 
-        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
-    };
-    return angka.toString().split('').map(c => map[c] || c).join('');
-}
 
   function kenomorAyat(n) {
     if (!n) return '';

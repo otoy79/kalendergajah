@@ -96,34 +96,7 @@ input:checked + .slider:before { transform: translateX(23px); }
 </head>
 <body>
 
-   <audio id="audioAdzan" preload="auto">
-    <source src="https://alquran-pro.pages.dev/audio/adzan.mp3" type="audio/mpeg">
-</audio>
-
-    <div class="pengaturan-adzan" style="background: var(--card-bg); padding: 8px 25px; border-radius: 15px; margin-bottom: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
-    <div style="text-align: left;">
-        <span style="font-weight: bold; display: block;">Auto Adzan Mekkah</span>
-        <small style="font-size: 10px; color: gray;">Aktifkan suara saat masuk waktu sholat</small>
-    </div>
-    <label class="switch">
-        <input type="checkbox" id="checkAdzan" onchange="simpanPengaturanAdzan()">
-        <span class="slider round"></span>
-    </label>
-</div>
-
-    <div id="modalAudio" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; backdrop-filter: blur(5px);">
-    <div style="background: var(--card-bg); color: var(--text); padding: 30px; border-radius: 20px; text-align:center; width:85%; max-width:400px; border: 1px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        <div style="font-size: 50px; margin-bottom: 15px;">🔊</div>
-        <h3 style="margin:0 0 10px 0;">Aktifkan Adzan?</h3>
-        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 25px;">Pengaturan Global suara Adzan Mekkah hanya bisa berkumandang saat Halaman ini di buka.</p>
-        
-        <div style="display: flex; gap: 10px;">
-            <button onclick="pancingAudio()" style="flex:1; background: var(--primary); color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; cursor:pointer;">Ya, Aktifkan</button>
-            <button onclick="tutupModal()" style="flex:1; background: #e74c3c; color:white; border:none; padding:12px; border-radius:12px; font-weight:bold; cursor:pointer;">Nanti Saja</button>
-        </div>
-    </div>
-</div>
-
+   
     <div class="header-nav" style="background:var(--primary); color:white; padding:15px; text-align: center; position:sticky; top:0; z-index:100;">
         <h2 style="margin:0; font-size:18px;">Jadwal Sholat</h2>
     </div>
