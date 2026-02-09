@@ -251,8 +251,8 @@
 .tab-btn {
     flex: 1;
     padding: 10px;
-    border-radius: 20px;
-    cursor: pointer;
+    border-radius: 210px;
+    cursor: none;
     font-weight: bold;
     transition: all 0.3s ease; /* Biar perpindahan warna halus */
     border: 1px solid var(--primary);
@@ -293,7 +293,26 @@
    body.no-tajwid .teks-arab font {
     color: inherit !important; /* Paksa ikut warna teks utama */
 }
-  
+  .surah-item { display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--card-bg); margin:10px; border-radius:12px; border: 1px solid var(--border);
+    box-shadow: 0 4px 10px var(--primary); cursor: none;
+ }
+  .surah-item:hover {
+    -ms-transform: scale(1.03); /* IE 9 */
+  -webkit-transform: scale(1.03); /* Safari 3-8 */
+    transform: scale(1.03);
+    border: 2px solid var(--primary);
+    box-shadow: 0 8px 15px var(--primary);
+}
+   .surah-juz { padding:15px; background:var(--card-bg); border-radius:15px; border: 0.5px solid var(--primary); margin:1px;
+    box-shadow: 0 8px 15px var(--border); text-align:center; cursor: none;
+ }
+   .surah-juz:hover {
+    -ms-transform: scale(1.05); /* IE 9 */
+  -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+    border: 2px solid var(--primary);
+    box-shadow: 0 8px 15px var(--primary);
+}
 </style>
 </head>
 <body class="mushaf-1">
@@ -444,12 +463,9 @@
 <button id="btnBackToTop" onclick="keAtas()" title="Kembali ke atas">
     ↑
 </button>
-
-<div class="player-bar">
-    <button id="btnPlay" class="btn-action" onclick="handlePlayPause()">Play Audio</button>
-</div>
-     
-
+     <div class="player-bar">
+    <button id="btnPlay" class="btn-action" onclick="handlePlayPause()">▶ Audio</button>
+</div>   
 
    <script src="data2/juz.js"></script>
     <script src="data2/kamus.js"></script>
@@ -504,15 +520,16 @@ document.getElementById('container-ayat').innerHTML = '';
     for (let no in daftarSurah) {
         const s = daftarSurah[no];
         html += `
-        <div onclick="pilihSurat(${no})" class="surah-item" style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--card-bg); margin-bottom:10px; border-radius:12px; border:1px solid var(--border); cursor:pointer;">
+        <div class="surah-item" onclick="pilihSurat(${no})">
             <div style="display:flex; align-items:center; gap:15px;">
-                <div style="width:35px; height:35px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:bold;">${no}</div>
+                <div style="width:30px; height:30px; background:var(--primary); color:white; display:flex; align-items:center; justify-content:center; border-radius:8px; font-weight:bold;">${no}</div>
                 <div style="text-align:left;">
                     <div style="font-weight:bold; color:var(--text);">${s.nama}</div>
                     <div style="font-size:11px; color:#888;">${s.type} • ${s.ayat} Ayat</div>
                 </div>
             </div>
-            <div class="teks-arab" style="font-size:20px;line-height: 1.4;margin:0;">${s.arab || ''}</div>
+            <div class="teks-arab" style="font-size:20px;line-height: 1.4;margin:0;">${s.arab || ''}        
+           <span style="width:35px; height:35px; color: var(--primary); font-size:24px;display:inline; align-items:center; justify-content:center;margin:0;">${keAngkaArab(no)}</span> </div>
         </div>`;
     }
     
@@ -624,10 +641,10 @@ document.getElementById('list-surat-container').innerHTML = html;
 
         // KUNCINYA DI SINI: bukaSurat(nomorSurat, nomorAyat)
         html += `
-        <div onclick="bukaSurat(${d.beginsurat}, ${d.beginayat})" class="surah-item" style="padding:15px; background:var(--card-bg); border-radius:15px; border:1px solid var(--border); text-align:center; cursor:pointer;">
+        <div onclick="bukaSurat(${d.beginsurat}, ${d.beginayat})" class="surah-juz">
             <div style="width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 12px; font-weight: bold;">${j}</div>
             <div style="font-weight:bold; color:var(--text); font-size: 14px;">Juz ${j}</div>
-            <div style="font-size:10px; color:#999; margin-top:5px;">${namaAwal}</div>
+            <div style="font-size:11px; color:#888; margin-top:5px;">${namaAwal}</div>
             <div style="font-size:9px; color:var(--primary); font-weight:bold;">Mulai Ayat ${d.beginayat}</div>
         </div>`;
     }
@@ -672,7 +689,7 @@ document.getElementById('list-surat-container').innerHTML = html;
             <div style="font-size:12px; margin-top:10px; font-weight:bold;">${info.type.toUpperCase()} • ${info.ayat} AYAT</div>
         </div>
             <div class="teks-arab ${fontAktif}" style="margin:5px; padding:0px 20px; font-size:${fontSizeArab}px; font-family: Qalam, serif; line-height:2.1; direction: rtl; cursor: none;">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-       
+      
     `;
 
     // 5. LOOPING AYAT
@@ -712,18 +729,18 @@ for (let n in data.ayat) {
                 <span style="background:rgba(255,255,255,0.2); width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:50%; font-size:12px;">${n}</span>                    
           </div>               
             <div style="display: flex; gap: 25px; align-items:center;">
-             <span onclick="putarAudio(${idx}); simpanBookmark(${idx}, true)" style="cursor:pointer; font-size:18px; opacity:0.7; border: 0.5px solid var(--text); border-radius: 5px; padding: 0 6px;"> ▶</span>
+             <span onclick="simpanBookmark(${idx}, true)" style="cursor:pointer; font-size:14px; opacity:0.7; border: 0.5px solid var(--text); border-radius: 5px; padding: 4px 6px;">📌</span>
                 <span onclick="copyAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7; border: 0.5px solid var(--text); border-radius: 5px; padding: 4px 6px;">📋</span>
                 <span onclick="shareAyat(${idx})" style="cursor:pointer; font-size:14px; opacity:0.7;border: 0.5px solid var(--text); border-radius: 5px; padding: 4px 6px;">🔗</span>
             </div>
         </div>
-     <div class="teks-arab ${fontAktif}" style="font-size:${fontSizeArab}px; line-height:2.1; direction: rtl; cursor.: none; text-align: right;"> 
+     <div onclick="putarAudio(${idx});" class="teks-arab ${fontAktif}" style="font-size:${fontSizeArab}px; line-height:2.1; direction: rtl; cursor.: none; text-align: right;"> 
     ${teksArabFinal} <span class="nomor-ayat-arab">﴿${keAngkaArab(nomorNya)}﴾</span> 
 </div>       
         <div class="teks-translate" style="text-align:left; margin-top:15px; font-size:15px; color:var(--text); display:${isTrans ? 'block' : 'none'}; opacity:0.9; line-height:1.7;">
             ${txtIndo}
         </div>
-    </div>`;
+    </div> `;
     idx++;
 }
      document.getElementById('container-ayat').innerHTML = html;
@@ -1072,6 +1089,104 @@ function filterTajwid(teks) {
     const map = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     return n.toString().split('').map(digit => map[digit] || digit).join('');
 }
+
+   // =========================================
+// 11. SISTEM AUDIO (PLAYER) - VERSI V.3 AUTO-ESTAFET
+// =========================================
+function putarAudio(index) {
+    // 1. SINKRONISASI DATA (Penting untuk V.3)
+    const data = window.dataAlquran;
+    if (!data) return;
+
+    // Pastikan dataAyatAktif selalu terisi dari objek ayat V.3
+    dataAyatAktif = Object.keys(data.ayat).map(no => {
+        return { nomorAyat: no, ...data.ayat[no] };
+    });
+
+    const totalAyat = dataAyatAktif.length;
+    const noSurat = noSuratAktif; // V.3 menggunakan noSuratAktif
+
+    // 2. LOGIKA PINDAH SURAH (ESTAFET)
+    if (index >= totalAyat) {
+        let suratSelanjutnya = parseInt(noSurat) + 1;
+        if (suratSelanjutnya <= 114) {
+            tampilkanToast(`Surah Berikutnya: Surah ke-${suratSelanjutnya}...`);
+            
+            // Panggil fungsi navigasi V.3 (bukaSurat)
+            if (typeof bukaSurat === "function") {
+                bukaSurat(suratSelanjutnya);
+            } else if (typeof gantiSurah === "function") {
+                gantiSurah(suratSelanjutnya);
+            }
+
+            // Tunggu data V.3 selesai dimuat ke window.dataAlquran
+            let cekDataBaru = setInterval(() => {
+                if (noSuratAktif === suratSelanjutnya && window.dataAlquran) {
+                    clearInterval(cekDataBaru);
+                    setTimeout(() => putarAudio(0), 1500); 
+                }
+            }, 500);
+            return;
+        } else {
+            tampilkanPesan("Khatam! Shadaqallahul 'adzim.");
+            return;
+        }
+    }
+
+    // 3. AMBIL DATA AYAT & QARI
+    const ayatSekarang = dataAyatAktif[index];
+    const nomorAyatReal = ayatSekarang.nomorAyat;
+
+    const qariMap = {
+        'Alafasy': 'Alafasy_128kbps',
+        'Abdurrahmaan_As-Sudais': 'Abdurrahmaan_As-Sudais_192kbps',
+        'Muhammad_Jibreel': 'Muhammad_Jibreel_128kbps',
+        'Abdul_Basit_Murattal' : 'Abdul_Basit_Murattal_192kbps'
+    };
+
+    const folderQari = qariMap[qariAktif] || 'Alafasy_128kbps';
+    const s = noSurat.toString().padStart(3, '0');
+    const a = nomorAyatReal.toString().padStart(3, '0');
+
+    // 4. EKSEKUSI PLAYER
+    player.src = `https://www.everyayah.com/data/${folderQari}/${s}${a}.mp3`;
+    
+    player.play().then(() => {
+        // --- TAMBAHKAN INI ---
+        const btnUtama = document.getElementById('btnPlay');
+        if(btnUtama) btnUtama.innerText = "⏸️ Pause Audio";
+        // UI Highlight & Auto Scroll
+        document.querySelectorAll('.ayat-card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.teks-arab').forEach(el => el.classList.remove('sedang-dibaca'));
+
+        const card = document.getElementById(`card-${index}`);
+        if(card) {
+            card.classList.add('active');
+            const teksArab = card.querySelector('.teks-arab');
+            if(teksArab) teksArab.classList.add('sedang-dibaca');
+
+            // Scroll ke posisi ayat
+            const headerHeight = document.getElementById('mode-fokus')?.checked ? 20 : 60; 
+            const offsetPosition = (card.getBoundingClientRect().top + window.pageYOffset) - headerHeight;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+    }).catch(e => {
+        console.log("Menunggu interaksi...");
+        tampilkanPesan("Klik tombol ▶ untuk memulai");
+    });
+
+    // 5. EVENT AUTO-NEXT
+    player.onended = () => {
+        setTimeout(() => putarAudio(index + 1), 800);
+    };
+
+    player.onerror = () => {
+        tampilkanPesan("Gagal memuat audio, mencoba ayat berikutnya...");
+        setTimeout(() => putarAudio(index + 1), 2000);
+    };
+}
+
+  
     </script>
     
 </body>
