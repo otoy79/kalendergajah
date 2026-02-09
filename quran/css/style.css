@@ -189,19 +189,18 @@
     .menu-btn:hover { background: rgba(255,255,255,0.3); }
 
     .btn-action {
-        background: var(--primary); color: white; border: none; padding: 12px 35px;
+        background: var(--primary); color: white; border: none; padding: 8px 25px;
         border-radius: 25px; font-weight: bold; cursor: pointer; transition: 0.3s;
     }
     .btn-action:active { transform: scale(0.95); }
-  .btn-kecil {background:none; border:1px solid #ccc; color:var(--text); border-radius:5px; cursor:pointer; padding:3px 8px;}
+  .btn-kecil {background:none; border:0.5px solid var(--text);; color:var(--text); border-radius:5px; cursor:pointer; padding:3px 8px;}
 
     /* Hasil Cari Button Group */
     /* GAYA KAPSUL FULL WIDTH */
 .hasilCari {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 5px;
+    display: block;
+    justify-content: align-items: center; text-align: center; padding: 10px;
+    margin: 0; text-align: center;
 }
 
     /* Update CSS Kapsul untuk mendukung tulisan Arab */
@@ -209,24 +208,49 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 10px 20px;
-    border-radius: 25px;
+    padding: 10px 15px;
+    border-radius: 8px;
     border: 1px solid var(--primary);
-    background: transparent;
     color: var(--text);
     font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
+    font-weight: 800;
+    cursor: none;
     transition: 0.3s;
     box-sizing: border-box;
-    margin-bottom: 5px; /* Jarak antar kapsul */
+    margin-bottom: 15px; 
+    transition: all 0.3s ease;
+    color: var(--primary);
+    background:var(--card-bg);
+    box-shadow: 0 5px 10px var(--primary);
+}
+
+   .hasilCari button:hover {
+    -ms-transform: scale(1.05); /* IE 9 */
+  -webkit-transform: scale(1.05); /* Safari 3-8 */
+    transform: scale(1.05);
+    border: 2px solid var(--primary);
+    box-shadow: 0 8px 15px var(--primary);
 }
 
 .no-surah {
     font-size: 12px;
-    color: var(--primary);
-    margin-right: 12px;
     min-width: 20px;
+    font-weight: 800;
+    background: var(--primary);
+    color: white; 
+    padding: 6px;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+ .no-surahArab {
+    font-size: 14px;
+    color: var(--primary);
+    min-width: 20px;
+    font-weight: 800;
+    border: 0.5px solid var(--primary);
+    padding: 2px;
+    border-radius: 4px;
+    margin-left: 10px;
 }
 
 .nama-surah {
@@ -236,9 +260,10 @@
 
 .nama-arab {
     font-family: 'LPMQ', serif; /* Pakai font Arab kita */
-    font-size: 18px;
+    font-size: 20px;
     color: var(--primary);
     margin-left: 10px;
+    font-weight: 400;
 }
 
 /* Efek pas diklik */
@@ -247,7 +272,9 @@
     color: white !important;
 }
 .hasilCari button:active .nama-arab, 
-.hasilCari button:active .no-surah {
+.hasilCari button:active .no-surah
+.hasilCari button:active .nama-surah
+.hasilCari button:active .no-surahArab {
     color: white;
 }
    .spinner {
@@ -288,7 +315,7 @@
        ============================================================ */
     .player-bar {
         position: fixed; bottom: 0; width: 100%; background: var(--card-bg);
-        padding: 10px 0; text-align: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+        padding: 5px 0; text-align: center; box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
         z-index: 900;
     }
 
