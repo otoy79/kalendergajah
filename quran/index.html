@@ -88,7 +88,7 @@
 }
 
     .menu-item:active { 
-        transform: scale(0.80); 
+        transform: scale(0.1); 
         background: var(--border); 
     }
 
@@ -137,7 +137,17 @@
     border-radius: 8px;
     font-size: 12px;
 }
-   
+   .notif-puasa {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 360px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+}
 body {
   transform: translateX(0);
   transition: transform 0.3s ease-in-out;
@@ -196,7 +206,7 @@ body {
     </a>
     <a href="baca.html" class="menu-item">
         <span class="menu-icon">📖</span>
-        <b>Al-Qur'an Tajwid</b>
+        <b>Al-Qur'an Tafsir</b>
     </a>
     <a href="tahlil.html" class="menu-item">
         <span class="menu-icon">📿</span>
@@ -488,7 +498,7 @@ async function muatTanggalHeader() {
                 // Suara Sapaan (Cukup 1x saja per sesi pengingat)
                 const keySapa = `sapa_pengingat_${tglCari}`;
                 if (localStorage.getItem(keySapa) !== 'true') {
-                    asistenNgomong("Assalamu'alaikum Bossku. " + infoPuasa);
+                    asistenNgomong("Assalamu'alaikum... " + infoPuasa);
                     localStorage.setItem(keySapa, 'true');
                 }
             }
@@ -510,25 +520,27 @@ document.head.appendChild(styleSlide);
 
     const divBaru = document.createElement('div');
     divBaru.id = "notif-puasa-floating";
+    // Gunakan template literal yang bersih
     divBaru.innerHTML = `
         <div style="display:flex; align-items:center; gap:12px;">
             <div style="font-size:24px;">🌙</div>
-            <div style="flex:1; font-size:14px; line-height:1.4;">
+            <div style="flex:1; font-size:14px; line-height:1.4; text-align:left;">
                 <b style="color:#ffcb8e; display:block; margin-bottom:2px;">Agenda Puasa</b>
                 ${pesan}
             </div>
-            <button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">&times;</button>
+            <button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:white; font-size:24px; cursor:pointer; padding:0 5px;">&times;</button>
         </div>
     `;
     
-    // Style Melayang di Bawah
+    // Style Melayang: Saya turunkan dikit ke 75px agar tidak terlalu dekat ke tengah
     Object.assign(divBaru.style, {
-        position: "fixed", bottom: "85px", left: "50%",
+        position: "fixed", bottom: "75px", left: "50%",
         transform: "translateX(-50%)", width: "88%", maxWidth: "400px",
-        backgroundColor: "rgba(0, 77, 64, 0.95)", // Hijau gelap botol
+        backgroundColor: "rgba(0, 40, 30, 0.98)", // Lebih gelap biar kontras
         color: "white", padding: "15px", borderRadius: "15px",
-        zIndex: "10000", boxShadow: "0 8px 20px rgba(0,0,0,0.4)",
-        border: "1px solid rgba(255,255,255,0.1)", animation: "slideUp 0.5s ease-out"
+        zIndex: "9999", boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+        border: "1px solid rgba(255,255,255,0.1)", animation: "slideUp 0.5s ease-out",
+        pointerEvents: "auto" 
     });
     
     document.body.appendChild(divBaru);
@@ -564,19 +576,19 @@ function tutupNotif() {
     suaraAsisten.currentTime = 0; // Balikin ke detik 0
 }
 
-  // Pakai pageshow biar pas di-BACK langsung berubah warnanya
-window.addEventListener('pageshow', () => {
+  window.addEventListener('pageshow', () => {
     sinkronTema();
     cekBookmark();
     ambilJadwal();
     muatTanggalHeader();
-   muatJadwal();
+    muatJadwal(); // <--- Ini harus jalan duluan tanpa gangguan
+
+    // Kasih jeda 3 detik (3000ms) sebelum cek agenda
+    // Biar timer sholat muncul angkanya dulu, baru notif nyusul
+    setTimeout(() => {
+        cekAgendaHariIni(); 
+    }, 3000); 
 });
-setTimeout(() => {
-    cekAgendaHariIni(); 
-    // asistenNgomong("Tes suara asisten Bossku sudah aktif!"); // Buka komen ini buat tes suara pas startup
-}, 2000);
-    
     </script>
 
   <script>
