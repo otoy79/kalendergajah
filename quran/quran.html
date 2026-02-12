@@ -52,7 +52,7 @@
     margin-right: -7px;
     margin-left: -25px;
     color: var(--primary);
-    font-size: 1em;
+    font-size: 1.2em;
     vertical-align: middle;
 }
 /* Mode Kitab: Ayat menyambung seperti paragraf */
@@ -120,7 +120,15 @@
   .ayat-card.active .teks-arab {
     border-radius: 8px;
 }
-
+   input {
+    border-radius: 25px;
+    border: 1.5px solid var(--primary);
+    background: var(--card-bg);
+    color: var(--text);
+    box-sizing: border-box;
+    outline: none;
+    font-size: 14px;
+  }
 </style>
 </head>
 <body class="tajwid-on mushaf-1">
@@ -194,7 +202,7 @@
     </div>
 
     <input type="text" placeholder="Cari surah (contoh: Al-Kahf)..." oninput="filterSurah(this.value)" 
-           style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing:border-box;">
+           style="width:100%; padding:12px; border-radius:10px; border:1.5px solid #ddd; margin-bottom:10px; box-sizing:border-box;">
     
     <div id="hasilCari" class="hasilCari"></div>
 </div>

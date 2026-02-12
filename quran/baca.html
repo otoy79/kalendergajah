@@ -195,15 +195,15 @@
     margin-top: 8px;
     padding: 8px 12px;
     background: rgba(0, 77, 64, 0.03); /* Hijau sangat tipis */
-    border-left: 2px solid var(--primary);
-    color: #666;
+    border-left: 1.5px solid var(--primary);
+    color: #888;
     font-style: italic;
     line-height: 1.4;
-    border-radius: 0 8px 8px 0;
+    border-radius:  12px 12px ;
 }
 [data-theme="dark"] .footnote-box {
     background: rgba(255, 255, 255, 0.05);
-    color: #bbb;
+    color: #888;
 }
   /* Berikan warna pada angka footnote di dalam teks terjemahan */
 .teks-translate sup {
@@ -211,6 +211,22 @@
     font-weight: bold;
     font-size: 0.8em;
     margin: 0 2px;
+}
+/* Mewarnai angka di terjemahan (yang sudah ada) */
+.teks-translate sup, 
+.teks-translate sup b {
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 0.85em;
+    margin: 0 2px;
+}
+
+/* Mewarnai angka di dalam kotak footnote (Tafsir) */
+.footnote-box b, 
+.footnote-box i {
+    color: var(--primary);
+    font-style: normal; /* Biar tegak kalau Bossku mau */
+    font-weight: bold;
 }
   /* Mengecilkan judul bab di dalam terjemahan */
 .teks-translate h2 {
@@ -251,7 +267,7 @@
 .tab-btn {
     flex: 1;
     padding: 10px;
-    border-radius: 210px;
+    border-radius: 20px;
     cursor: none;
     font-weight: bold;
     transition: all 0.3s ease; /* Biar perpindahan warna halus */
@@ -265,7 +281,7 @@
     background: var(--primary);
     color: white;
     border: none;
-    box-shadow: 0 4px 10px rgba(0, 150, 136, 0.3); /* Efek bayangan dikit */
+    box-shadow: 0 4px 5px rgba(0, 150, 136, 0.3); /* Efek bayangan dikit */
 }
   .nomer-ayat {
    background: var(--primary); color: white; padding: 8px;
@@ -278,7 +294,7 @@
    .nomor-ayat-arab {
     font-family: 'Qalam', 'Uthmani', serif; 
     color: var(--primary); 
-    font-size: 0.7em; 
+    font-size: 0.72em; 
     margin-right: 5px;
     vertical-align: middle;
 }
@@ -293,15 +309,15 @@
    body.no-tajwid .teks-arab font {
     color: inherit !important; /* Paksa ikut warna teks utama */
 }
-  .surah-item { display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--card-bg); margin:10px; border-radius:12px; border: 1px solid var(--border);
-    box-shadow: 0 4px 10px var(--primary); cursor: none;
+  .surah-item { display:flex; justify-content:space-between; align-items:center; padding:15px; background:var(--card-bg); margin:15px; border-radius:12px; border: 0.2px solid var(--primary);
+    box-shadow: 0 4px 8px var(--primary); cursor: none;
  }
   .surah-item:hover {
     -ms-transform: scale(1.03); /* IE 9 */
   -webkit-transform: scale(1.03); /* Safari 3-8 */
     transform: scale(1.03);
-    border: 2px solid var(--primary);
-    box-shadow: 0 8px 15px var(--primary);
+    border: 1.5px solid var(--primary);
+    box-shadow: 0 5px 10px var(--primary);
 }
    .surah-juz { padding:15px; background:var(--card-bg); border-radius:15px; border: 0.5px solid var(--primary); margin:1px;
     box-shadow: 0 8px 15px var(--border); text-align:center; cursor: none;
@@ -708,15 +724,20 @@ for (let n in data.ayat) {
             .trim();
 
         if (t.includes('<footnote>')) {
-    if (isFoot) {
-        // Kita ambil isi di dalam tag footnote
-        let isiFootnote = bersih.replace('<footnote>', '').replace('</footnote>', '');
-        txtIndo += `<div class="footnote-box"><b>Tafsir/Penjelasan:</b> ${isiFootnote}</div>`;
-    }
-} else {
-    if (isTrans) {
-        // Terjemahan utama dengan penanda [11] yang tetap eksis
-        txtIndo += `<div style="margin-bottom: 5px;">${bersih}</div>`;
+            // --- BAGIAN TAFSIR/FOOTNOTE ---
+            if (isFoot) {
+                let isiFootnote = bersih.replace('<footnote>', '').replace('</footnote>', '');
+                
+                // TRIK SAKTI: Warnai angka [1], [2] dst di dalam Tafsir
+                isiFootnote = isiFootnote.replace(/\[(\d+)\]/g, '<span style="color:var(--primary); font-style: normal; font-weight: bold; font-size: 0.85em;">[$1]</span>');
+                
+                // Masukkan ke txtIndo khusus kotak Tafsir
+                txtIndo += `<div class="footnote-box"><b>Tafsir/Penjelasan : </b> ${isiFootnote}</div>`;
+            }
+        } else {
+            // --- BAGIAN TERJEMAHAN UTAMA ---
+            if (isTrans) {
+                txtIndo += `<div style="margin-bottom: 5px;">${bersih}</div>`;
             }
         }
     });
