@@ -210,7 +210,7 @@ function renderTabel(data, tglSkr, tahun) {
             timerEl.innerText = `${jam.toString().padStart(2, '0')}:${menit.toString().padStart(2, '0')}:${detik.toString().padStart(2, '0')}`;
 
             // Tambahkan LOGIKA ADZAN di sini (sebelum penutup selisih > 08 detik)
-           if (jam === 0 && menit === 00 && detik === 00) {
+           if (jam === 00 && menit === 00 && detik === 01) {
     if (suaraAktif && !adzanSudahBunyi && sholatNext.nama !== 'Imsak') {
         adzanPlayer.play();
         adzanSudahBunyi = true; 

@@ -242,7 +242,9 @@ function kembaliKeHome() {
         
         <div style="display: flex; font-size: 10px; justify-content: center; gap: 5px; margin-bottom: 10px;">
             <input type="number" id="inputAyat" placeholder="Ke Ayat..." 
-                   style="padding: 5px; border-radius: 4px; border: 1px solid var(--primary); width: 80px; text-align: center;">
+                   style="padding: 5px; border-radius: 4px; border: 1px solid var(--primary); width: 80px; text-align: center; background: var(--card-bg);
+    color: var(--text);
+    box-sizing: border-box;">
             <button onclick="lompatKeAyat()" 
                     style="padding: 5px 12px; border-radius: 4px; background: var(--primary); color: white; border: none; cursor:pointer;">GO</button>
         </div>
@@ -932,6 +934,11 @@ function eksekusiReset() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-  const container = document.getElementById("container");
-  container.classList.add("slide-mode");
+  const app = document.getElementById('app-container');
+  if(app) {
+      app.style.transform = "translateX(350px)";
+      setTimeout(function() {
+        app.style.transform = "translateX(0)";
+      }, 500);
+  }
 });
