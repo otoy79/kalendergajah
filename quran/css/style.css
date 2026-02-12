@@ -62,7 +62,7 @@
         --card-bg: #1e1e1e;
         --text: #e0e0e0;
         --border: #333333;
-        --primary: #0dd434;
+        --primary: #ffa50a;
         --header-bg: #111111;
     }
 
@@ -79,7 +79,7 @@
         overflow-x: hidden;
          
     }
-  #konten {
+  body {
     animation: fadeIn 1.2s ease-out;
 }
 
@@ -210,7 +210,7 @@
     width: 100%;
     padding: 10px 15px;
     border-radius: 8px;
-    border: 1px solid var(--primary);
+    border: 0.5px solid var(--primary);
     color: var(--text);
     font-size: 14px;
     font-weight: 800;
@@ -219,17 +219,16 @@
     box-sizing: border-box;
     margin-bottom: 15px; 
     transition: all 0.3s ease;
-    color: var(--primary);
     background:var(--card-bg);
-    box-shadow: 0 5px 10px var(--primary);
+    box-shadow: 0 3px 5px var(--primary);
 }
 
    .hasilCari button:hover {
-    -ms-transform: scale(1.05); /* IE 9 */
-  -webkit-transform: scale(1.05); /* Safari 3-8 */
-    transform: scale(1.05);
-    border: 2px solid var(--primary);
-    box-shadow: 0 8px 15px var(--primary);
+    -ms-transform: scale(1.03); /* IE 9 */
+  -webkit-transform: scale(1.03); /* Safari 3-8 */
+    transform: scale(1.03);
+    border: 1.5px solid var(--primary);
+    box-shadow: 0 5px 10px var(--primary);
 }
 
 .no-surah {
@@ -243,14 +242,14 @@
     margin-right: 15px;
 }
  .no-surahArab {
-    font-size: 14px;
-    color: var(--primary);
+    font-size: 16px;
+    color: var(--text);
     min-width: 20px;
     font-weight: 800;
     border: 0.5px solid var(--primary);
-    padding: 2px;
-    border-radius: 4px;
-    margin-left: 10px;
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-left: 12px;
 }
 
 .nama-surah {
@@ -261,7 +260,7 @@
 .nama-arab {
     font-family: 'LPMQ', serif; /* Pakai font Arab kita */
     font-size: 20px;
-    color: var(--primary);
+    color: var(--text);
     margin-left: 10px;
     font-weight: 400;
 }
@@ -269,7 +268,7 @@
 /* Efek pas diklik */
 .hasilCari button:active {
     background: var(--primary);
-    color: white !important;
+    color: white;
 }
 .hasilCari button:active .nama-arab, 
 .hasilCari button:active .no-surah
