@@ -197,14 +197,14 @@
     </style>
 </head>
    <body class="mushaf-1">
-     <body>
+     
    <div id="app-container">
    
     <div id="notif-sholat">
     <div style="font-size: 24px;">🔔</div>
     <div style="flex: 1;">
         <b id="judul-notif" style="display: block;">Pengingat Sholat</b>
-        <small id="pesan-notif">10 Menit lagi waktu Subuh</small>
+        <small id="pesan-notif">10 Menit lagi waktu Sholat</small>
     </div>
     <button class="btn-tutup-notif" onclick="tutupNotif()">OK</button>
 </div>
@@ -272,10 +272,7 @@
 
     </div>
 
-     <audio id="audioAdzan" preload="auto">
-    <source src="https://alquran.pages.dev/quran/audio/adzan.mp3" type="audio/mpeg">
-</audio>
-   
+    
   <script src="js/kalender.js"></script>
   <script src="js/jadwal.js"></script>
    <script src="js/script.js"></script>
@@ -467,7 +464,7 @@ async function ambilJadwal() {
         const el = document.getElementById('jkt-countdown-sholat');
 
         // LOGIKA NOTIFIKASI
-        if (sJam === 0 && sMenit === 10 && sDetik === 0) {
+        if (sJam === 0 && sMenit === 11 && sDetik === 0) {
             tampilkanNotif(`10 Menit Menuju ${namaSholat}`, `🕌 Persiapan yuk, 10 menit lagi waktu ${namaSholat}.`);
         }
 
@@ -639,9 +636,6 @@ document.addEventListener('click', function() {
         window.suaraAsisten.play().catch(e => console.log("Gagal bunyi!"));
     }, 150);
 
-    // 3. DURASI BANNER (Disesuaikan)
-    // Karena suara cuma 17 detik, kita tutup di detik ke-25 
-    // biar user sempat baca tapi gak kelamaan nangkring.
     setTimeout(() => { 
         tutupNotif(); 
     }, 30000); // 30 detik saja Bossku
