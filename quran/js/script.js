@@ -464,7 +464,7 @@ function renderAyat(namaSurah) {
             }
         }).catch(e => {
             console.log("Audio play diblokir browser, menunggu interaksi user.");
-            tampilkanPesan("Klik layar untuk memutar audio");
+            tampilkanPesan(" Periksa koneksi internet untuk ▶ memutar audio");
         });
 
         // 8. EVENT AUTO-NEXT & ERROR HANDLING
