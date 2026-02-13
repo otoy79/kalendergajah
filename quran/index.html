@@ -463,15 +463,25 @@ async function ambilJadwal() {
 
         const el = document.getElementById('jkt-countdown-sholat');
 
-        // LOGIKA NOTIFIKASI
-        if (sJam === 0 && sMenit === 11 && sDetik === 0) {
-            tampilkanNotif(`10 Menit Menuju ${namaSholat}`, `🕌 Persiapan yuk, 10 menit lagi waktu ${namaSholat}.`);
-        }
+        // --- LOGIKA 1: PENGINGAT 10 MENIT SEBELUM ---
+if (sJam === 0 && sMenit === 10 && sDetik === 0) {
+    // CEK: Jangan bunyikan Belt kalau targetnya adalah Subuh 
+    // karena jam ini barengan sama waktu Imsak (Tarhim)
+    if (namaSholat !== 'Subuh') {
+        tampilkanNotif(`10 Menit Menuju ${namaSholat}`, `🕌 Persiapan yuk, 10 menit lagi waktu ${namaSholat}.`);
+    } else {
+        console.log("Notif 10 menit Subuh dilewati karena barengan Imsak/Tarhim.");
+    }
+}
 
-        if (sJam === 0 && sMenit === 00 && sDetik === 0) {
-            if (namaSholat === 'Imsak') putarSirineImsak();
-            else putarAdzan(namaSholat);
-        }
+// --- LOGIKA 2: TEPAT WAKTU (IMSAK / ADZAN) ---
+if (sJam === 0 && sMenit === 00 && sDetik === 0) {
+    if (namaSholat === 'Imsak') {
+        putarSirineImsak(); 
+    } else {
+        putarAdzan(namaSholat); 
+    }
+}
 
         // TAMPILAN TIMER
         if (el) {
@@ -611,6 +621,7 @@ document.addEventListener('click', function() {
 
 // --- FUNGSI NOTIF UMUM ---
    function tampilkanNotif(judul, pesan) {
+    window.suaraAsisten.loop = false;
     const notif = document.getElementById('notif-sholat');
     if (!notif) return;
 
@@ -644,6 +655,7 @@ document.addEventListener('click', function() {
 
 // --- FUNGSI ADZAN ---
    function putarAdzan(nama) {
+    window.suaraAsisten.loop = false;
     const notif = document.getElementById('notif-sholat');
     if (notif) {
         document.getElementById('judul-notif').innerText = `Waktu ${nama} Tiba`;
@@ -692,38 +704,30 @@ document.addEventListener('click', function() {
         notif.classList.add('tampil');
     }
 
-    // 1. SET IDENTITAS AUDIO (Biar muncul di Lock Screen)
     if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: `Waktu Imsak`,
+            title: `Waktu Imsak (Tarhim)`,
             artist: 'Al-Qur\'an Pro',
             album: 'Persiapan Subuh',
-            artwork: [
-                { src: 'https://alquran-pro.pages.dev/img/alquran.png', sizes: '512x512', type: 'image/png' }
-            ]
+            artwork: [{ src: 'https://alquran-pro.pages.dev/img/alquran.png', sizes: '512x512', type: 'image/png' }]
         });
     }
 
-    // 2. EKSEKUSI SUARA TARHIM
+    // 2. EKSEKUSI SUARA TARHIM DENGAN LOOP
     window.suaraAsisten.pause();
     window.suaraAsisten.src = "https://alquran-pro.pages.dev/audio/imsak_tahrim.mp3";
+    window.suaraAsisten.loop = true; // <--- DAGINGNYA DI SINI Bossku! (Biar mutar terus)
     window.suaraAsisten.load();
     
     setTimeout(() => {
-        const playPromise = window.suaraAsisten.play();
-        if (playPromise !== undefined) {
-            playPromise.then(_ => {
-                console.log("Tarhim Imsak berkumandang!");
-            }).catch(error => {
-                console.log("Imsak butuh umpan daging (klik): " + error);
-            });
-        }
+        window.suaraAsisten.play().catch(e => console.log("Imsak error: " + e));
     }, 200);
 
-    // Imsak/Tarhim biasanya agak lama, tutup notif setelah 5 menit (300.000 ms)
+    // Biarkan notif nangkring terus sampai 10 menit (600.000 ms) 
+    // biar pas sama waktu Subuh datang.
     setTimeout(() => { 
         tutupNotif(); 
-    }, 360000);
+    }, 600000); 
 }
  
     function tutupNotif() {
