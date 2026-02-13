@@ -498,17 +498,18 @@ async function muatTanggalHeader() {
     const mskr = new Date();
     const jamSekarang = mskr.getHours();
 
-    // 1. FILTER JAM (Hanya muncul jam 18:00 - 06:00)
-     if (!(jamSekarang >= 18 || jamSekarang <= 6)) return;
+    // 1. FILTER JAM: Muncul mulai jam 18:00 (6 sore) sampai jam 05:00 pagi
+    // Jadi kalau jam 05:01, notif ini sudah tidak muncul lagi
+    if (!(jamSekarang >= 18 || jamSekarang < 5)) return;
 
     // 2. TENTUKAN "TARGET HARI"
-    // Jika jam 18.00-23.59, berarti kita ingatkan untuk BESOK
-    // Jika jam 00.00-06.00, berarti kita ingatkan untuk HARI INI
     let targetDina; 
     if (jamSekarang >= 18) {
-        targetDina = (mskr.getDay() + 1) % 5; // Hari besok
+        // Jam 6 sore ke atas, ingatkan buat BESOK
+        targetDina = (mskr.getDay() + 1) % 7; 
     } else {
-        targetDina = mskr.getDay(); // Hari ini (karena masih dini hari)
+        // Jam 00:00 sampai 04:59 pagi, ingatkan buat HARI INI
+        targetDina = mskr.getDay(); 
     }
 
     // 3. AMBIL DATA KALENDER (Untuk Hijriyah)
@@ -517,7 +518,7 @@ async function muatTanggalHeader() {
 
     if (dataKalender) {
         // Cari data hijriyah (kalau jam > 18, cari tanggal masehi besok)
-        const tglCari = (jamSekarang >= 18) ? mskr.getDate() + 1 : mskr.getDate();
+       const tglCari = (jamSekarang >= 18) ? mskr.getDate() + 1 : mskr.getDate();
         const infoHari = dataKalender.find(d => parseInt(d.gregorian.day) === tglCari);
         
         if (infoHari) {
