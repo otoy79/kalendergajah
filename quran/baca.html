@@ -1012,7 +1012,7 @@ function resetPencarian() {
     const pesan = `*${info.nama} : Ayat ${ayat.nomorAyat}*\n\n` +
                   `${arabBersih}\n\n` +
                   `_"${teksIndo}"_\n\n` +
-                  `Dibagikan dari: *Al-Qur'an Pro V.3* (𝒪𝓉ℴ𝓎)`;
+                  `Dibagikan dari: https://alquran-pro.pages.dev/ *Al-Qur'an Pro V.3*`;
 
     // Kirim ke WA
     const urlWA = `https://api.whatsapp.com/send?text=${encodeURIComponent(pesan)}`;
@@ -1038,7 +1038,7 @@ function resetPencarian() {
     const teksCopy = `*${info.nama}: Ayat ${ayat.nomorAyat}*\n\n` + 
                  `${arabBersih}\n\n` + 
                  `_"${teksIndo}"_\n\n` + 
-                 `Shared from *Al-Qur'an V.3*`;
+                 `https://alquran-pro.pages.dev/ Shared from *Al-Qur'an V.3*`;
 
     navigator.clipboard.writeText(teksCopy).then(() => {
         tampilkanToast(`📋 ${info.nama} Ayat ${ayat.nomorAyat} Disalin!`);

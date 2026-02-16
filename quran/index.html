@@ -367,7 +367,7 @@ async function ambilJadwal() {
     try {
         console.log("Jadwal Baris Index: Fetching data untuk " + kotaTersimpan);
         // Samakan parameter 'tune' dengan jadwal utama agar sinkron
-        const url = `https://api.aladhan.com/v1/timingsByCity?city=${kotaTersimpan}&country=Indonesia&method=11&tune=1,1,0,2,2,3,4,2`;
+        const url = `https://api.aladhan.com/v1/timingsByCity?city=${kotaTersimpan}&country=Indonesia&method=11&tune=2,2,2,4,3,3,2,2`;  // 4+(dhuhur)
         
         const r = await fetch(url);
         const res = await r.json();
@@ -464,7 +464,7 @@ async function ambilJadwal() {
         const el = document.getElementById('jkt-countdown-sholat');
 
         // --- LOGIKA 1: PENGINGAT 10 MENIT SEBELUM ---
-if (sJam === 0 && sMenit === 10 && sDetik === 0) {
+if (sJam === 0 && sMenit === 10 && sDetik === 3) {
     // CEK: Jangan bunyikan Belt kalau targetnya adalah Subuh 
     // karena jam ini barengan sama waktu Imsak (Tarhim)
     if (namaSholat !== 'Subuh') {
@@ -475,7 +475,7 @@ if (sJam === 0 && sMenit === 10 && sDetik === 0) {
 }
 
 // --- LOGIKA 2: TEPAT WAKTU (IMSAK / ADZAN) ---
-if (sJam === 0 && sMenit === 00 && sDetik === 0) {
+if (sJam === 0 && sMenit === 00 && sDetik === 5) {
     if (namaSholat === 'Imsak') {
         putarSirineImsak(); 
     } else {
@@ -485,7 +485,7 @@ if (sJam === 0 && sMenit === 00 && sDetik === 0) {
 
         // TAMPILAN TIMER
         if (el) {
-            if (sJam === 0 && sMenit < 10) {
+            if (sJam === 0 && sMenit < 6) {
                 el.innerHTML = `<div style="background:red; color:white; padding:10px; border-radius:10px; animation:blink 0.8s infinite;">⚠️ ${sMenit}m ${sDetik}s LAGI ${namaSholat.toUpperCase()}!</div>`;
             } else {
                 el.innerHTML = `⏳ <b>${sJam}j ${sMenit}m ${sDetik}s</b> lagi menuju <b>${namaSholat}</b>`;
