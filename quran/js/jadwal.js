@@ -83,7 +83,7 @@ let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
 
     try {
         // Menggunakan URL dengan parameter tune pilihan Bossku
-        const url = `https://api.aladhan.com/v1/calendarByAddress?address=${kotaAktif},Indonesia&method=11&month=${bulan}&year=${tahun}&tune=1,1,0,2,2,3,4,2`;
+        const url = `https://api.aladhan.com/v1/calendarByAddress?address=${kotaAktif},Indonesia&method=11&month=${bulan}&year=${tahun}&tune=2,2,2,4,3,3,2,2`;  // 4+(dhuhur)
         
         const r = await fetch(url);
         const res = await r.json();
