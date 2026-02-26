@@ -4,23 +4,46 @@ const religiSongs = [
   artist: "Ungu",
   url:
   "ungu/mp3/Andai_Ku_Tahu.mp3" },
-
+  {
+  title: "Bismillah_Cinta",
+  artist: "Ungu_Lesti",
+  url:
+  "religi/Ungu_Lesti_Bismillah_Cinta.mp3" },
   {
   title: "Tobat_Maksiat(Tomat)",
   artist: "Wali",
   url:
   "wali/mp3/4_Tobat_Maksiat(Tomat).mp3" },
-  
+  {
+  title: "KISAH_SINGKAT_NABI_MUHAMMAD_NISSA_SABYAN,_EKHSAN,_FA",
+  artist: "NISSA SABYAN, EKHSAN,",
+  url:
+  "religi/KISAH_SINGKAT_NABI_MUHAMMAD_NISSA_SABYAN,_EKHSAN,_FA.mp3" },
+  {
+  title: "Sesungguhnya",
+  artist: "Ungu",
+  url:
+  "religi/Sesungguhnya_Ungu.mp3" },
 {
   title: "Berita_Kepada_Kawan",
   artist: "Ebit G Ade",
   url:
   "religi/Berita_Kepada_Kawan-Ebiet_G_Ade.mp3" },
+   {
+  title: "Astagfirullah",
+  artist: "Opick",
+  url:
+  "religi/Opick_Astagfirullah.mp3" },
 {
   title: "Cari_Berkah_CABE",
   artist: "Wali",
   url:
   "wali/mp3/5_Cari_Berkah__CABE.mp3" },
+  {
+  title: "Kisah_Sang_Rasul_Unofficial",
+  artist: "Unofficial",
+  url:
+  "religi/Kisah_Sang_Rasul_Unofficial.mp3" },
 
 {
   title: "2. Asmara_Terindah ",
@@ -37,6 +60,11 @@ const religiSongs = [
   artist: "Ungu",
   url:
   "ungu/mp3/CahayaMu.mp3" },
+  {
+  title: "Ya_Rabbana",
+  artist: "Jefri_Al_Buchori_Opick_Ya_Rabbana",
+  url:
+  "religi/Jefri_Al_Buchori_Opick_Ya_Rabbana.mp3" },
   {
   title: "Ya_Allah",
   artist: "Wali",
@@ -208,11 +236,21 @@ const religiSongs = [
   artist: "Ungu",
   url:
   "ungu/mp3/SurgaMu.mp3" },
+  {
+  title: "Pintu_Taubat",
+  artist: "Zivilia",
+  url:
+  "religi/Pintu_Taubat_Zivilia.mp3" },
  {
   title: "18. Shalawat",
   artist: "Ungu",
   url:
   "ungu/mp3/Shalawat.mp3" },
+  {
+  title: "KebesaranMU",
+  artist: "ST12",
+  url:
+  "religi/ST12_KebesaranMU.mp3" },
  {
   title: " 19. Syukur_Alhamdulillah ",
   artist: "Ungu",
