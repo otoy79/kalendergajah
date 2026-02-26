@@ -15,10 +15,10 @@ const religiSongs = [
   url:
   "wali/mp3/4_Tobat_Maksiat(Tomat).mp3" },
   {
-  title: "KISAH_SINGKAT_NABI_MUHAMMAD_NISSA_SABYAN,_EKHSAN,_FA",
-  artist: "NISSA SABYAN, EKHSAN,",
+  title: "KISAH_SINGKAT_NABI_MUHAMMAD",
+  artist: "NISSA SABYAN EKHSAN",
   url:
-  "religi/KISAH_SINGKAT_NABI_MUHAMMAD_NISSA_SABYAN,_EKHSAN,_FA.mp3" },
+  "religi/KISAH_SINGKAT_NABI_MUHAMMAD_NISSA_SABYAN_EKHSAN_FA.mp3" },
   {
   title: "Sesungguhnya",
   artist: "Ungu",
@@ -111,7 +111,7 @@ const religiSongs = [
   url:
   "ungu/mp3/Doa.mp3" },
  {
-  title: "7. Doa_Untuk_Ibu.mp3",
+  title: "Doa_Untuk_Ibu",
   artist: "Ungu",
   url:
   "ungu/mp3/Doa_Untuk_Ibu.mp3" },
