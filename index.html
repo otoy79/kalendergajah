@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aplikasi Dashboard</title>
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  
+  <style>
+    :root {
+      --primary-orange: #ff6600;
+      --secondary-orange: #ff8533;
+      --light-orange: #fff5ee;
+      --dark-orange: #cc5200;
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding-bottom: 80px;
+      overflow-x: hidden;
+    }
+
+    /* 1. HEADER HERO / UCAPAN WAKTU */
+    .hero-header {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+      border-bottom: 6px solid var(--dark-orange);
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: 0 4px 15px rgba(239, 108, 0, 0.3);
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      transition: background 1s ease;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .bg-pagi { background: linear-gradient(-45deg, #ff7e5f, #feb47b, #ff6600, #ff9966); }
+    .bg-siang { background: linear-gradient(-45deg, #ff512f, #f09819, #ff6600, #ff8000); }
+    .bg-sore { background: linear-gradient(-45deg, #e55d87, #5fc3e4, #ff6600, #cc4400); }
+    .bg-malam { background: linear-gradient(-45deg, #141e30, #243b55, #d35400, #1f1c2c); }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .greeting-text { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; }
+    .clock-text { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; }
+    .date-text { font-size: 0.9rem; font-weight: 400; opacity: 0.95; margin-top: 2px; }
+
+    /* CONTAINER */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark-orange);
+      margin: 20px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      scroll-margin-top: 20px;
+    }
+
+    /* 2. JADWAL SHOLAT CARD */
+    .prayer-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border-left: 5px solid var(--primary-orange);
+    }
+
+    .location-info {
+      font-size: 0.8rem;
+      color: #444;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: var(--light-orange);
+      padding: 10px 12px;
+      border-radius: 10px;
+      line-height: 1.4;
+    }
+
+    .location-info i {
+      margin-top: 3px;
+    }
+
+    .prayer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .prayer-item {
+      background: #fafafa;
+      border: 1px solid #ffe0b2;
+      border-radius: 10px;
+      padding: 10px 5px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    /* Highlight Waktu Sholat Aktif */
+    .prayer-item.active-prayer {
+      background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+      color: #ffffff !important;
+      border-color: var(--dark-orange);
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+      transform: scale(1.03);
+    }
+
+    .prayer-item.active-prayer .prayer-name,
+    .prayer-item.active-prayer .prayer-time {
+      color: #ffffff !important;
+    }
+
+    .prayer-name { font-size: 0.75rem; color: #555; font-weight: 600; }
+    .prayer-time { font-size: 0.95rem; font-weight: 700; color: var(--dark-orange); margin-top: 3px; }
+
+    /* MENU GRIDS & ICON INTERACTION */
+    .menu-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .menu-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    .menu-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #ffebd9;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .menu-card:active {
+      background: var(--primary-orange);
+      color: #fff;
+      transform: scale(0.95);
+    }
+
+    .menu-card:active i {
+      color: #fff;
+    }
+
+    .menu-card i {
+      font-size: 1.5rem;
+      color: var(--primary-orange);
+      margin-bottom: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .menu-card span { font-size: 0.75rem; font-weight: 600; text-align: center; }
+
+    /* 5. BOTTOM NAVIGATION BAR */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: #ffffff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      z-index: 1000;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #888888;
+      font-size: 0.7rem;
+      font-weight: 600;
+      width: 20%;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .nav-item i { font-size: 1.25rem; margin-bottom: 3px; transition: transform 0.2s; }
+    
+    .nav-item:active i {
+      transform: scale(1.3);
+      color: var(--dark-orange);
+    }
+
+    .nav-item.active { color: var(--primary-orange); }
+
+    /* POPUP MODAL (GT APK) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 85%;
+      max-width: 400px;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      transform: scale(0.7);
+      transition: transform 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .apk-icon-placeholder {
+      width: 90px;
+      height: 90px;
+      background: var(--light-orange);
+      border: 3px dashed var(--primary-orange);
+      border-radius: 22px;
+      margin: 15px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--primary-orange);
+      font-size: 2.2rem;
+    }
+
+    .btn-close-modal {
+      background: var(--primary-orange);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    /* SLIDE PROFIL PANEL (OFFCANVAS) */
+    .profile-slide {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+      z-index: 1500;
+      transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .profile-slide.active {
+      bottom: 0;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--light-orange);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .profile-form group {
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .profile-form input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-orange);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .btn-wa { background: #25D366; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <!-- 1. HEADER UCAPAN WAKTU & JAM ANIMASI -->
+  <header class="hero-header">
+    <div id="heroBg" class="hero-bg bg-pagi"></div>
+    <div class="hero-content">
+      <div class="greeting-text" id="greeting">Selamat Pagi</div>
+      <div class="clock-text" id="clock">00:00:00</div>
+      <div class="date-text" id="date">Loading tanggal...</div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- 2. JADWAL SHOLAT GEOLOCATION -->
+    <div class="section-title" id="sec-sholat">
+      <i class="fa-solid fa-kaaba"></i> Jadwal Sholat Hari Ini
+    </div>
+    <div class="prayer-card">
+      <div class="location-info">
+        <i class="fa-solid fa-location-dot" style="color: var(--primary-orange);"></i>
+        <span id="locStatus">Mendeteksi Lokasi GPS...</span>
+      </div>
+      <div class="prayer-grid">
+        <div class="prayer-item" id="card-imsak">
+          <div class="prayer-name">IMSAK</div>
+          <div class="prayer-time" id="imsak">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-subuh">
+          <div class="prayer-name">SUBUH</div>
+          <div class="prayer-time" id="subuh">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-dzuhur">
+          <div class="prayer-name">DZUHUR</div>
+          <div class="prayer-time" id="dzuhur">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-ashar">
+          <div class="prayer-name">ASHAR</div>
+          <div class="prayer-time" id="ashar">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-maghrib">
+          <div class="prayer-name">MAGHRIB</div>
+          <div class="prayer-time" id="maghrib">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-isya">
+          <div class="prayer-name">ISYA</div>
+          <div class="prayer-time" id="isya">--:--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MENU AKSES KALENDER & WEB -->
+    <div class="section-title" id="sec-kalender">
+      <i class="fa-solid fa-calendar-days"></i> Akses Fitur Utama
+    </div>
+    <div class="menu-grid-4">
+      <a href="kal-full.html" class="menu-card">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Kal Full</span>
+      </a>
+      <a href="kal-offline.html" class="menu-card">
+        <i class="fa-solid fa-calendar-xmark"></i>
+        <span>Kal Offline</span>
+      </a>
+      <a href="kal-online.html" class="menu-card">
+        <i class="fa-solid fa-globe"></i>
+        <span>Kal Online</span>
+      </a>
+      <a href="app-web.html" class="menu-card">
+        <i class="fa-solid fa-laptop-code"></i>
+        <span>App Web</span>
+      </a>
+    </div>
+
+    <!-- 4. MENU RELIGI & ISLAMIC -->
+    <div class="section-title" id="sec-islamic">
+      <i class="fa-solid fa-book-quran"></i> Fitur Islamic & Religi
+    </div>
+    <div class="menu-grid-6">
+      <a href="assets/alquran/index.html" class="menu-card">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Al-Quran</span>
+      </a>
+      <a href="quran-online.html" class="menu-card">
+        <i class="fa-solid fa-cloud"></i>
+        <span>Quran Online</span>
+      </a>
+      <a href="murothal.html" class="menu-card">
+        <i class="fa-solid fa-headphones"></i>
+        <span>Murothal</span>
+      </a>
+      <a href="asmaulhusna.html" class="menu-card">
+        <i class="fa-solid fa-star-and-crescent"></i>
+        <span>Asmaulhusna</span>
+      </a>
+      <a href="sholawat.html" class="menu-card">
+        <i class="fa-solid fa-hands-praying"></i>
+        <span>Sholawat</span>
+      </a>
+      <a href="religi.html" class="menu-card">
+        <i class="fa-solid fa-mosque"></i>
+        <span>Religi</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- 5. BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="scrollToTop()">
+      <i class="fa-solid fa-house"></i>
+      <span>Beranda</span>
+    </button>
+    <button class="nav-item" onclick="scrollToSection('sec-kalender')">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Kalender</span>
+    </button>
+    <button class="nav-item" onclick="openGtModal()">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>GT</span>
+    </button>
+    <button class="nav-item" onclick="scrollToSection('sec-islamic')">
+      <i class="fa-solid fa-kaaba"></i>
+      <span>Islamic</span>
+    </button>
+    <button class="nav-item" onclick="openProfileSlide()">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </button>
+  </nav>
+
+  <!-- POPUP MODAL (GT APK) -->
+  <div class="modal-overlay" id="gtModal">
+    <div class="modal-content">
+      <h3 style="color: var(--dark-orange);">Aplikasi GT</h3>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Akses Cepat Modul Aplikasi GT</p>
+      
+      <!-- Slot Gambar Icon APK -->
+      <div class="apk-icon-placeholder" id="apkIconBox">
+        <i class="fa-solid fa-android"></i>
+      </div>
+
+      <p style="font-size: 0.85rem; font-weight: 600;">Modul GT Mobile v1.0</p>
+      <button class="btn-close-modal" onclick="closeGtModal()">Tutup</button>
+    </div>
+  </div>
+
+  <!-- SLIDE PROFIL PANEL -->
+  <div class="profile-slide" id="profileSlide">
+    <div class="slide-header">
+      <h3 style="color: var(--dark-orange);"><i class="fa-solid fa-user-gear"></i> Pengaturan Profil</h3>
+      <i class="fa-solid fa-xmark" style="font-size: 1.4rem; cursor: pointer;" onclick="closeProfileSlide()"></i>
+    </div>
+
+    <div class="profile-form">
+      <div style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; font-weight: 600;">Nama Pengguna:</label>
+        <input type="text" id="profName" style="width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px;" placeholder="Masukkan Nama">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label style="font-size: 0.8rem; font-weight: 600;">Kota / Domisili:</label>
+        <input type="text" id="profCity" style="width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px;" placeholder="Masukkan Kota">
+      </div>
+
+      <button class="btn-action" onclick="saveProfileData()">
+        <i class="fa-solid fa-floppy-disk"></i> Simpan Profil
+      </button>
+
+      <a href="https://chat.whatsapp.com/" target="_blank" class="btn-action btn-wa">
+        <i class="fa-brands fa-whatsapp"></i> Chat Group WA
+      </a>
+
+      <div style="margin-top: 20px; padding: 12px; background: var(--light-orange); border-radius: 10px; font-size: 0.8rem; color: #555;">
+        <strong><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi:</strong>
+        <p style="margin-top: 4px;">Dashboard Apps v2.0 - Fitur Waktu Sholat, Kalender, dan Modul Islamic Terintegrasi.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let prayerTimingsCache = null;
+
+    // --- 1. WAKTU, JAM, DAN ANIMASI BACKGROUND ---
+    function updateClockAndGreeting() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      document.getElementById('clock').innerText = `${String(hours).padStart(2, '0')}:${minutes}:${seconds}`;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('date').innerText = now.toLocaleDateString('id-ID', options);
+
+      const greetingEl = document.getElementById('greeting');
+      const bgEl = document.getElementById('heroBg');
+
+      if (hours >= 3 && hours < 11) {
+        greetingEl.innerText = "Selamat Pagi 🌅";
+        bgEl.className = "hero-bg bg-pagi";
+      } else if (hours >= 11 && hours < 15) {
+        greetingEl.innerText = "Selamat Siang ☀️";
+        bgEl.className = "hero-bg bg-siang";
+      } else if (hours >= 15 && hours < 18) {
+        greetingEl.innerText = "Selamat Sore 🌇";
+        bgEl.className = "hero-bg bg-sore";
+      } else {
+        greetingEl.innerText = "Selamat Malam 🌙";
+        bgEl.className = "hero-bg bg-malam";
+      }
+
+      if (prayerTimingsCache) {
+        highlightCurrentPrayer(now, prayerTimingsCache);
+      }
+    }
+
+    setInterval(updateClockAndGreeting, 1000);
+    updateClockAndGreeting();
+
+    // --- 2. GEOLOCATION, REVERSE GEOCODING & JADWAL SHOLAT ---
+    function getPrayerTimes() {
+      const storedLat = localStorage.getItem('user_lat');
+      const storedLon = localStorage.getItem('user_lon');
+      const storedAddress = localStorage.getItem('user_address');
+
+      if (storedLat && storedLon) {
+        if(storedAddress) {
+          document.getElementById('locStatus').innerText = storedAddress;
+        } else {
+          reverseGeocode(storedLat, storedLon);
+        }
+        fetchPrayerData(storedLat, storedLon);
+      } else {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              
+              localStorage.setItem('user_lat', lat);
+              localStorage.setItem('user_lon', lon);
+
+              reverseGeocode(lat, lon);
+              fetchPrayerData(lat, lon);
+            },
+            (error) => {
+              const defaultAddr = "Panunggangan Utara, Pinang, Tangerang, Banten, 15143, Indonesia";
+              document.getElementById('locStatus').innerText = defaultAddr;
+              fetchPrayerData(-6.22, 106.65);
+            }
+          );
+        } else {
+          fetchPrayerData(-6.22, 106.65);
+        }
+      }
+    }
+
+    // Mendapatkan Alamat Lengkap via OpenStreetMap
+    function reverseGeocode(lat, lon) {
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.display_name) {
+            const fullAddress = data.display_name;
+            document.getElementById('locStatus').innerText = fullAddress;
+            localStorage.setItem('user_address', fullAddress);
+          }
+        })
+        .catch(() => {
+          const fallback = `Lat: ${parseFloat(lat).toFixed(2)}, Lon: ${parseFloat(lon).toFixed(2)}`;
+          document.getElementById('locStatus').innerText = fallback;
+        });
+    }
+
+    function fetchPrayerData(lat, lon) {
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+      const day = now.getDate() - 1;
+
+      const url = `https://api.aladhan.com/v1/calendar?latitude=${lat}&longitude=${lon}&method=11&month=${month}&year=${year}&tune=2,2,2,4,3,3,2,2`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.code === 200 && data.data[day]) {
+            const timings = data.data[day].timings;
+            prayerTimingsCache = timings;
+            
+            document.getElementById('imsak').innerText = timings.Imsak.split(' ')[0];
+            document.getElementById('subuh').innerText = timings.Fajr.split(' ')[0];
+            document.getElementById('dzuhur').innerText = timings.Dhuhr.split(' ')[0];
+            document.getElementById('ashar').innerText = timings.Asr.split(' ')[0];
+            document.getElementById('maghrib').innerText = timings.Maghrib.split(' ')[0];
+            document.getElementById('isya').innerText = timings.Isha.split(' ')[0];
+
+            highlightCurrentPrayer(new Date(), timings);
+          }
+        });
+    }
+
+    // Highlight background beda untuk waktu sholat yang sedang berlangsung
+    function highlightCurrentPrayer(now, timings) {
+      const timeToMin = (tStr) => {
+        const [h, m] = tStr.split(' ')[0].split(':').map(Number);
+        return h * 60 + m;
+      };
+
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+
+      const pTimes = [
+        { id: 'card-imsak', min: timeToMin(timings.Imsak) },
+        { id: 'card-subuh', min: timeToMin(timings.Fajr) },
+        { id: 'card-dzuhur', min: timeToMin(timings.Dhuhr) },
+        { id: 'card-ashar', min: timeToMin(timings.Asr) },
+        { id: 'card-maghrib', min: timeToMin(timings.Maghrib) },
+        { id: 'card-isya', min: timeToMin(timings.Isha) }
+      ];
+
+      document.querySelectorAll('.prayer-item').forEach(el => el.classList.remove('active-prayer'));
+
+      let activeId = 'card-isya';
+      for (let i = 0; i < pTimes.length - 1; i++) {
+        if (currentMin >= pTimes[i].min && currentMin < pTimes[i+1].min) {
+          activeId = pTimes[i].id;
+          break;
+        }
+      }
+      if (currentMin >= pTimes[pTimes.length - 1].min) {
+        activeId = pTimes[pTimes.length - 1].id;
+      }
+
+      const activeCard = document.getElementById(activeId);
+      if (activeCard) activeCard.classList.add('active-prayer');
+    }
+
+    getPrayerTimes();
+
+    // --- 3. NAVIGASI BOTTOM BAR & INTERAKSI ---
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Modal Popup GT
+    function openGtModal() {
+      document.getElementById('gtModal').classList.add('active');
+    }
+    function closeGtModal() {
+      document.getElementById('gtModal').classList.remove('active');
+    }
+
+    // Profile Slide Panel
+    function openProfileSlide() {
+      document.getElementById('profName').value = localStorage.getItem('user_name') || '';
+      document.getElementById('profCity').value = localStorage.getItem('user_city') || '';
+      document.getElementById('profileSlide').classList.add('active');
+    }
+    function closeProfileSlide() {
+      document.getElementById('profileSlide').classList.remove('active');
+    }
+
+    function saveProfileData() {
+      const name = document.getElementById('profName').value;
+      const city = document.getElementById('profCity').value;
+
+      localStorage.setItem('user_name', name);
+      localStorage.setItem('user_city', city);
+      alert("Profil berhasil disimpan!");
+      closeProfileSlide();
+    }
+  </script>
+</body>
+</html>
