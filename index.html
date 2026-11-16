@@ -10,7 +10,7 @@
   
   <style>
     :root {
-      --primary-orange: #ff6600;
+      --primary-orange: #e8853f;
       --secondary-orange: #ff8533;
       --light-orange: #fff5ee;
       --dark-orange: #cc5200;
@@ -51,6 +51,92 @@
       border-bottom-left-radius: 28px;
       border-bottom-right-radius: 28px;
       box-shadow: 0 4px 15px rgba(239, 108, 0, 0.3);
+    }
+
+    /* TOP CORNER ICONS - SEJAJAR PAS DI ATAS */
+    .top-left-icon, .top-right-icon {
+      position: absolute;
+      top: 15px;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1rem;
+      backdrop-filter: blur(5px);
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .top-left-icon:active, .top-right-icon:active {
+      transform: scale(0.9);
+      background: var(--primary-orange);
+    }
+    .top-left-icon { left: 15px; }
+    .top-right-icon { right: 15px; }
+
+    /* DROPDOWN SHARE MENU (POSISI MENYESUAIKAN TOMBOL KANAN) */
+    .share-menu {
+      position: absolute;
+      top: 58px;
+      right: 15px;
+      background: #ffffff;
+      color: var(--text-color);
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      width: 210px;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeInDropdown 0.2s ease;
+      border: 1px solid #ffe0b2;
+      z-index: 30;
+    }
+
+    .share-menu.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDropdown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .share-item {
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #fff;
+      transition: background 0.2s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      border-bottom: 1px solid #f4f6f8;
+    }
+
+    .share-item:last-child {
+      border-bottom: none;
+    }
+
+    .share-item:hover, .share-item:active {
+      background: var(--light-orange);
+      color: var(--dark-orange);
+    }
+
+    .share-item i {
+      font-size: 1.1rem;
+      color: #25D366; /* Warna Hijau WA */
     }
 
     .hero-bg {
@@ -335,13 +421,6 @@
       margin-bottom: 15px;
     }
 
-    .profile-form group {
-      margin-bottom: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
     .profile-form input {
       padding: 10px;
       border: 1px solid #ddd;
@@ -363,15 +442,33 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
+      text-decoration: none;
     }
 
-    .btn-wa { background: #25D366; text-decoration: none; }
+    .btn-wa { background: #25D366; }
   </style>
 </head>
 <body>
 
-  <!-- 1. HEADER UCAPAN WAKTU & JAM ANIMASI -->
+  <!-- 1. HEADER HERO / UCAPAN WAKTU -->
   <header class="hero-header">
+    <!-- Icon Kiri Atas: Browser -->
+    <a href="https://kalendergt.blogspot.com/" target="_blank" class="top-left-icon" title="Kalender GT Blog">
+      <i class="fa-solid fa-globe"></i>
+    </a>
+    
+    <!-- Icon Kanan Atas: Tombol Share -->
+    <button class="top-right-icon" id="shareBtn" onclick="toggleShareMenu(event)" title="Share Menu">
+      <i class="fa-solid fa-share-nodes"></i>
+    </button>
+
+    <!-- Dropdown Menu (Terpisah agar tombol tetap lurus) -->
+    <div class="share-menu" id="shareMenu">
+      <button class="share-item" onclick="shareToWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i> Share ke WA
+      </button>
+    </div>
+
     <div id="heroBg" class="hero-bg bg-pagi"></div>
     <div class="hero-content">
       <div class="greeting-text" id="greeting">Selamat Pagi</div>
@@ -389,7 +486,7 @@
     <div class="prayer-card">
       <div class="location-info">
         <i class="fa-solid fa-location-dot" style="color: var(--primary-orange);"></i>
-        <span id="locStatus">Mendeteksi Lokasi GPS...</span>
+        <span id="locStatus">Mengambil posisi GPS terbaru...</span>
       </div>
       <div class="prayer-grid">
         <div class="prayer-item" id="card-imsak">
@@ -421,24 +518,44 @@
 
     <!-- 3. MENU AKSES KALENDER & WEB -->
     <div class="section-title" id="sec-kalender">
-      <i class="fa-solid fa-calendar-days"></i> Akses Fitur Utama
+      <i class="fa-solid fa-calendar"></i> Akses Fitur Utama
     </div>
     <div class="menu-grid-4">
       <a href="https://kalendergajah.pages.dev/Kal-Nas/kal-sheet.html" class="menu-card">
         <i class="fa-solid fa-calendar-check"></i>
         <span>Kal Full</span>
       </a>
-      <a href="kal-offline.html" class="menu-card">
-        <i class="fa-solid fa-calendar-xmark"></i>
-        <span>Kal Offline</span>
+      <a href="http://localhost/kal/kal.html" class="menu-card">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Kal 4G3S</span>
       </a>
       <a href="https://kalendergt.blogspot.com/2024/01/jadwal-kerja-4g3s-gt.html" class="menu-card">
         <i class="fa-solid fa-globe"></i>
-        <span>Kal Online</span>
+        <span>Kal On</span>
       </a>
       <a href="https://kalendergt.blogspot.com/2025/11/app-kalender-gt-versi-web.html" class="menu-card">
         <i class="fa-solid fa-laptop-code"></i>
-        <span>App Web</span>
+        <span>K-Apps</span>
+      </a>
+    </div>
+
+    <!-- 3B. TAMBAHAN 4 MENU BARU -->
+    <div class="menu-grid-4" style="margin-top: 12px;">
+      <a href="https://kalendergajah.pages.dev/pkb/2023/pkb23-24.html" class="menu-card">
+        <i class="fa-solid fa-file-invoice"></i>
+        <span>PKB 22-24</span>
+      </a>
+      <a href="scan.html" class="menu-card">
+        <i class="fa-solid fa-qrcode"></i>
+        <span>Scan QR</span>
+      </a>
+      <a href="https://kalendergajah.pages.dev/kal-ot/in" class="menu-card">
+        <i class="fa-solid fa-note-sticky"></i>
+        <span>Kal Notes</span>
+      </a>
+      <a href="http://localhost/msc/shifter.html" class="menu-card">
+        <i class="fa-solid fa-music"></i>
+        <span>Shifter MP3</span>
       </a>
     </div>
 
@@ -447,7 +564,7 @@
       <i class="fa-solid fa-book-quran"></i> Fitur Islamic & Religi
     </div>
     <div class="menu-grid-6">
-      <a href="file:///android_asset/alquran/quran.html" class="menu-card">
+      <a href="http://localhost/alquran/index.html" class="menu-card">
         <i class="fa-solid fa-book-open"></i>
         <span>Al-Quran</span>
       </a>
@@ -455,19 +572,19 @@
         <i class="fa-solid fa-cloud"></i>
         <span>Quran Online</span>
       </a>
-      <a href="http://localhost/alquran/index.html" class="menu-card">
+      <a href="http://localhost/murothal/murothal.html" class="menu-card">
         <i class="fa-solid fa-headphones"></i>
         <span>Murothal</span>
       </a>
-      <a href="asmaulhusna.html" class="menu-card">
+      <a href="http://localhost/asmaul/index.html" class="menu-card">
         <i class="fa-solid fa-star-and-crescent"></i>
         <span>Asmaulhusna</span>
       </a>
-      <a href="sholawat.html" class="menu-card">
+      <a href="http://localhost/sholawat/indexarab.html" class="menu-card">
         <i class="fa-solid fa-hands-praying"></i>
         <span>Sholawat</span>
       </a>
-      <a href="religi.html" class="menu-card">
+      <a href="https://kalendergajah.pages.dev/religi/religi.html" class="menu-card">
         <i class="fa-solid fa-mosque"></i>
         <span>Religi</span>
       </a>
@@ -542,7 +659,7 @@
 
       <div style="margin-top: 20px; padding: 12px; background: var(--light-orange); border-radius: 10px; font-size: 0.8rem; color: #555;">
         <strong><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi:</strong>
-        <p style="margin-top: 4px;">Dashboard Apps v2.0 - Fitur Waktu Sholat, Kalender, dan Modul Islamic Terintegrasi.</p>
+        <p style="margin-top: 4px;">Dashboard Apps v2.3 - Fitur Waktu Sholat Live GPS, Kalender, & Modul Terintegrasi.</p>
       </div>
     </div>
   </div>
@@ -587,47 +704,71 @@
     setInterval(updateClockAndGreeting, 1000);
     updateClockAndGreeting();
 
-    // --- 2. GEOLOCATION, REVERSE GEOCODING & JADWAL SHOLAT ---
+    // --- DROPDOWN SHARE MENU TOGGLE & CLICK OUTSIDE ---
+    function toggleShareMenu(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('shareMenu');
+      menu.classList.toggle('show');
+    }
+
+    window.addEventListener('click', () => {
+      const menu = document.getElementById('shareMenu');
+      if (menu.classList.contains('show')) {
+        menu.classList.remove('show');
+      }
+    });
+
+    // Share ke WhatsApp
+    function shareToWhatsApp() {
+      const text = encodeURIComponent("Download apk Kal-GT ada linknya https://kalendergt.blogspot.com/");
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    // --- 2. LIVE GEOLOCATION ---
     function getPrayerTimes() {
+      if (navigator.geolocation) {
+        document.getElementById('locStatus').innerText = "Mengambil posisi GPS terbaru...";
+        
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            localStorage.setItem('user_lat', lat);
+            localStorage.setItem('user_lon', lon);
+
+            reverseGeocode(lat, lon);
+            fetchPrayerData(lat, lon);
+          },
+          (error) => {
+            console.warn("GPS gagal/ditolak, mencoba fallback localStorage...");
+            loadFallbackLocation();
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        loadFallbackLocation();
+      }
+    }
+
+    function loadFallbackLocation() {
       const storedLat = localStorage.getItem('user_lat');
       const storedLon = localStorage.getItem('user_lon');
       const storedAddress = localStorage.getItem('user_address');
 
       if (storedLat && storedLon) {
-        if(storedAddress) {
+        if (storedAddress) {
           document.getElementById('locStatus').innerText = storedAddress;
-        } else {
-          reverseGeocode(storedLat, storedLon);
         }
         fetchPrayerData(storedLat, storedLon);
       } else {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lon = position.coords.longitude;
-              
-              localStorage.setItem('user_lat', lat);
-              localStorage.setItem('user_lon', lon);
-
-              reverseGeocode(lat, lon);
-              fetchPrayerData(lat, lon);
-            },
-            (error) => {
-              const defaultAddr = "Panunggangan Utara, Pinang, Tangerang, Banten, 15143, Indonesia";
-              document.getElementById('locStatus').innerText = defaultAddr;
-              fetchPrayerData(-6.22, 106.65);
-            }
-          );
-        } else {
-          fetchPrayerData(-6.22, 106.65);
-        }
+        document.getElementById('locStatus').innerText = "Koordinat Default (Jakarta)";
+        fetchPrayerData(-6.2088, 106.8456);
       }
     }
 
-    // Mendapatkan Alamat Lengkap via OpenStreetMap
     function reverseGeocode(lat, lon) {
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=id`)
         .then(res => res.json())
         .then(data => {
           if (data && data.display_name) {
@@ -637,7 +778,7 @@
           }
         })
         .catch(() => {
-          const fallback = `Lat: ${parseFloat(lat).toFixed(2)}, Lon: ${parseFloat(lon).toFixed(2)}`;
+          const fallback = `Lat: ${parseFloat(lat).toFixed(4)}, Lon: ${parseFloat(lon).toFixed(4)}`;
           document.getElementById('locStatus').innerText = fallback;
         });
     }
@@ -666,10 +807,12 @@
 
             highlightCurrentPrayer(new Date(), timings);
           }
+        })
+        .catch(err => {
+          console.error("Gagal mengambil data sholat:", err);
         });
     }
 
-    // Highlight background beda untuk waktu sholat yang sedang berlangsung
     function highlightCurrentPrayer(now, timings) {
       const timeToMin = (tStr) => {
         const [h, m] = tStr.split(' ')[0].split(':').map(Number);
@@ -718,7 +861,6 @@
       }
     }
 
-    // Modal Popup GT
     function openGtModal() {
       document.getElementById('gtModal').classList.add('active');
     }
@@ -726,7 +868,6 @@
       document.getElementById('gtModal').classList.remove('active');
     }
 
-    // Profile Slide Panel
     function openProfileSlide() {
       document.getElementById('profName').value = localStorage.getItem('user_name') || '';
       document.getElementById('profCity').value = localStorage.getItem('user_city') || '';
