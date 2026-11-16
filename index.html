@@ -886,6 +886,11 @@
       alert("Profil berhasil disimpan!");
       closeProfileSlide();
     }
+ if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Mode Offline Siap!'))
+    .catch((err) => console.log('SW Gagal:', err));
+}
   </script>
 </body>
 </html>
