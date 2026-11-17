@@ -471,6 +471,41 @@
     }
 
     .btn-wa { background: #25D366; }
+
+   /* POPUP OFFLINE ALERT */
+.offline-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+.offline-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.offline-modal-box {
+  background: #ffffff;
+  width: 82%;
+  max-width: 340px;
+  border-radius: 18px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  transform: scale(0.8);
+  transition: transform 0.25s ease;
+}
+
+.offline-modal.active .offline-modal-box {
+  transform: scale(1);
+}
   </style>
 </head>
 <body>
@@ -694,6 +729,16 @@
       </div>
     </div>
   </div>
+  
+  <!-- POPUP PERINGATAN OFFLINE -->
+<div class="offline-modal" id="offlineLinkModal" onclick="closeOfflineModal()">
+  <div class="offline-modal-box" onclick="event.stopPropagation()">
+    <i class="fa-solid fa-wifi" style="font-size: 2.5rem; color: #d32f2f; margin-bottom: 10px;"></i>
+    <h3 style="color: #333; font-size: 1.05rem; margin-bottom: 6px;">Koneksi Terputus</h3>
+    <p style="font-size: 0.85rem; color: #666; line-height: 1.4;">Anda tidak terhubung dengan internet. Aktifkan data seluler atau Wi-Fi untuk membuka menu ini.</p>
+    <button class="btn-close-modal" onclick="closeOfflineModal()">Mengerti</button>
+  </div>
+</div>
 
   <script>
     let prayerTimingsCache = null;
@@ -992,6 +1037,26 @@
         .then(() => console.log('Mode Offline Siap!'))
         .catch((err) => console.log('SW Gagal:', err));
     }
+
+   function openOfflineModal() {
+  document.getElementById('offlineLinkModal').classList.add('active');
+}
+
+function closeOfflineModal() {
+  document.getElementById('offlineLinkModal').classList.remove('active');
+}
+
+// Cegat semua link eksternal (https://) saat HP dalam keadaan offline
+document.addEventListener('click', function (e) {
+  const link = e.target.closest('a');
+  if (!link) return;
+
+  const href = link.getAttribute('href') || '';
+  if (href.startsWith('https://') && !navigator.onLine) {
+    e.preventDefault(); // Batalkan buka halaman agar tidak muncul ERR_INTERNET_DISCONNECTED
+    openOfflineModal(); // Munculkan popup peringatan
+  }
+});
   </script>
 </body>
 </html>
