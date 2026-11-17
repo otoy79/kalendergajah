@@ -34,6 +34,31 @@
       overflow-x: hidden;
     }
 
+    /* NOTIFIKASI STATUS OFFLINE */
+    .offline-banner {
+      display: none;
+      background: #d32f2f;
+      color: #ffffff;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 8px 15px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      animation: slideDown 0.3s ease;
+    }
+
+    .offline-banner.show {
+      display: flex;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* 1. HEADER HERO / UCAPAN WAKTU */
     .hero-header {
       position: relative;
@@ -80,7 +105,7 @@
     .top-left-icon { left: 15px; }
     .top-right-icon { right: 15px; }
 
-    /* DROPDOWN SHARE MENU (POSISI MENYESUAIKAN TOMBOL KANAN) */
+    /* DROPDOWN SHARE MENU */
     .share-menu {
       position: absolute;
       top: 58px;
@@ -136,7 +161,7 @@
 
     .share-item i {
       font-size: 1.1rem;
-      color: #25D366; /* Warna Hijau WA */
+      color: #25D366;
     }
 
     .hero-bg {
@@ -450,6 +475,12 @@
 </head>
 <body>
 
+  <!-- BANNER NOTIFIKASI SAAT OFFLINE -->
+  <div id="offlineBanner" class="offline-banner">
+    <i class="fa-solid fa-wifi"></i>
+    <span>Mode Offline — Menampilkan data tersimpan di perangkat</span>
+  </div>
+
   <!-- 1. HEADER HERO / UCAPAN WAKTU -->
   <header class="hero-header">
     <!-- Icon Kiri Atas: Browser -->
@@ -462,7 +493,7 @@
       <i class="fa-solid fa-share-nodes"></i>
     </button>
 
-    <!-- Dropdown Menu (Terpisah agar tombol tetap lurus) -->
+    <!-- Dropdown Menu -->
     <div class="share-menu" id="shareMenu">
       <button class="share-item" onclick="shareToWhatsApp()">
         <i class="fa-brands fa-whatsapp"></i> Share ke WA
@@ -659,13 +690,30 @@
 
       <div style="margin-top: 20px; padding: 12px; background: var(--light-orange); border-radius: 10px; font-size: 0.8rem; color: #555;">
         <strong><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi:</strong>
-        <p style="margin-top: 4px;">Dashboard Apps v2.3 - Fitur Waktu Sholat Live GPS, Kalender, & Modul Terintegrasi.</p>
+        <p style="margin-top: 4px;">Dashboard Apps v2.4 - Mendukung Jadwal Sholat Offline & Online.</p>
       </div>
     </div>
   </div>
 
   <script>
     let prayerTimingsCache = null;
+
+    // --- DETEKSI STATUS ONLINE / OFFLINE ---
+    function updateOnlineStatus() {
+      const banner = document.getElementById('offlineBanner');
+      if (!navigator.onLine) {
+        banner.classList.add('show');
+      } else {
+        banner.classList.remove('show');
+      }
+    }
+
+    window.addEventListener('online', () => {
+      updateOnlineStatus();
+      getPrayerTimes(); // Otomatis refresh data saat internet kembali menyala
+    });
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
 
     // --- 1. WAKTU, JAM, DAN ANIMASI BACKGROUND ---
     function updateClockAndGreeting() {
@@ -718,17 +766,26 @@
       }
     });
 
-    // Share ke WhatsApp
     function shareToWhatsApp() {
       const text = encodeURIComponent("Download apk Kal-GT ada linknya https://kalendergt.blogspot.com/");
       window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
     }
 
-    // --- 2. LIVE GEOLOCATION ---
+    // --- 2. GEOLOCATION & JADWAL SHOLAT (ONLINE + CACHE OFFLINE) ---
     function getPrayerTimes() {
+      // Langsung tampilkan jadwal dari cache lebih dulu (agar instan saat offline / sinyal lambat)
+      loadCachedPrayerForToday();
+
+      // Jika offline, cukup pakai data tersimpan dan tampilkan alamat terakhir
+      if (!navigator.onLine) {
+        const storedAddress = localStorage.getItem('user_address');
+        document.getElementById('locStatus').innerText = storedAddress
+          ? `${storedAddress} (Offline)`
+          : "Lokasi Offline (Data Tersimpan)";
+        return;
+      }
+
       if (navigator.geolocation) {
-        document.getElementById('locStatus').innerText = "Mengambil posisi GPS terbaru...";
-        
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const lat = position.coords.latitude;
@@ -778,9 +835,51 @@
           }
         })
         .catch(() => {
-          const fallback = `Lat: ${parseFloat(lat).toFixed(4)}, Lon: ${parseFloat(lon).toFixed(4)}`;
+          const fallback = localStorage.getItem('user_address') || `Lat: ${parseFloat(lat).toFixed(4)}, Lon: ${parseFloat(lon).toFixed(4)}`;
           document.getElementById('locStatus').innerText = fallback;
         });
+    }
+
+    // Tampilkan data jadwal sholat ke elemen HTML
+    function renderPrayerTimings(timings) {
+      if (!timings) return;
+      prayerTimingsCache = timings;
+
+      document.getElementById('imsak').innerText = timings.Imsak.split(' ')[0];
+      document.getElementById('subuh').innerText = timings.Fajr.split(' ')[0];
+      document.getElementById('dzuhur').innerText = timings.Dhuhr.split(' ')[0];
+      document.getElementById('ashar').innerText = timings.Asr.split(' ')[0];
+      document.getElementById('maghrib').innerText = timings.Maghrib.split(' ')[0];
+      document.getElementById('isya').innerText = timings.Isha.split(' ')[0];
+
+      highlightCurrentPrayer(new Date(), timings);
+    }
+
+    // Muat jadwal sholat hari ini dari localStorage (untuk mode offline)
+    function loadCachedPrayerForToday() {
+      const savedCalendar = localStorage.getItem('prayer_calendar_cache');
+      const savedSingle = localStorage.getItem('prayer_last_timings');
+      const now = new Date();
+      const dayIndex = now.getDate() - 1;
+
+      if (savedCalendar) {
+        try {
+          const parsed = JSON.parse(savedCalendar);
+          if (parsed.month === (now.getMonth() + 1) && parsed.year === now.getFullYear() && parsed.days[dayIndex]) {
+            renderPrayerTimings(parsed.days[dayIndex].timings);
+            return;
+          }
+        } catch (e) {
+          console.error("Gagal membaca cache kalender sholat:", e);
+        }
+      }
+
+      // Cadangan jika bulan sudah berganti saat masih offline
+      if (savedSingle) {
+        try {
+          renderPrayerTimings(JSON.parse(savedSingle));
+        } catch (e) {}
+      }
     }
 
     function fetchPrayerData(lat, lon) {
@@ -794,22 +893,23 @@
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          if (data.code === 200 && data.data[day]) {
+          if (data.code === 200 && data.data && data.data[day]) {
             const timings = data.data[day].timings;
-            prayerTimingsCache = timings;
-            
-            document.getElementById('imsak').innerText = timings.Imsak.split(' ')[0];
-            document.getElementById('subuh').innerText = timings.Fajr.split(' ')[0];
-            document.getElementById('dzuhur').innerText = timings.Dhuhr.split(' ')[0];
-            document.getElementById('ashar').innerText = timings.Asr.split(' ')[0];
-            document.getElementById('maghrib').innerText = timings.Maghrib.split(' ')[0];
-            document.getElementById('isya').innerText = timings.Isha.split(' ')[0];
 
-            highlightCurrentPrayer(new Date(), timings);
+            // Simpan jadwal 1 bulan penuh + jadwal terakhir ke localStorage agar bisa diakses offline
+            localStorage.setItem('prayer_calendar_cache', JSON.stringify({
+              month: month,
+              year: year,
+              days: data.data
+            }));
+            localStorage.setItem('prayer_last_timings', JSON.stringify(timings));
+
+            renderPrayerTimings(timings);
           }
         })
         .catch(err => {
-          console.error("Gagal mengambil data sholat:", err);
+          console.warn("Gagal mengambil jadwal online, menggunakan data offline:", err);
+          loadCachedPrayerForToday();
         });
     }
 
@@ -886,11 +986,12 @@
       alert("Profil berhasil disimpan!");
       closeProfileSlide();
     }
- if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js')
-    .then(() => console.log('Mode Offline Siap!'))
-    .catch((err) => console.log('SW Gagal:', err));
-}
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Mode Offline Siap!'))
+        .catch((err) => console.log('SW Gagal:', err));
+    }
   </script>
 </body>
 </html>
