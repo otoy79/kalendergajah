@@ -32,6 +32,7 @@
       color: var(--text-color);
       padding-bottom: 80px;
       overflow-x: hidden;
+     animation: fadeIn 1s ease-out;
     }
 
     /* NOTIFIKASI STATUS OFFLINE */
@@ -63,7 +64,7 @@
     .hero-header {
       position: relative;
       width: 100%;
-      height: 220px;
+      height: 290px;
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -72,9 +73,9 @@
       text-align: center;
       padding: 20px;
       overflow: hidden;
-      border-bottom: 6px solid var(--dark-orange);
-      border-bottom-left-radius: 28px;
-      border-bottom-right-radius: 28px;
+      border-bottom: 15px solid var(--dark-orange);
+      border-bottom-left-radius: 88px;
+      border-bottom-right-radius: 88px;
       box-shadow: 0 4px 15px rgba(239, 108, 0, 0.3);
     }
 
@@ -85,8 +86,8 @@
       z-index: 20;
       background: rgba(0, 0, 0, 0.25);
       color: #fff;
-      width: 38px;
-      height: 38px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -189,6 +190,7 @@
 
     .hero-content {
       position: relative;
+      padding-top: 80px;
       z-index: 2;
       text-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
@@ -388,12 +390,11 @@
     .modal-overlay.active .modal-content {
       transform: scale(1);
     }
-
-    .apk-icon-placeholder {
-      width: 90px;
-      height: 90px;
+    .apk-icon-gt {
+      width: 65px;
+      height: 64px;
       background: var(--light-orange);
-      border: 3px dashed var(--primary-orange);
+      border: 0px dashed var(--primary-orange);
       border-radius: 22px;
       margin: 15px auto;
       display: flex;
@@ -401,8 +402,33 @@
       align-items: center;
       color: var(--primary-orange);
       font-size: 2.2rem;
+      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(img/logogt.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     }
-
+    .apk-icon-placeholder {
+      width: 130px;
+      height: 100px;
+      background: var(--light-orange);
+      border: 0px dashed var(--primary-orange);
+      border-radius: 22px;
+      margin: 15px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--primary-orange);
+      font-size: 2.2rem;
+      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(img/1.gif);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    }
+  .icon80 {
+   width: 48px;
+   height: 40px;
+   background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(img/icon80.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+   }
     .btn-close-modal {
       background: var(--primary-orange);
       color: #fff;
@@ -506,6 +532,10 @@
 .offline-modal.active .offline-modal-box {
   transform: scale(1);
 }
+   @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(0px); }
+    to { opacity: 1; transform: translateY(0); }
+}
   </style>
 </head>
 <body>
@@ -531,7 +561,7 @@
     <!-- Dropdown Menu -->
     <div class="share-menu" id="shareMenu">
       <button class="share-item" onclick="shareToWhatsApp()">
-        <i class="fa-brands fa-whatsapp"></i> Share ke WA
+        <i class="fa-brands fa-whatsapp"></i> Share ke WhatsApp
       </button>
     </div>
 
@@ -540,6 +570,9 @@
       <div class="greeting-text" id="greeting">Selamat Pagi</div>
       <div class="clock-text" id="clock">00:00:00</div>
       <div class="date-text" id="date">Loading tanggal...</div>
+      <!-- Slot Gambar Icon APK -->
+      <div class="apk-icon-gt" id="apkIconBox">
+      </div>
     </div>
   </header>
 
@@ -669,7 +702,7 @@
       <span>Kalender</span>
     </button>
     <button class="nav-item" onclick="openGtModal()">
-      <i class="fa-solid fa-layer-group"></i>
+      <i class="fa-solid play icon80" onclick="playAudio()"></i>
       <span>GT</span>
     </button>
     <button class="nav-item" onclick="scrollToSection('sec-islamic')">
@@ -690,11 +723,10 @@
       
       <!-- Slot Gambar Icon APK -->
       <div class="apk-icon-placeholder" id="apkIconBox">
-        <i class="fa-solid fa-android"></i>
       </div>
 
       <p style="font-size: 0.85rem; font-weight: 600;">Modul GT Mobile v1.0</p>
-      <button class="btn-close-modal" onclick="closeGtModal()">Tutup</button>
+      <button class="btn-close-modal stop" onclick="closeGtModal()"><span class="stop" onclick="stopAudio()">Tutup</span></button>
     </div>
   </div>
 
@@ -719,8 +751,8 @@
         <i class="fa-solid fa-floppy-disk"></i> Simpan Profil
       </button>
 
-      <a href="https://chat.whatsapp.com/" target="_blank" class="btn-action btn-wa">
-        <i class="fa-brands fa-whatsapp"></i> Chat Group WA
+      <a href="https://chat.whatsapp.com/Cx2xf0RvjdVBe0mPIRbj95?s=cl&p=a&iam=2" target="_blank" class="btn-action btn-wa">
+        <i class="fa-brands fa-whatsapp"></i> Gabung Group WA
       </a>
 
       <div style="margin-top: 20px; padding: 12px; background: var(--light-orange); border-radius: 10px; font-size: 0.8rem; color: #555;">
@@ -739,6 +771,10 @@
     <button class="btn-close-modal" onclick="closeOfflineModal()">Mengerti</button>
   </div>
 </div>
+
+   <audio style="display:none" id="audio" controls loop>
+    <source src="img/gajah.mp3" type="audio/mpeg">
+</audio>
 
   <script>
     let prayerTimingsCache = null;
@@ -1057,6 +1093,9 @@ document.addEventListener('click', function (e) {
     openOfflineModal(); // Munculkan popup peringatan
   }
 });
+   const audio = document.getElementById("audio"); function playAudio() { audio.play(); } function stopAudio() { audio.pause(); audio.currentTime = 0; }
+
+
   </script>
 </body>
 </html>
