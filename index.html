@@ -73,9 +73,9 @@
       text-align: center;
       padding: 20px;
       overflow: hidden;
-      border-bottom: 15px solid var(--dark-orange);
-      border-bottom-left-radius: 88px;
-      border-bottom-right-radius: 88px;
+      border-bottom: 8px solid var(--dark-orange);
+      border-bottom-left-radius: 18px;
+      border-bottom-right-radius: 18px;
       box-shadow: 0 4px 15px rgba(239, 108, 0, 0.3);
     }
 
@@ -1091,6 +1091,29 @@ document.addEventListener('click', function (e) {
   if (href.startsWith('https://') && !navigator.onLine) {
     e.preventDefault(); // Batalkan buka halaman agar tidak muncul ERR_INTERNET_DISCONNECTED
     openOfflineModal(); // Munculkan popup peringatan
+  }
+});
+
+document.addEventListener("click", function (e) {
+  const link = e.target.closest("a");
+  if (!link || !link.href) return;
+
+  const urlAsli = link.href;
+  const urlKecil = urlAsli.toLowerCase();
+
+  const keBlogspot = urlKecil.includes("blogspot.com");
+  const fileUnduhan =
+    urlKecil.endsWith(".apk") ||
+    urlKecil.endsWith(".png") ||
+    urlKecil.endsWith(".jpg") ||
+    urlKecil.endsWith(".jpeg") ||
+    urlKecil.endsWith(".webp") ||
+    urlKecil.endsWith(".zip") ||
+    link.hasAttribute("download");
+
+  if ((keBlogspot || fileUnduhan) && window.AppInventor && window.AppInventor.setWebViewString) {
+    e.preventDefault();
+    window.AppInventor.setWebViewString("buka_luar|" + urlAsli);
   }
 });
    const audio = document.getElementById("audio"); function playAudio() { audio.play(); } function stopAudio() { audio.pause(); audio.currentTime = 0; }
