@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Aplikasi Dashboard</title>
   <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="file:///android_asset/css/icon.css">
+  <link rel="stylesheet" href="file:///android_asset/css/font.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
   
@@ -32,7 +34,7 @@
       color: var(--text-color);
       padding-bottom: 80px;
       overflow-x: hidden;
-     animation: fadeIn 1s ease-out;
+     animation: fadeIn 0.5s ease-out;
     }
 
     /* NOTIFIKASI STATUS OFFLINE */
@@ -402,7 +404,7 @@
       align-items: center;
       color: var(--primary-orange);
       font-size: 2.2rem;
-      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(img/logogt.png);
+      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(file:///android_asset/img/logogt.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     }
@@ -418,14 +420,14 @@
       align-items: center;
       color: var(--primary-orange);
       font-size: 2.2rem;
-      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(img/1.gif);
+      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(file:///android_asset/img/1.gif);
     background-repeat: no-repeat;
     background-size: 100% 100%;
     }
   .icon80 {
    width: 48px;
    height: 40px;
-   background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(img/icon80.png);
+   background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(file:///android_asset/img/icon80.png);
     background-repeat: no-repeat;
     background-size: 100% 100%;
    }
@@ -773,7 +775,7 @@
 </div>
 
    <audio style="display:none" id="audio" controls loop>
-    <source src="img/gajah.mp3" type="audio/mpeg">
+    <source src="file:///android_asset/img/gajah.mp3" type="audio/mpeg">
 </audio>
 
   <script>
