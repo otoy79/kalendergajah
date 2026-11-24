@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADIO ROCKER SHIFT - Al-Qur'an Pro Edition</title>
+    <style>
+        :root {
+            --rock-red: #fca903;
+            --rock-dark: #694705;
+            --rock-gold: #ff0000;
+        }
+   body {
+    background: linear-gradient(135deg, #690505, #1a0000, #690505);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: #fff; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+    @keyframes rockPulse {
+    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.6); }
+    100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.2); }
+}
+
+.dashboard {
+    animation: rockPulse 3s infinite ease-in-out;
+    border: 2px solid var(--rock-red) !important; /* Biar makin sangar */
+}
+        /* PANEL UTAMA */
+        .dashboard {
+            width: 85%;
+            max-width: 400px;
+            background: var(--rock-dark);         
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        h1 { font-size: 2.8rem; color: var(--rock-red); text-transform: uppercase; letter-spacing: 5px; margin-bottom: 5px; }
+        .sub-title { font-size: 0.7rem; color: #888; margin-bottom: 20px; }
+
+        /* MONITOR STATUS */
+        .monitor {
+            background: #2e0202;
+            border: 2px inset #333;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .shift-tag {
+            background: var(--rock-red);
+            padding: 5px 10px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            border-radius: 5px;
+        }
+
+        .song-title {
+            display: block;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: var(--rock-gold);
+            font-weight: bold;
+            height: 1.5em;
+        }
+        .sub-title {
+            font-size: 1rem;
+            color: #e89609;
+        }
+
+        /* TOMBOL SAKTI */
+        .btn-power {
+            background: linear-gradient(to bottom, #ff0000, #8b0000);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+            transition: 0.3s;
+        }
+   .btn-next, .btn-stop {
+            background: linear-gradient(to bottom, #ff0000, #8b0000);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .btn-power:active { transform: scale(0.95); }
+        .playing { animation: pulse 1.5s infinite; }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+        }
+
+        .footer { margin-top: 20px; font-size: 0.7rem; color: #e89609; }
+
+   /* Container untuk teks berjalan */
+.marquee-container {
+    width: 100%;
+    overflow: hidden; /* Sembunyikan teks yang keluar batas */
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 0;
+    margin: 10px 0;
+    border-radius: 5px;
+    border-left: 3px solid var(--rock-red);
+    border-right: 3px solid var(--rock-red);
+}
+
+/* Animasi teks jalannya */
+.marquee-text {
+    display: inline-block;
+    padding-left: 100%; /* Mulai dari luar kanan */
+    animation: jalanTerus 20s linear infinite;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--rock-gold); /* Warna emas biar mewah */
+}
+
+@keyframes jalanTerus {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <h1>ROCKER</h1>
+        <div class="sub-title">SHIFTER MUSIC STATION</div>
+
+        <div class="monitor">
+            <span id="shift-status" class="shift-tag">STANDBY</span>
+   <div class="marquee-container">
+    <div id="song-info" class="marquee-text">Menunggu Jam Istirahat... <i style="font-size: 0.7em; color:#ccc">Shift 1 (11-13) | Shift 2 (18:30-19:30) | Shift 3 (03-04) | WEEKEND (Minggu) FULL KONSER</i></div>
+</div>
+            <div id="timer" style="margin-top: 10px; font-family: monospace; color: #0f0;font-size: 1.4rem;">00:00:00</div>
+      <canvas id="visualizer" style="width: 100%; height: 50px; margin-top: 10px; border-radius: 5px;"></canvas>
+        </div>
+
+   <div class="controls" style="margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+    <button id="btnStop" onclick="stopKonser()" class="btn-stop" style=" border: none; border-radius: 5px; cursor: pointer;">STOP</button>
+        <button id="btnPlay" class="btn-power" onclick="startRadio()">PLAY MUSIC</button>
+       <button id="btnNext" onclick="nextLagu()" class="btn-next" style=" border: none; border-radius: 5px; cursor: pointer;">NEXT</button>
+</div>
+
+        <div class="footer">
+            Shift 1 (11-13) | Shift 2 (18:30-19:30) | Shift 3 (03-04) | WEEKEND (Minggu) FULL KONSER
+        </div>
+    </div>
+
+ <script src="https://kalendergajah.pages.dev/musik/musik/dewa/dewa.js"></script>
+<script src="https://kalendergajah.pages.dev/musik/musik/padi/padi.js"></script>
+<script src="https://kalendergajah.pages.dev/musik/musik/noah/noah.js"></script>
+<script src="https://kalendergajah.pages.dev/musik/musik/jamrud/jamrud.js"></script>
+<script src="https://kalendergajah.pages.dev/musik/musik/denny/denny.js"></script>
+<script src="https://kalendergajah.pages.dev/musik/musik/ungu/ungu.js"></script>
+<script src="https://kalendergajah.pages.dev/musik/musik/wali/wali.js"></script>
+
+   <script>
+    // --- 1. KONFIGURASI GLOBAL ---
+    const pathArtis = "https://kalendergajah.pages.dev/musik/musik/";
+    let daftarPutarKonser = [];
+    let currentAudio = new Audio();
+    currentAudio.crossOrigin = "anonymous"; // Izin akses file audio
+    
+    let isRadioActive = false;
+    let playlistIndex = 0;
+    
+    // Audio Context untuk Visualizer
+    let audioCtx, analyzer, source, canvas, ctx;
+    let visualizerInitialized = false;
+
+    // --- 2. FUNGSI SIAPKAN PLAYLIST ---
+    function siapkanKonser() {
+        const sekarang = new Date();
+        const hariIni = sekarang.getDay(); 
+        let semuaArtis = [];
+        
+        // Ambil data dari variabel global (file .js external)
+        const d_dewa   = (typeof dewaSongs !== 'undefined') ? dewaSongs : [];
+        const d_padi   = (typeof songs !== 'undefined') ? songs : []; 
+        const d_noah   = (typeof noahSongs !== 'undefined') ? noahSongs : [];
+        const d_jamrud = (typeof jamrudSongs !== 'undefined') ? jamrudSongs : [];
+        const d_denny  = (typeof dennySongs !== 'undefined') ? dennySongs : [];
+        const d_ungu   = (typeof unguSongs !== 'undefined') ? unguSongs : [];
+        const d_wali   = (typeof waliSongs !== 'undefined') ? waliSongs : [];
+
+        // LOGIKA HARI JUMAT (Hari ke-5)
+        if (hariIni === 5) {
+            console.log("Mode Jumat Berkah: Ungu & Wali.");
+            semuaArtis = d_ungu.concat(d_wali);
+            if (semuaArtis.length === 0) semuaArtis = d_dewa.concat(d_padi);
+        } else {
+            // HARI BIASA & MINGGU: CAMPUR SEMUA
+            console.log("Mode Konser Akbar: Semua Artis.");
+            semuaArtis = [].concat(d_dewa, d_padi, d_noah, d_jamrud, d_denny, d_ungu, d_wali);
+        }
+
+        // Filter data valid
+        const finalCheck = semuaArtis.filter(s => s && s.title);
+
+        if (finalCheck.length > 0) {
+            daftarPutarKonser = finalCheck.sort(() => Math.random() - 0.5);
+            console.log("Playlist Siap: " + daftarPutarKonser.length + " lagu.");
+        } else {
+            console.error("Artis belum datang! Cek file .js");
+        }
+    }
+
+    // --- 3. LOGIKA SHIFT & JAM TAYANG ---
+    function checkShiftAndPlay() {
+        if (!isRadioActive) return;
+
+        if (daftarPutarKonser.length === 0) siapkanKonser();
+
+        const now = new Date();
+        const hariIni = now.getDay(); 
+        const jam = now.getHours();
+        const menit = now.getMinutes();
+        const desimal = jam + (menit / 60);
+
+        let isIstirahat = false;
+        let labelShift = "";
+
+        // MINGGU FULL TIME (0)
+        if (hariIni === 0) {
+            isIstirahat = true;
+            labelShift = "WEEKEND FULL KONSER AKTIF";
+        } 
+        // HARI KERJA (SHIFT)
+        else {
+            if (jam >= 11 && jam < 13) { isIstirahat = true; labelShift = "SHIFT 1 AKTIF (11:00~13:00)"; }
+            else if (desimal >= 18.5 && desimal < 19.5) { isIstirahat = true; labelShift = "SHIFT 2 AKTIF (18:30•19:30)"; }
+            else if (jam >= 3 && jam < 4) { isIstirahat = true; labelShift = "SHIFT 3 AKTIF (03:00~04:00)"; }
+        }
+
+        if (isIstirahat) {
+            mainkanLagu(labelShift);
+        } else {
+            stopMusic("Belum Jam Istirahat, Boss! Kerja dulu! =>Shift 1 (11-13) | Shift 2 (18:30-19:30) | Shift 3 (03-04) | WEEKEND (Minggu) FULL KONSER");
+        }
+    }
+
+    // --- 4. FUNGSI PEMUTAR MUSIK ---
+    function mainkanLagu(labelShift) {
+        document.getElementById('shift-status').innerText = "MODE: " + labelShift;
+
+        if (currentAudio.paused) {
+            if (daftarPutarKonser.length === 0) return;
+
+            const lagu = daftarPutarKonser[playlistIndex];
+            if (!lagu) { playlistIndex = 0; return; }
+
+            // Deteksi Folder
+            const artis = (lagu.artist || "").toLowerCase();
+            let folderArtis = "dewa"; 
+            if (artis.includes("padi")) folderArtis = "padi";
+            else if (artis.includes("noah")) folderArtis = "noah";
+            else if (artis.includes("jamrud")) folderArtis = "jamrud";
+            else if (artis.includes("denny")) folderArtis = "denny";
+            else if (artis.includes("ungu")) folderArtis = "ungu";
+            else if (artis.includes("wali")) folderArtis = "wali";
+
+            const linkLengkap = pathArtis + folderArtis + "/" + lagu.url;
+            document.getElementById('song-info').innerText = lagu.title.trim() + " - " + lagu.artist;
+            
+            currentAudio.src = linkLengkap;
+            currentAudio.load();
+            
+            currentAudio.play().catch(e => {
+                document.getElementById('song-info').innerText = "Klik Tombol Merah Boss!";
+            });
+
+            currentAudio.onended = () => {
+                playlistIndex = (playlistIndex + 1) % daftarPutarKonser.length;
+                mainkanLagu(labelShift);
+            };
+        }
+    }
+
+    function stopMusic(msg) {
+        currentAudio.pause();
+        document.getElementById('shift-status').innerText = "STANDBY";
+        document.getElementById('song-info').innerText = msg;
+        playlistIndex = 0;
+    }
+
+    // --- 5. VISUALIZER (BIAR GOYANG) ---
+    function initVisualizer() {
+        if (visualizerInitialized) return;
+        try {
+            canvas = document.getElementById('visualizer');
+            ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyzer = audioCtx.createAnalyser();
+            source = audioCtx.createMediaElementSource(currentAudio);
+            source.connect(analyzer);
+            analyzer.connect(audioCtx.destination);
+            
+            analyzer.fftSize = 256;
+            visualizerInitialized = true;
+            draw();
+        } catch (e) { console.log("Visualizer Error: ", e); }
+    }
+
+    function draw() {
+        requestAnimationFrame(draw);
+        if (!analyzer) return;
+        let spectrum = new Uint8Array(analyzer.frequencyBinCount);
+        analyzer.getByteFrequencyData(spectrum);
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height);
+        let w = 15;
+        for(let i = 0; i < spectrum.length; i += w) {
+            let x = (i / spectrum.length) * canvas.width;
+            let y = canvas.height - (spectrum[i] / 255) * canvas.height;
+            ctx.lineTo(x, y);
+        }
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.2)';
+        ctx.fill();
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+    }
+
+    // --- 6. KONTROL TOMBOL & TIMER ---
+    function startRadio() {
+        initVisualizer();
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        
+        isRadioActive = true;
+        siapkanKonser(); 
+        document.getElementById('btnPlay').innerText = "MUSIC AKTIF";
+        document.getElementById('btnPlay').classList.add('playing');
+        checkShiftAndPlay();
+    }
+
+    setInterval(checkShiftAndPlay, 10000);
+    setInterval(() => {
+        document.getElementById('timer').innerText = new Date().toLocaleTimeString('id-ID');
+    }, 1000);
+
+   // FUNGSI NEXT (GANTI LAGU)
+   function nextLagu() {
+    if (!isRadioActive) return;
+    
+    // Matikan lagu yang sekarang
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    
+    // Maju ke index berikutnya
+    playlistIndex = (playlistIndex + 1) % daftarPutarKonser.length;
+    
+    // Ambil label shift yang sedang aktif dari layar
+    let labelSekarang = document.getElementById('shift-status').innerText.replace("MODE: ", "");
+    
+    // Putar lagu baru
+    mainkanLagu(labelSekarang);
+    console.log("Next lagu ditekan...");
+}
+
+// FUNGSI STOP (BUBARKAN KONSER)
+    function stopKonser() {
+    isRadioActive = false; // Matikan sistem otomatis
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    
+    // Kembalikan tampilan ke awal
+    document.getElementById('btnPlay').innerText = "START RADIO";
+    document.getElementById('btnPlay').classList.remove('playing');
+    document.getElementById('shift-status').innerText = "STANDBY";
+    document.getElementById('song-info').innerText = "Konser Berhenti, Boss!";
+    
+    console.log("Konser dibubarkan!");
+}
+</script>
+</body>
+</html>
