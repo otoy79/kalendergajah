@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Al-Qur'an Pro - Home</title>
+     <script>
+    // SCRIPT ANTI-KEDIP (Mata Genit)
+    (function() {
+        const isDark = localStorage.getItem('userDark') === 'true';
+        const tipe = localStorage.getItem('tipeMushaf') || 'mushaf-1';
+        
+        // Cek batasan Mushaf 2 & 3 (gak boleh dark mode)
+        const bolehDark = isDark && tipe !== 'mushaf-2' && tipe !== 'mushaf-3';
+
+        if (bolehDark) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            // 'color-scheme' ini sakti, bikin scrollbar & background bawaan lgsg item
+            document.documentElement.style.colorScheme = 'dark';
+            document.documentElement.style.backgroundColor = '#121212';
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+            document.documentElement.style.backgroundColor = '#ffffff';
+        }
+    })();
+</script>
+    <link rel="stylesheet" href="css/style.css"> 
+    <style>
+        /* Styling khusus tambahan untuk Menu Utama */
+        body { padding-bottom: 50px; } /* Reset padding bawah index */
+        
+  /* Pindahkan dari body ke container */
+#app-container {
+  transform: translateX(0);
+  transition: transform 0.3s ease-in-out;
+  min-height: 100vh;
+  width: 100%;
+  overflow:auto;
+  z-index: 0;
+}
+
+.slide-mode #app-container {
+  transform: translateX(380px);
+}
+  #app-container {
+    will-change: transform;
+    backface-visibility: hidden;
+}
+        .hero-menu { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: white; padding: 25px 20px; 
+            text-align: center; border-bottom-left-radius: 4px; border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+     .hero-menu h1 {      
+       font-size: 9.5vw;
+        }
+
+        .sholat-container {
+            background: var(--card-bg); margin: -30px 20px 20px; border-radius: 20px;
+            padding: 15px; display: flex; justify-content: space-around;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 1px solid var(--border); text-align: center;"
+        }
+
+        .sholat-box { text-align: center; font-size: 11px; }
+        .sholat-box b { display: block; color: var(--primary); font-size: 14px; margin-top: 5px; }
+
+      
+        .menu-item:active { transform: scale(0.95); background: var(--border); }
+       
+        .resume-card-home {
+            margin: 10px 20px 20px; background: var(--primary); color: white;
+            padding: 18px; border-radius: 20px; cursor: pointer;
+            display: none; position: relative; overflow: hidden;
+        }
+   .menu-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; 
+        padding: 10px 20px;
+    }
+
+    .menu-item {
+        background: var(--card-bg); 
+        padding: 30px; 
+        border-radius: 20px;
+        text-align: center; 
+        text-decoration: none; 
+        color: var(--text);
+        border: 0.5px solid var(--primary); 
+        transition: 0.2s;
+        box-shadow: 0 4px 10px var(--primary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+       cursor: none;
+    }
+   .menu-item:hover {
+    transform: scale(1.03);
+    border: 1px solid var(--primary);
+    box-shadow: 0 8px 15px var(--primary);
+}
+    .menu-item:active { 
+        transform: scale(0.95); 
+        background: var(--border); 
+    }
+
+    /* Ikon dibuat tegak dan lebih berisi */
+    .menu-icon { 
+        font-style: normal; /* Ini biar nggak miring lagi! */
+        font-size: 40px; 
+        margin-bottom: 5px; 
+        line-height: 1;
+    }
+
+    .menu-item b { 
+        font-size: 12px; 
+        font-weight: 600;
+        margin-top: 8px;
+    }
+
+   #notif-sholat {
+    position: fixed;
+    top: -100px; /* Sembunyi di atas */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    max-width: 360px;
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#notif-sholat.tampil {
+    top: 20px; /* Meluncur ke bawah */
+}
+
+.btn-tutup-notif {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+  /* CSS UNTUK NOTIF AGENDA PUASA */
+#notif-agenda-floating {
+    position: fixed;
+    bottom: -150px; /* Sembunyi di bawah layar */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    max-width: 310px;
+    background: rgba(0, 40, 30, 0.98); /* Hijau botol gelap mewah */
+    color: white;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 -10px 25px rgba(0,0,0,0.3);
+    z-index: 9999; /* Tetap kasih tinggi */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(10px); /* Efek kaca biar makin pro */
+}
+
+#notif-agenda-floating.muncul {
+    bottom: 10px; /* Melayang pas di atas menu navigasi */
+}
+
+.btn-tutup-agenda {
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  @keyframes slideUp {
+    from { bottom: -100px; opacity: 0; }
+    to { bottom: 100px; opacity: 1; } /* HARUS SAMA DENGAN DI JS */
+}
+  #status-lonceng {
+    transition: all 0.5s ease;
+}
+  #status-lokasi {
+    font-size: 10px;
+    opacity: 0.9;
+    margin: 10px 20px;
+    color: #ffffff;
+    line-height: 1.4;
+    background: rgba(0, 0, 0, 0.2); /* Kasih background tipis biar kebaca */
+    padding: 8px 12px;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    border: 0.5px solid rgba(255,255,255,0.1);
+}
+
+.dot-gps {
+    height: 10px;
+    width: 10px;
+    background-color: #2ecc71;
+    border-radius: 50%;
+    flex-shrink: 0; /* Biar buletannya gak gepeng pas teks panjang */
+    margin-top: 3px;
+    box-shadow: 0 0 8px #2ecc71;
+    animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; }
+}
+    </style>
+</head>
+   <body class="mushaf-1">
+     
+   <div id="app-container">
+   
+    <div id="notif-sholat">
+    <div style="font-size: 24px;">🔔</div>
+    <div style="flex: 1;">
+        <b id="judul-notif" style="display: block;">Pengingat Sholat</b>
+        <small id="pesan-notif">10 Menit lagi waktu Sholat</small>
+    </div>
+    <button class="btn-tutup-notif" onclick="tutupNotif()">OK</button>
+</div>
+
+    <div class="hero-menu">
+    <h1 style="margin:0; font-family: 'Amiri', serif;">Al-Qur'an Pro</h1>
+    <div id="greeting" style="opacity:0.9; font-size:14px; margin-top:10px; height: 38px;">Assalamu'alaikum</div>
+ 
+   <div id="jkt-countdown-sholat" style="font-size: 13px; margin: 5px 0; font-weight: 500; text-align:center; border-top:1px solid rgba(255,255,255,0.2); border-bottom:1px solid rgba(255,255,255,0.2); padding: 5px 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+    <span id="status-lonceng" style="font-size: 16px; filter: grayscale(1); opacity: 0.5;">🔊</span>
+    <span id="teks-countdown">Menghitung waktu sholat...</span>
+</div>
+      <div id="status-lokasi" style="font-size: 11px; opacity: 0.8; margin: 8px; text-align: left;">
+    <span class="dot-gps"></span> Mendeteksi Posisi GPS...(aktifkan lokasi GPS dan koneksi internet di hp anda)...
+</div>
+       </div>
+  
+      <div class="sholat-container">
+        <div class="sholat-box">Imsak<b id="s-imsak" style="color:#e67e22">--:--</b></div>
+        <div class="sholat-box">Subuh<b id="s-subuh">--:--</b></div>
+        <div class="sholat-box">Dzuhur<b id="s-dzuhur">--:--</b></div>
+        <div class="sholat-box">Ashar<b id="s-ashar">--:--</b></div>
+        <div class="sholat-box">Maghrib<b id="s-maghrib">--:--</b></div>
+        <div class="sholat-box">Isya`<b id="s-isya">--:--</b></div>
+    </div>
+
+  
+   <div id="resume-home" class="resume-card-home" onclick="bukaTerakhir()">
+    <span style="font-size:13px; opacity:0.9;">📌 Terakhir Dibaca:</span>
+    <span id="resume-info-home" style="font-weight:bold; margin-top:5px; font-size:14px;">--</span>
+</div>
+
+   <div class="menu-grid">
+    <a href="quran.html" class="menu-item">
+        <span class="menu-icon">📖</span>
+        <b>Al-Qur'an</b>
+    </a>
+    <a href="baca.html" class="menu-item">
+        <span class="menu-icon">📖</span>
+        <b>Al-Qur'an Tafsir</b>
+    </a>
+    <a href="tahlil.html" class="menu-item">
+        <span class="menu-icon">📿</span>
+        <b>Tahlil & Yasin</b>
+    </a>
+    <a href="jadwal.html" class="menu-item">
+        <span class="menu-icon">🕌</span>
+        <b>Jadwal Sholat</b>
+    </a>
+    <a href="doa.html" class="menu-item">
+        <span class="menu-icon">🤲</span>
+        <b>Doa Pilihan</b>
+    </a>
+    <a href="kalender.html" class="menu-item">
+    <span class="menu-icon">📅</span> <b>Kalender Hijriah</b>
+</a>
+     <a href="asmaul-husna.html" class="menu-item">
+    <span class="menu-icon">💎</span>
+    <b>Asmaul Husna</b>
+</a>
+    <a href="kiblat.html" class="menu-item">
+    <span class="menu-icon">🕋</span>
+    <b>Arah Kiblat</b>
+</a>
+</div>
+
+    </div>
+
+  <div id="modal-izin-suara" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 20000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+    <div style="background: var(--card-bg); width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; text-align: center; border: 2px solid var(--primary);">
+        <div style="font-size: 50px; margin-bottom: 15px;">🔔</div>
+        <h2 style="color: var(--primary); margin-bottom: 10px; font-size: 20px;">Aktifkan Suara Adzan?</h2>
+        <p style="font-size: 14px; color: var(--text); opacity: 0.8; margin-bottom: 20px; line-height: 1.5;">
+            Agar Fitur suara Adzan & Pengingat berjalan, aplikasi memerlukan izin memutar suara di latar belakang. (Jangan tutup halaman ini agar suara Alert, Tahrim, Adzan, berkumandang!)
+        </p>
+        <button onclick="izinkanSuara()" style="background: var(--primary); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; box-shadow: 0 4px 10px var(--primary);">
+            AKTIFKAN SEKARANG
+        </button>
+        <button onclick="tutupModalIzin()" style="background: transparent; color: var(--text); border: none; margin-top: 15px; font-size: 12px; opacity: 0.6;">Nanti Saja</button>
+    </div>
+</div>
+
+   <div id="custom-alert" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:var(--card-bg); border:1px solid var(--border); padding:20px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.5); z-index:10000; width:80%; max-width:300px; text-align:center;">
+    <div id="isi-alert" style="margin-bottom:20px; color:var(--text); font-size:14px;"></div>
+    <button onclick="tutupAlert()" style="background:var(--primary); color:white; border:none; padding:8px 25px; border-radius:10px; cursor:pointer;">OKE</button>
+</div>
+<div id="alert-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999;"></div>
+
+    
+  <script src="js/kalender.js"></script>
+  <script src="js/jadwal.js"></script>
+   <script src="js/script.js"></script>
+ 
+<script src="js/config-app.js"></script>
+<script src="js/adzan-pro.js"></script>
+<script src="js/agenda-puasa.js"></script>
+
+<script>
+    // Jalankan semua mesin pas halaman terbuka
+    window.addEventListener('pageshow', () => {
+        sinkronTema();
+        cekBookmark();
+        muatTanggalHeader();
+        
+        // Panggil mesin adzan & countdown
+        ambilJadwal(); 
+        
+        // Cek agenda puasa (kasih jeda biar gak berat)
+        setTimeout(cekAgendaHariIni, 3000);
+    });
+
+    // Animasi geser yang Bossku mau
+    document.addEventListener("DOMContentLoaded", function() {
+        const app = document.getElementById('app-container');
+        if(app) {
+            app.style.transform = "translateX(350px)";
+            setTimeout(() => { app.style.transform = "translateX(0)"; }, 300);
+        }
+    });
+</script>
+<script>
+    // Jalankan inisialisasi tema & bookmark yang ringan-ringan tetap di sini boleh
+    window.addEventListener('pageshow', () => {
+        if(typeof sinkronTema === "function") sinkronTema();
+        if(typeof cekBookmark === "function") cekBookmark();
+        
+        // Jalankan mesin yang sudah di-import
+        ambilJadwal();
+        setTimeout(() => {
+            cekAgendaHariIni();
+        }, 3000);
+    });
+</script>
+    
+   <script> 
+  function pesan(teks) {
+    document.getElementById('isi-alert').innerText = teks;
+    document.getElementById('custom-alert').style.display = 'block';
+    document.getElementById('alert-overlay').style.display = 'block';
+}
+
+    function tutupAlert() {
+    document.getElementById('custom-alert').style.display = 'none';
+    document.getElementById('alert-overlay').style.display = 'none';
+}
+</script>
+ 
+</body>
+</html>
