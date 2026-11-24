@@ -33,7 +33,7 @@
     }
      
     /* Mushaf 1: Standar Hijau */
-    body.mushaf-1 { --primary: #093b13; --bg: #ffffff; --card-bg: #ffffff; --text: #333; }
+    body.mushaf-1 { --primary: #d15f1d; --bg: #ffffff; --card-bg: #ffffff; --text: #333; }
 
     /* Mushaf 2: Madinah (Krem) - Dikunci agar tetap nyaman */
     body.mushaf-2 { 
@@ -80,11 +80,11 @@
          
     }
   body {
-    animation: fadeIn 1.2s ease-out;
+    animation: fadeIn 0.8s ease-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(0px); }
     to { opacity: 1; transform: translateY(0); }
 }
   
@@ -276,10 +276,19 @@
 .hasilCari button:active .no-surahArab {
     color: white;
 }
-   .spinner {
-    background: red;
-    color: white !important;
- }
+  
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f1f1f1;
+  border-top: 4px solid red;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
     /* Settings Side Panel */
     .settings-panel {
