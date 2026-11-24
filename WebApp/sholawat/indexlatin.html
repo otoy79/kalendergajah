@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+        <meta charset="UTF-8">
+        <title>Sholawat Nabi Lyric Arab Ulama bersepakat atas banyak manfaat shalawat Nabi Muhammad SAW. Banyak dalil menunjukkan manfaat dan keutamaan yang berpulang kepada siapa saja yang membaca shalawat nabi. Sayyid Bakri bin Sayyid Muhammad Syatha Ad-Dimyathi dalam Kifayatul Atqiya wa Minhajul Ashfiya menyebutkan faidah membaca shalawat</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+  <style>
+     .containerr{
+  position:fixed;
+ width:100%;
+ bottom: 20px;
+  left:0;
+  z-index:9;
+ margin-left: 12px;
+ margin: 2px 10px;
+ }
+          
+.top {
+ position:fixed;
+ width:100%;
+ height:100%;
+ background: #873103;
+ padding-top: 55px;
+ padding-right: 0px;
+ padding-left: 0px;
+  top: 0;
+  left:0;
+  overflow:auto;
+ z-index:99999;
+ display: none;
+}
+.top1 {
+ width:16px;
+ height: 16px;
+ background-image: url(arabic.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+ text-align: center;
+ padding: 5px;
+ position:relative;
+ top:0px;
+ float:left;
+ left: 8px;
+ margin:0;
+ border-radius:50%;
+ border:1px solid #fff;
+ cursor:pointer;
+ margin-left: 8px;
+}
+.ttp {
+ width:20px;
+ height: 20px;
+ background: #873103;
+ text-align: center;
+ padding: 8px;
+ position: fixed;
+ float:right;
+ right: 8px;
+ top:10px;
+ border-radius:50%;
+ border:1px solid #fff;
+ cursor:pointer;
+ z-index: 99999;
+  display: none;
+}
+.close, .ttpcont {
+ width:20px;
+ height: 20px;
+ background: #f7a8a8;
+ text-align: center;
+ padding: 4px;
+ position: fixed;
+ float:right;
+ right: 10px;
+ top:8px;
+ border-radius:50%;
+ border:1px solid red;
+ cursor:pointer;
+ z-index: 99999;
+}
+ .buka, .peng {
+ width:20px;
+ height: 20px;
+ background: #873103;
+ text-align: center;
+ padding: 8px;
+ position:relative;
+ top:10px;
+ float:left;
+ left: 8px;
+ margin:0;
+ border-radius:50%;
+ border:1px solid #fff;
+ cursor:pointer;
+ margin-left: 8px;
+}
+.aplayer-list {display: none;}
+.vtext {
+ background-color: #3b1503;
+ border:1px solid #fff;
+  top: 0px;margin: 0;
+  right: 10px;
+  text-align: center;
+  color: #fff;
+}
+.ctext {
+ background-color: #fff;
+padding-top: 2px;
+margin-bottom: 50px;
+  position: fixed;
+ height: 100%;
+ top:0px;
+ bottom: 20px;
+ margin: 10px;
+overflow: auto;
+ left:0;
+  top: 0px;
+  color: #222;
+  display: none;
+}
+.accordion {
+  background-color: #eee;
+  color: #444;
+  border-bottom:0.1px solid #999;
+  cursor: pointer;
+  padding: 12px;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.accordion:after {
+  content: '\290B';
+  color: blue;
+  font-weight: bold;
+  float: right;
+  margin-left: 12px;
+}
+
+.active:after {
+  content: "\290A";
+  color: red;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+  .button {
+  background-color: #ccc;
+  padding:8px 15px;
+  border: 0.5px solid #111;
+  width:50%;
+ }
+ .text {background: #eee;color:#333;padding:18px;box-shadow: 8px 8px 8px green;
+font-size: 14px;
+ position: fixed;
+ width⭕️:100%;
+ height: 100%;
+ top:0px;
+ bottom: 20px;
+ margin:0;
+overflow: auto;
+display: none;
+padding-right: 20px;
+}
+
+ .button {
+  background-color: #ccc;
+  padding:8px 15px;
+  border: 0.5px solid #111;
+  width:50%;
+ }
+  button {font-size: 14px;}
+.arab, .ltn, .arti {padding:10px}
+.arab {font-family: 'lpmq';background-color: #fff;text-align: right;font-size: 28px;}
+.ltn {background-color: #ddd;text-align: left;font-weight: bold;}
+.arti {background-color: #eee;text-align: left;}
+.poster { position: relative; display: inline-flex; } .poster:after { content: ""; position: absolute; left: 0; right: 0; top: 0; bottom: 0; background: url(img2.webp); background-size: cover; transition: 1s ease; opacity: 0.9; cursor: pointer; } .poster-active:after { opacity: 0; pointer-events: none; }
+        </style>
+
+    </head>
+<body>
+   <div><a href="indexarab.html" class="top1"></a></div>
+
+<center> <h2><button id="play">Sholawat Nabi 🎵</button></h2>
+  </center>
+
+<div class="containerr">
+   <div class="buka">➕</div>
+ <div id="peng" class="peng"> ❔ </div>
+ <div id="ctext" class="peng"> 🗒 </div>
+</div>
+
+<div id="player3" class="aplayer">
+
+</div>
+
+<div id="btns" style="display: none;">
+    <button onclick="setprogress(0.8)">Progress +</button>
+    <button onclick="setprogress(-0.8)">schedule-</button>
+</div>
+  <div id="ttp" class="ttp">❌</div>
+
+   <br>  <br> 
+  </center>
+  <div class="text"><div id="ttppeng" class="close">❌</div>
+
+<br>
+<div class="poster"> 
+<iframe src="https://drive.google.com/file/d/19Fti2ZXgdEA84DIojTyzgt9Judmj6nP_/preview" style="width:100%;height: 300px;" allow="autoplay"></iframe>
+</div>
+
+
+  <p>Ulama bersepakat atas banyak manfaat shalawat Nabi Muhammad SAW. Banyak dalil menunjukkan manfaat dan keutamaan yang berpulang kepada siapa saja yang membaca shalawat nabi. Sayyid Bakri bin Sayyid Muhammad Syatha Ad-Dimyathi dalam Kifayatul Atqiya wa Minhajul Ashfiya menyebutkan faidah membaca shalawat.</p>
+
+<p>1. Mereka yang bershalawat memiliki kesamaan “aktivitas” dengan Allah SWT, yaitu bershalawat untuk Nabi Muhammad SAW meski shalawat Allah dan shalawat umatnya memiliki makna yang berbeda. 2. Mereka yang bershalawat memiliki kesamaan aktivitas dengan malaikat, yaitu bershalawat untuk Nabi Muhammad SAW.</p>
+
+<p>2. Mereka yang bershalawat memiliki kesamaan aktivitas dengan malaikat, yaitu bershalawat untuk Nabi Muhammad SAW.</p>
+
+<p>3. Allah SWT secara mutlak bershalawat untuk umat Islam yang bershalawat kepada Nabi Muhammad SAW.</p>
+  
+<p>4. Allah SWT membalas 10 kali shalawat kepada mereka yang bershalawat atas sekali pembacaan lafal shalawat Nabi Muhammad SAW.</p>
+
+<p>5. Rasulullah SAW bershalawat untuk mereka yang bershalawat kepadanya.</p>
+
+<p>6. Mereka yang bershalawat mendapatkan 10 catatan amal kebaikan.</p>
+
+<p>7. Shalawat itu menutupi kesalahan dan kekhilafan mereka.</p>
+
+<p>8. Shalawat itu mengangkat derajat mereka di sisi Allah.</p>
+
+<p>9. Shalawat itu menjadi sebab yang dapat mencukupi kepentingan duniawi dan ukhrawi mereka.</p>
+
+<p>10.Shalawat itu menjadi sebab atas pengampunan dosa mereka.</p>
+ <br>  <br>  <br>  <br>
+  </div>
+ 
+    <div class="ctext">
+  <div class="ttpcont">❌</div> 
+<br>
+  <script src="contenn.js"></script>
+  <br><br>
+ </div>
+  
+
+<script src="jslatin.js"></script> 
+<script src="musikelatin.js"></script>
+<script src="jquery-1.7.1.min.js"></script>
+  <script>
+const poster = document.querySelector(".poster"); poster.addEventListener("click", removePoster); function removePoster() { poster.classList.add("poster-active"); document.querySelector("#myIframe").src += "?autoplay=1"; } 
+$(document).ready(function(){
+  $("#play").click(function(){
+    $(".containerr").slideDown();
+  });
+  $(".ttp").click(function(){
+    $(".top").slideUp();
+  });
+});
+</script>
+<script>
+$(document).ready(function(){
+  $("#ctext").click(function(){
+    $(".ctext").toggle(500);
+  });});
+$(document).ready(function(){
+  $(".ttpcont").click(function(){
+    $(".ctext").toggle(500);
+  });});
+ $(document).ready(function(){
+ $("#peng, .close").click(function(){
+    $(".text").toggle(500);
+  });
+});
+  $(document).ready(function(){
+ $(".buka").click(function(){
+    $(".top").toggle(50);
+  });
+});
+$(document).ready(function(){
+ $(".buka").click(function(){
+    $(".ttp").toggle(500);
+  });
+});
+  $(document).ready(function(){
+ $("li").click(function(){
+    $(".top, .ttp").hide(50);
+  });
+});
+ $(document).ready(function(){
+ $(".ttp").click(function(){
+    $("#ttp").hide(800);
+  });
+});
+</script>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight) {
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
