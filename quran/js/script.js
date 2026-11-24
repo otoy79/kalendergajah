@@ -920,8 +920,7 @@ function eksekusiReset() {
     // 2. Kasih efek visual dikit
     const content = document.querySelector('.modal-content');
     content.innerHTML = `
-        <div class="spinner" style="margin: 20px auto;"></div>
-        <p>Sedang membersihkan data...</p>
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center;"> <div class="spinner"></div> <p style="color: var(--primary);;">Menghapus riwayat data...</p> </div>
     `;
     
     // 3. Reload total

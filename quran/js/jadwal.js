@@ -59,58 +59,55 @@ let kotaAktif = localStorage.getItem('userKota') || 'Jakarta';
     const wadahTabel = document.getElementById('isi-jadwal');
     const namaKotaTampil = document.getElementById('nama-kota');
     
-    namaKotaTampil.innerText = kotaAktif;
-
     const skr = new Date();
     const bulan = skr.getMonth() + 1;
     const tahun = skr.getFullYear();
     const tglSkr = skr.getDate();
 
-    // --- 1. CEK DATA DI LOCALSTORAGE ---
+    // Ambil koordinat dan alamat dari localStorage
+    const lat = localStorage.getItem('userLat');
+    const lon = localStorage.getItem('userLon');
+    const alamatLengkap = localStorage.getItem('userAlamatLengkap') || localStorage.getItem('userKota') || "Jakarta";
+
+    namaKotaTampil.innerText = alamatLengkap;
+    namaKotaTampil.style.fontSize = "14px"; // Biar muat kalau alamat panjang
+
+    // --- 1. CEK CACHE LOCALSTORAGE ---
     const dataLama = localStorage.getItem('jadwal_sholat_data');
     if (dataLama) {
         const cache = JSON.parse(dataLama);
-        // Jika kota, bulan, dan tahun masih sama, pakai data yang ada
-        if (cache.kota === kotaAktif && cache.bulan === bulan && cache.tahun === tahun) {
-            console.log("Mengambil data dari LocalStorage...");
+        // Sinkron jika koordinat/kota dan waktu masih sama
+        if ((cache.lat == lat || cache.kota === alamatLengkap) && cache.bulan === bulan && cache.tahun === tahun) {
             renderTabel(cache.data, tglSkr, tahun);
-            return; // Keluar dari fungsi, tidak perlu download lagi
+            return;
         }
     }
 
-    // --- 2. JIKA DATA TIDAK ADA / GANTI BULAN -> AMBIL DARI API ---
-    wadahTabel.innerHTML = '<tr><td colspan="7" class="loading">Sedang mencari jadwal di ' + kotaAktif + '...</td></tr>';
-
+    // --- 2. AMBIL DATA BARU (Jika koordinat ada, pakai koordinat) ---
     try {
-        // Menggunakan URL dengan parameter tune pilihan Bossku
-        const url = `https://api.aladhan.com/v1/calendarByAddress?address=${kotaAktif},Indonesia&method=11&month=${bulan}&year=${tahun}&tune=2,2,2,4,3,3,2,2`;  // 4+(dhuhur)
+        let url;
+        if (lat && lon) {
+            url = `https://api.aladhan.com/v1/calendar?latitude=${lat}&longitude=${lon}&method=11&month=${bulan}&year=${tahun}&tune=2,2,2,4,3,3,2,2`;
+        } else {
+            url = `https://api.aladhan.com/v1/calendarByAddress?address=${alamatLengkap},Indonesia&method=11&month=${bulan}&year=${tahun}&tune=2,2,2,4,3,3,2,2`;
+        }
         
         const r = await fetch(url);
         const res = await r.json();
         
-        if (res.code !== 200 || !res.data) {
-            throw new Error("Kota tidak ditemukan");
+        if (res.code === 200) {
+            localStorage.setItem('jadwal_sholat_data', JSON.stringify({
+                kota: alamatLengkap,
+                lat: lat,
+                lon: lon,
+                bulan: bulan,
+                tahun: tahun,
+                data: res.data
+            }));
+            renderTabel(res.data, tglSkr, tahun);
         }
-
-        const data = res.data;
-
-        // --- 3. SIMPAN KE LOCALSTORAGE ---
-        const dataKeSimpan = {
-            kota: kotaAktif,
-            bulan: bulan,
-            tahun: tahun,
-            data: data
-        };
-        localStorage.setItem('jadwal_sholat_data', JSON.stringify(dataKeSimpan));
-
-        // --- 4. TAMPILKAN KE TABEL ---
-        renderTabel(data, tglSkr, tahun);
-
     } catch (e) {
-        console.error(e);
-        wadahTabel.innerHTML = `<tr><td colspan="7" style="color:red; padding:20px;">
-            Maaf, jadwal untuk "<b>${kotaAktif}</b>" gagal dimuat. Cek koneksi internet!
-        </td></tr>`;
+        wadahTabel.innerHTML = `<tr><td colspan="7">Gagal memuat jadwal otomatis, Periksa koneksi internet!</td></tr>`;
     }
 }
 
@@ -134,6 +131,7 @@ function renderTabel(data, tglSkr, tahun) {
             <td>${tgl}</td>
             <td style="font-weight:bold; color:#e67e22">${f(hari.timings.Imsak)}</td>
             <td>${f(hari.timings.Fajr)}</td>
+        
             <td>${f(hari.timings.Dhuhr)}</td>
             <td>${f(hari.timings.Asr)}</td>
             <td>${f(hari.timings.Maghrib)}</td>
@@ -175,6 +173,7 @@ function renderTabel(data, tglSkr, tahun) {
         const daftarSholat = [
             { nama: 'Imsak', jam: bersihkanJam(timings.Imsak) },
             { nama: 'Subuh', jam: bersihkanJam(timings.Fajr) },
+           
             { nama: 'Dzuhur', jam: bersihkanJam(timings.Dhuhr) },
             { nama: 'Ashar', jam: bersihkanJam(timings.Asr) },
             { nama: 'Maghrib', jam: bersihkanJam(timings.Maghrib) },
