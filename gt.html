@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aplikasi Dashboard</title>
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="webapp/css/icon.css">
+  <link rel="stylesheet" href="webapp/css/font.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  
+  <style>
+    :root {
+      --primary-orange: #e8853f;
+      --secondary-orange: #ff8533;
+      --light-orange: #fff5ee;
+      --dark-orange: #cc5200;
+      --bg-color: #f4f6f8;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      padding-bottom: 80px;
+      overflow-x: hidden;
+     animation: fadeIn 0.5s ease-out;
+    }
+
+    /* NOTIFIKASI STATUS OFFLINE */
+    .offline-banner {
+      display: none;
+      background: #d32f2f;
+      color: #ffffff;
+      text-align: center;
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 8px 15px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      animation: slideDown 0.3s ease;
+    }
+
+    .offline-banner.show {
+      display: flex;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 1. HEADER HERO / UCAPAN WAKTU */
+    .hero-header {
+      position: relative;
+      width: 100%;
+      height: 290px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      overflow: hidden;
+      border-bottom: 6px solid var(--dark-orange);
+      border-bottom-left-radius: 28px;
+      border-bottom-right-radius: 28px;
+      box-shadow: 0 4px 15px rgba(239, 108, 0, 0.3);
+    }
+
+    /* TOP CORNER ICONS - SEJAJAR PAS DI ATAS */
+    .top-left-icon, .top-right-icon {
+      position: absolute;
+      top: 15px;
+      z-index: 20;
+      background: rgba(0, 0, 0, 0.25);
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1rem;
+      backdrop-filter: blur(5px);
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .top-left-icon:active, .top-right-icon:active {
+      transform: scale(0.9);
+      background: var(--primary-orange);
+    }
+    .top-left-icon { left: 15px; }
+    .top-right-icon { right: 15px; }
+
+    /* DROPDOWN SHARE MENU */
+    .share-menu {
+      position: absolute;
+      top: 58px;
+      right: 15px;
+      background: #ffffff;
+      color: var(--text-color);
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      width: 210px;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: fadeInDropdown 0.2s ease;
+      border: 1px solid #ffe0b2;
+      z-index: 30;
+    }
+
+    .share-menu.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDropdown {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .share-item {
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: #fff;
+      transition: background 0.2s;
+      border: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      border-bottom: 1px solid #f4f6f8;
+    }
+
+    .share-item:last-child {
+      border-bottom: none;
+    }
+
+    .share-item:hover, .share-item:active {
+      background: var(--light-orange);
+      color: var(--dark-orange);
+    }
+
+    .share-item i {
+      font-size: 1.1rem;
+      color: #25D366;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      transition: background 1s ease;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .bg-pagi { background: linear-gradient(-45deg, #ff7e5f, #feb47b, #ff6600, #ff9966); }
+    .bg-siang { background: linear-gradient(-45deg, #ff512f, #f09819, #ff6600, #ff8000); }
+    .bg-sore { background: linear-gradient(-45deg, #e55d87, #5fc3e4, #ff6600, #cc4400); }
+    .bg-malam { background: linear-gradient(-45deg, #141e30, #243b55, #d35400, #1f1c2c); }
+
+    .hero-content {
+      position: relative;
+      padding-top: 80px;
+      z-index: 2;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .greeting-text { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; }
+    .clock-text { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; }
+    .date-text { font-size: 0.9rem; font-weight: 400; opacity: 0.95; margin-top: 2px; }
+
+    /* CONTAINER */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 15px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark-orange);
+      margin: 20px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      scroll-margin-top: 20px;
+    }
+
+    /* 2. JADWAL SHOLAT CARD */
+    .prayer-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border-left: 5px solid var(--primary-orange);
+    }
+
+    .location-info {
+      font-size: 0.8rem;
+      color: #444;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: var(--light-orange);
+      padding: 10px 12px;
+      border-radius: 10px;
+      line-height: 1.4;
+    }
+
+    .location-info i {
+      margin-top: 3px;
+    }
+
+    .prayer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .prayer-item {
+      background: #fafafa;
+      border: 1px solid #ffe0b2;
+      border-radius: 10px;
+      padding: 10px 5px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    /* Highlight Waktu Sholat Aktif */
+    .prayer-item.active-prayer {
+      background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+      color: #ffffff !important;
+      border-color: var(--dark-orange);
+      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.4);
+      transform: scale(1.03);
+    }
+
+    .prayer-item.active-prayer .prayer-name,
+    .prayer-item.active-prayer .prayer-time {
+      color: #ffffff !important;
+    }
+
+    .prayer-name { font-size: 0.75rem; color: #555; font-weight: 600; }
+    .prayer-time { font-size: 0.95rem; font-weight: 700; color: var(--dark-orange); margin-top: 3px; }
+
+    /* MENU GRIDS & ICON INTERACTION */
+    .menu-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .menu-grid-6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+    .menu-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #ffebd9;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .menu-card:active {
+      background: var(--primary-orange);
+      color: #fff;
+      transform: scale(0.95);
+    }
+
+    .menu-card:active i {
+      color: #fff;
+    }
+
+    .menu-card i {
+      font-size: 1.5rem;
+      color: var(--primary-orange);
+      margin-bottom: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .menu-card span { font-size: 0.75rem; font-weight: 600; text-align: center; }
+
+    /* 5. BOTTOM NAVIGATION BAR */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: #ffffff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      border-top-left-radius: 18px;
+      border-top-right-radius: 18px;
+      z-index: 1000;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #888888;
+      font-size: 0.7rem;
+      font-weight: 600;
+      width: 20%;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .nav-item i { font-size: 1.25rem; margin-bottom: 3px; transition: transform 0.2s; }
+    
+    .nav-item:active i {
+      transform: scale(1.3);
+      color: var(--dark-orange);
+    }
+
+    .nav-item.active { color: var(--primary-orange); }
+
+    /* POPUP MODAL (GT APK) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 85%;
+      max-width: 400px;
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      transform: scale(0.7);
+      transition: transform 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+    .apk-icon-gt {
+      width: 65px;
+      height: 64px;
+      background: var(--light-orange);
+      border: 0px dashed var(--primary-orange);
+      border-radius: 22px;
+      margin: 15px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--primary-orange);
+      font-size: 2.2rem;
+      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(webapp/img/logogt.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    }
+    .apk-icon-placeholder {
+      width: 130px;
+      height: 100px;
+      background: var(--light-orange);
+      border: 0px dashed var(--primary-orange);
+      border-radius: 22px;
+      margin: 15px auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--primary-orange);
+      font-size: 2.2rem;
+      background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(webapp/img/1.gif);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    }
+  .icon80 {
+   width: 48px;
+   height: 40px;
+   background: linear-gradient(rgba(64, 227, 245, 0.0), rgba(64, 227, 245, 0.0)), url(data:image/png;base64,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);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+   }
+    .btn-close-modal {
+      background: var(--primary-orange);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 20px;
+      font-weight: 600;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    /* SLIDE PROFIL PANEL (OFFCANVAS) */
+    .profile-slide {
+      position: fixed;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+      z-index: 1500;
+      transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .profile-slide.active {
+      bottom: 0;
+    }
+
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--light-orange);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .profile-form input {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary-orange);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-top: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn-wa { background: #25D366; }
+
+   /* POPUP OFFLINE ALERT */
+.offline-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.25s ease;
+}
+
+.offline-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.offline-modal-box {
+  background: #ffffff;
+  width: 82%;
+  max-width: 340px;
+  border-radius: 18px;
+  padding: 22px 18px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  transform: scale(0.8);
+  transition: transform 0.25s ease;
+}
+
+.offline-modal.active .offline-modal-box {
+  transform: scale(1);
+}
+   @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(0px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+  </style>
+</head>
+<body>
+
+  <!-- BANNER NOTIFIKASI SAAT OFFLINE -->
+  <div id="offlineBanner" class="offline-banner">
+    <i class="fa-solid fa-wifi"></i>
+    <span>Mode Offline — Menampilkan data tersimpan di perangkat</span>
+  </div>
+
+  <!-- 1. HEADER HERO / UCAPAN WAKTU -->
+  <header class="hero-header">
+    <!-- Icon Kiri Atas: Browser -->
+    <a href="https://kalendergt.blogspot.com/" target="_blank" class="top-left-icon" title="Kalender GT Blog">
+      <i class="fa-solid fa-globe"></i>
+    </a>
+    
+    <!-- Icon Kanan Atas: Tombol Share -->
+    <button class="top-right-icon" id="shareBtn" onclick="toggleShareMenu(event)" title="Share Menu">
+      <i class="fa-solid fa-share-nodes"></i>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div class="share-menu" id="shareMenu">
+      <button class="share-item" onclick="shareToWhatsApp()">
+        <i class="fa-brands fa-whatsapp"></i> Share ke WhatsApp
+      </button>
+    </div>
+
+    <div id="heroBg" class="hero-bg bg-pagi"></div>
+    <div class="hero-content">
+      <div class="greeting-text" id="greeting">Selamat Pagi</div>
+      <div class="clock-text" id="clock">00:00:00</div>
+      <div class="date-text" id="date">Loading tanggal...</div>
+      <!-- Slot Gambar Icon APK -->
+      <div class="apk-icon-gt" id="apkIconBox">
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- 2. JADWAL SHOLAT GEOLOCATION -->
+    <div class="section-title" id="sec-sholat">
+      <i class="fa-solid fa-kaaba"></i> Jadwal Sholat Hari Ini
+    </div>
+    <div class="prayer-card">
+      <div class="location-info">
+        <i class="fa-solid fa-location-dot" style="color: var(--primary-orange);"></i>
+        <span id="locStatus">Mengambil posisi GPS terbaru...</span>
+      </div>
+      <div class="prayer-grid">
+        <div class="prayer-item" id="card-imsak">
+          <div class="prayer-name">IMSAK</div>
+          <div class="prayer-time" id="imsak">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-subuh">
+          <div class="prayer-name">SUBUH</div>
+          <div class="prayer-time" id="subuh">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-dzuhur">
+          <div class="prayer-name">DZUHUR</div>
+          <div class="prayer-time" id="dzuhur">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-ashar">
+          <div class="prayer-name">ASHAR</div>
+          <div class="prayer-time" id="ashar">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-maghrib">
+          <div class="prayer-name">MAGHRIB</div>
+          <div class="prayer-time" id="maghrib">--:--</div>
+        </div>
+        <div class="prayer-item" id="card-isya">
+          <div class="prayer-name">ISYA</div>
+          <div class="prayer-time" id="isya">--:--</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. MENU AKSES KALENDER & WEB -->
+    <div class="section-title" id="sec-kalender">
+      <i class="fa-solid fa-calendar"></i> Akses Fitur Utama
+    </div>
+    <div class="menu-grid-4">
+      <a href="Kal-Nas/kal-sheet.html" class="menu-card">
+        <i class="fa-solid fa-calendar-check"></i>
+        <span>Kal Full</span>
+      </a>
+      <a href="webapp/kal/index.html" class="menu-card">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>Kal 4G3S</span>
+      </a>
+      <a href="https://kalendergt.blogspot.com/2024/01/jadwal-kerja-4g3s-gt.html" class="menu-card">
+        <i class="fa-solid fa-globe"></i>
+        <span>Kal On</span>
+      </a>
+      <a href="https://kalendergt.blogspot.com/2025/11/app-kalender-gt-versi-web.html" class="menu-card">
+        <i class="fa-solid fa-laptop-code"></i>
+        <span>K-Apps</span>
+      </a>
+    </div>
+
+    <!-- 3B. TAMBAHAN 4 MENU BARU -->
+    <div class="menu-grid-4" style="margin-top: 12px;">
+      <a href="pkb/2023/pkb23-24.html" class="menu-card">
+        <i class="fa-solid fa-file-invoice"></i>
+        <span>PKB 22-24</span>
+      </a>
+      <a href="webapp/scan/qr.html" class="menu-card">
+        <i class="fa-solid fa-qrcode"></i>
+        <span>Scan QR</span>
+      </a>
+      <a href="kal-ot/in.html" class="menu-card">
+        <i class="fa-solid fa-note-sticky"></i>
+        <span>Kal Notes</span>
+      </a>
+      <a href="webapp/msc/shifter.html" class="menu-card">
+        <i class="fa-solid fa-music"></i>
+        <span>Shifter MP3</span>
+      </a>
+    </div>
+
+    <!-- 4. MENU RELIGI & ISLAMIC -->
+    <div class="section-title" id="sec-islamic">
+      <i class="fa-solid fa-book-quran"></i> Fitur Islamic & Religi
+    </div>
+    <div class="menu-grid-6">
+      <a href="quran/index.html" class="menu-card">
+        <i class="fa-solid fa-book-open"></i>
+        <span>Al-Quran</span>
+      </a>
+      <a href="quran/index.html" class="menu-card">
+        <i class="fa-solid fa-cloud"></i>
+        <span>Quran Online</span>
+      </a>
+      <a href="webapp/murothal/murothal.html" class="menu-card">
+        <i class="fa-solid fa-headphones"></i>
+        <span>Murothal</span>
+      </a>
+      <a href="webapp/asmaul/index.html" class="menu-card">
+        <i class="fa-solid fa-star-and-crescent"></i>
+        <span>Asmaulhusna</span>
+      </a>
+      <a href="webapp/sholawat/indexarab.html" class="menu-card">
+        <i class="fa-solid fa-hands-praying"></i>
+        <span>Sholawat</span>
+      </a>
+      <a href="webapp/msc/religi.html" class="menu-card">
+        <i class="fa-solid fa-mosque"></i>
+        <span>Religi</span>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- 5. BOTTOM NAVIGATION BAR -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="scrollToTop()">
+      <i class="fa-solid fa-house"></i>
+      <span>Beranda</span>
+    </button>
+    <button class="nav-item" onclick="scrollToSection('sec-kalender')">
+      <i class="fa-solid fa-calendar-days"></i>
+      <span>Kalender</span>
+    </button>
+    <button class="nav-item" onclick="openGtModal()">
+      <i class="fa-solid play icon80" onclick="playAudio()"></i>
+      <span>GT</span>
+    </button>
+    <button class="nav-item" onclick="scrollToSection('sec-islamic')">
+      <i class="fa-solid fa-kaaba"></i>
+      <span>Islamic</span>
+    </button>
+    <button class="nav-item" onclick="openProfileSlide()">
+      <i class="fa-solid fa-user"></i>
+      <span>Profil</span>
+    </button>
+  </nav>
+
+  <!-- POPUP MODAL (GT APK) -->
+  <div class="modal-overlay" id="gtModal">
+    <div class="modal-content">
+      <h3 style="color: var(--dark-orange);">Aplikasi GT</h3>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 5px;">Akses Cepat Modul Aplikasi GT</p>
+      
+      <!-- Slot Gambar Icon APK -->
+      <div class="apk-icon-placeholder" id="apkIconBox">
+      </div>
+
+      <p style="font-size: 0.85rem; font-weight: 600;">Modul GT Mobile v1.0</p>
+      <button class="btn-close-modal stop" onclick="closeGtModal()"><span class="stop" onclick="stopAudio()">Tutup</span></button>
+    </div>
+  </div>
+
+  <!-- SLIDE PROFIL PANEL -->
+  <div class="profile-slide" id="profileSlide">
+    <div class="slide-header">
+      <h3 style="color: var(--dark-orange);"><i class="fa-solid fa-user-gear"></i> Pengaturan Profil</h3>
+      <i class="fa-solid fa-xmark" style="font-size: 1.4rem; cursor: pointer;" onclick="closeProfileSlide()"></i>
+    </div>
+
+    <div class="profile-form">
+      <div style="margin-bottom: 12px;">
+        <label style="font-size: 0.8rem; font-weight: 600;">Nama Pengguna:</label>
+        <input type="text" id="profName" style="width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px;" placeholder="Masukkan Nama">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <label style="font-size: 0.8rem; font-weight: 600;">Kota / Domisili:</label>
+        <input type="text" id="profCity" style="width:100%; padding:8px; margin-top:4px; border:1px solid #ccc; border-radius:6px;" placeholder="Masukkan Kota">
+      </div>
+
+      <button class="btn-action" onclick="saveProfileData()">
+        <i class="fa-solid fa-floppy-disk"></i> Simpan Profil
+      </button>
+
+      <a href="https://chat.whatsapp.com/Cx2xf0RvjdVBe0mPIRbj95?s=cl&p=a&iam=2" target="_blank" class="btn-action btn-wa">
+        <i class="fa-brands fa-whatsapp"></i> Gabung Group WA
+      </a>
+
+   <a href="webapp/css/saran.html" target="_blank" class="btn-action btn-wa">
+        <i class="fa-solid fa-comments"></i> Comments
+      </a>
+
+      <div style="margin-top: 20px; padding: 12px; background: var(--light-orange); border-radius: 10px; font-size: 0.8rem; color: #555;">
+        <strong><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi:</strong>
+        <p style="margin-top: 4px;">Dashboard Apps v2.4 - Mendukung Jadwal Sholat Offline & Online.</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- POPUP PERINGATAN OFFLINE -->
+<div class="offline-modal" id="offlineLinkModal" onclick="closeOfflineModal()">
+  <div class="offline-modal-box" onclick="event.stopPropagation()">
+    <i class="fa-solid fa-wifi" style="font-size: 2.5rem; color: #d32f2f; margin-bottom: 10px;"></i>
+    <h3 style="color: #333; font-size: 1.05rem; margin-bottom: 6px;">Koneksi Terputus</h3>
+    <p style="font-size: 0.85rem; color: #666; line-height: 1.4;">Anda tidak terhubung dengan internet. Aktifkan data seluler atau Wi-Fi untuk membuka menu ini.</p>
+    <button class="btn-close-modal" onclick="closeOfflineModal()">Mengerti</button>
+  </div>
+</div>
+
+   <audio style="display:none" id="audio" controls loop>
+    <source src="webapp/img/gajah.mp3" type="audio/mpeg">
+</audio>
+
+  <script>
+    let prayerTimingsCache = null;
+
+    // --- DETEKSI STATUS ONLINE / OFFLINE ---
+    function updateOnlineStatus() {
+      const banner = document.getElementById('offlineBanner');
+      if (!navigator.onLine) {
+        banner.classList.add('show');
+      } else {
+        banner.classList.remove('show');
+      }
+    }
+
+    window.addEventListener('online', () => {
+      updateOnlineStatus();
+      getPrayerTimes(); // Otomatis refresh data saat internet kembali menyala
+    });
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    // --- 1. WAKTU, JAM, DAN ANIMASI BACKGROUND ---
+    function updateClockAndGreeting() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      
+      document.getElementById('clock').innerText = `${String(hours).padStart(2, '0')}:${minutes}:${seconds}`;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('date').innerText = now.toLocaleDateString('id-ID', options);
+
+      const greetingEl = document.getElementById('greeting');
+      const bgEl = document.getElementById('heroBg');
+
+      if (hours >= 3 && hours < 11) {
+        greetingEl.innerText = "Selamat Pagi 🌅";
+        bgEl.className = "hero-bg bg-pagi";
+      } else if (hours >= 11 && hours < 15) {
+        greetingEl.innerText = "Selamat Siang ☀️";
+        bgEl.className = "hero-bg bg-siang";
+      } else if (hours >= 15 && hours < 18) {
+        greetingEl.innerText = "Selamat Sore 🌇";
+        bgEl.className = "hero-bg bg-sore";
+      } else {
+        greetingEl.innerText = "Selamat Malam 🌙";
+        bgEl.className = "hero-bg bg-malam";
+      }
+
+      if (prayerTimingsCache) {
+        highlightCurrentPrayer(now, prayerTimingsCache);
+      }
+    }
+
+    setInterval(updateClockAndGreeting, 1000);
+    updateClockAndGreeting();
+
+    // --- DROPDOWN SHARE MENU TOGGLE & CLICK OUTSIDE ---
+    function toggleShareMenu(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('shareMenu');
+      menu.classList.toggle('show');
+    }
+
+    window.addEventListener('click', () => {
+      const menu = document.getElementById('shareMenu');
+      if (menu.classList.contains('show')) {
+        menu.classList.remove('show');
+      }
+    });
+
+    function shareToWhatsApp() {
+      const text = encodeURIComponent("Download apk Kal-GT ada link https://kalendergt.blogspot.com/");
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    // --- 2. GEOLOCATION & JADWAL SHOLAT (ONLINE + CACHE OFFLINE) ---
+    function getPrayerTimes() {
+      // Langsung tampilkan jadwal dari cache lebih dulu (agar instan saat offline / sinyal lambat)
+      loadCachedPrayerForToday();
+
+      // Jika offline, cukup pakai data tersimpan dan tampilkan alamat terakhir
+      if (!navigator.onLine) {
+        const storedAddress = localStorage.getItem('user_address');
+        document.getElementById('locStatus').innerText = storedAddress
+          ? `${storedAddress} (Offline)`
+          : "Lokasi Offline (Data Tersimpan)";
+        return;
+      }
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            localStorage.setItem('user_lat', lat);
+            localStorage.setItem('user_lon', lon);
+
+            reverseGeocode(lat, lon);
+            fetchPrayerData(lat, lon);
+          },
+          (error) => {
+            console.warn("GPS gagal/ditolak, mencoba fallback localStorage...");
+            loadFallbackLocation();
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        loadFallbackLocation();
+      }
+    }
+
+    function loadFallbackLocation() {
+      const storedLat = localStorage.getItem('user_lat');
+      const storedLon = localStorage.getItem('user_lon');
+      const storedAddress = localStorage.getItem('user_address');
+
+      if (storedLat && storedLon) {
+        if (storedAddress) {
+          document.getElementById('locStatus').innerText = storedAddress;
+        }
+        fetchPrayerData(storedLat, storedLon);
+      } else {
+        document.getElementById('locStatus').innerText = "Koordinat Default (Jakarta)";
+        fetchPrayerData(-6.2088, 106.8456);
+      }
+    }
+
+    function reverseGeocode(lat, lon) {
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=id`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.display_name) {
+            const fullAddress = data.display_name;
+            document.getElementById('locStatus').innerText = fullAddress;
+            localStorage.setItem('user_address', fullAddress);
+          }
+        })
+        .catch(() => {
+          const fallback = localStorage.getItem('user_address') || `Lat: ${parseFloat(lat).toFixed(4)}, Lon: ${parseFloat(lon).toFixed(4)}`;
+          document.getElementById('locStatus').innerText = fallback;
+        });
+    }
+
+    // Tampilkan data jadwal sholat ke elemen HTML
+    function renderPrayerTimings(timings) {
+      if (!timings) return;
+      prayerTimingsCache = timings;
+
+      document.getElementById('imsak').innerText = timings.Imsak.split(' ')[0];
+      document.getElementById('subuh').innerText = timings.Fajr.split(' ')[0];
+      document.getElementById('dzuhur').innerText = timings.Dhuhr.split(' ')[0];
+      document.getElementById('ashar').innerText = timings.Asr.split(' ')[0];
+      document.getElementById('maghrib').innerText = timings.Maghrib.split(' ')[0];
+      document.getElementById('isya').innerText = timings.Isha.split(' ')[0];
+
+      highlightCurrentPrayer(new Date(), timings);
+    }
+
+    // Muat jadwal sholat hari ini dari localStorage (untuk mode offline)
+    function loadCachedPrayerForToday() {
+      const savedCalendar = localStorage.getItem('prayer_calendar_cache');
+      const savedSingle = localStorage.getItem('prayer_last_timings');
+      const now = new Date();
+      const dayIndex = now.getDate() - 1;
+
+      if (savedCalendar) {
+        try {
+          const parsed = JSON.parse(savedCalendar);
+          if (parsed.month === (now.getMonth() + 1) && parsed.year === now.getFullYear() && parsed.days[dayIndex]) {
+            renderPrayerTimings(parsed.days[dayIndex].timings);
+            return;
+          }
+        } catch (e) {
+          console.error("Gagal membaca cache kalender sholat:", e);
+        }
+      }
+
+      // Cadangan jika bulan sudah berganti saat masih offline
+      if (savedSingle) {
+        try {
+          renderPrayerTimings(JSON.parse(savedSingle));
+        } catch (e) {}
+      }
+    }
+
+    function fetchPrayerData(lat, lon) {
+      const now = new Date();
+      const month = now.getMonth() + 1;
+      const year = now.getFullYear();
+      const day = now.getDate() - 1;
+
+      const url = `https://api.aladhan.com/v1/calendar?latitude=${lat}&longitude=${lon}&method=11&month=${month}&year=${year}&tune=2,2,2,4,3,3,2,2`;
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.code === 200 && data.data && data.data[day]) {
+            const timings = data.data[day].timings;
+
+            // Simpan jadwal 1 bulan penuh + jadwal terakhir ke localStorage agar bisa diakses offline
+            localStorage.setItem('prayer_calendar_cache', JSON.stringify({
+              month: month,
+              year: year,
+              days: data.data
+            }));
+            localStorage.setItem('prayer_last_timings', JSON.stringify(timings));
+
+            renderPrayerTimings(timings);
+          }
+        })
+        .catch(err => {
+          console.warn("Gagal mengambil jadwal online, menggunakan data offline:", err);
+          loadCachedPrayerForToday();
+        });
+    }
+
+    function highlightCurrentPrayer(now, timings) {
+      const timeToMin = (tStr) => {
+        const [h, m] = tStr.split(' ')[0].split(':').map(Number);
+        return h * 60 + m;
+      };
+
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+
+      const pTimes = [
+        { id: 'card-imsak', min: timeToMin(timings.Imsak) },
+        { id: 'card-subuh', min: timeToMin(timings.Fajr) },
+        { id: 'card-dzuhur', min: timeToMin(timings.Dhuhr) },
+        { id: 'card-ashar', min: timeToMin(timings.Asr) },
+        { id: 'card-maghrib', min: timeToMin(timings.Maghrib) },
+        { id: 'card-isya', min: timeToMin(timings.Isha) }
+      ];
+
+      document.querySelectorAll('.prayer-item').forEach(el => el.classList.remove('active-prayer'));
+
+      let activeId = 'card-isya';
+      for (let i = 0; i < pTimes.length - 1; i++) {
+        if (currentMin >= pTimes[i].min && currentMin < pTimes[i+1].min) {
+          activeId = pTimes[i].id;
+          break;
+        }
+      }
+      if (currentMin >= pTimes[pTimes.length - 1].min) {
+        activeId = pTimes[pTimes.length - 1].id;
+      }
+
+      const activeCard = document.getElementById(activeId);
+      if (activeCard) activeCard.classList.add('active-prayer');
+    }
+
+    getPrayerTimes();
+
+    // --- 3. NAVIGASI BOTTOM BAR & INTERAKSI ---
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function openGtModal() {
+      document.getElementById('gtModal').classList.add('active');
+    }
+    function closeGtModal() {
+      document.getElementById('gtModal').classList.remove('active');
+    }
+
+    function openProfileSlide() {
+      document.getElementById('profName').value = localStorage.getItem('user_name') || '';
+      document.getElementById('profCity').value = localStorage.getItem('user_city') || '';
+      document.getElementById('profileSlide').classList.add('active');
+    }
+    function closeProfileSlide() {
+      document.getElementById('profileSlide').classList.remove('active');
+    }
+
+    function saveProfileData() {
+      const name = document.getElementById('profName').value;
+      const city = document.getElementById('profCity').value;
+
+      localStorage.setItem('user_name', name);
+      localStorage.setItem('user_city', city);
+      alert("Profil berhasil disimpan!");
+      closeProfileSlide();
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(() => console.log('Mode Offline Siap!'))
+        .catch((err) => console.log('SW Gagal:', err));
+    }
+
+   function openOfflineModal() {
+  document.getElementById('offlineLinkModal').classList.add('active');
+}
+
+function closeOfflineModal() {
+  document.getElementById('offlineLinkModal').classList.remove('active');
+}
+
+// Cegat semua link eksternal (https://) saat HP dalam keadaan offline
+document.addEventListener('click', function (e) {
+  const link = e.target.closest('a');
+  if (!link) return;
+
+  const href = link.getAttribute('href') || '';
+  if (href.startsWith('https://') && !navigator.onLine) {
+    e.preventDefault(); // Batalkan buka halaman agar tidak muncul ERR_INTERNET_DISCONNECTED
+    openOfflineModal(); // Munculkan popup peringatan
+  }
+});
+
+   const audio = document.getElementById("audio"); function playAudio() { audio.play(); } function stopAudio() { audio.pause(); audio.currentTime = 0; }
+
+
+  </script>
+</body>
+</html>
