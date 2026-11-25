@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>QR & Barcode Scanner Pro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Library html5-qrcode -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #09090b;
+            color: #f4f4f5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Kustomisasi tampilan video dari html5-qrcode */
+        #reader {
+            width: 100% !important;
+            border: none !important;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #18181b;
+        }
+
+        #reader video {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 1rem;
+        }
+
+        /* Sembunyikan elemen bawaan html5-qrcode yang tidak perlu */
+        #reader__dashboard_section_csr span,
+        #reader__dashboard_section_swaplink,
+        #reader__status_span {
+            display: none !important;
+        }
+
+        /* Animasi garis laser scanner */
+        @keyframes scanLine {
+            0% { top: 10%; opacity: 0.2; }
+            50% { top: 88%; opacity: 1; }
+            100% { top: 10%; opacity: 0.2; }
+        }
+
+        .laser-line {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #f97316, #fb923c, #f97316, transparent);
+            box-shadow: 0 0 12px #f97316, 0 0 24px #ea580c;
+            border-radius: 999px;
+            animation: scanLine 2.4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Bingkai sudut viewfinder */
+        .scanner-corner {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-color: #f97316;
+            border-style: solid;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* Custom Scrollbar untuk Riwayat */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #18181b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between pb-8 selection:bg-orange-500 selection:text-white">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2.5 bg-zinc-800 border border-orange-500/40 text-white px-4 py-2.5 rounded-full shadow-2xl transition-all duration-300 opacity-0 -translate-y-4 pointer-events-none">
+        <span id="toast-icon" class="text-orange-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </span>
+        <span id="toast-message" class="text-sm font-medium">Berhasil disalin!</span>
+    </div>
+
+    <!-- Header -->
+    <header class="w-full max-w-lg px-4 pt-5 pb-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/20">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight text-white">ScanPro <span class="text-orange-500">QR</span></h1>
+                <p class="text-xs text-zinc-400">QR Code & Barcode Scanner</p>
+            </div>
+        </div>
+
+        <!-- Status Kamera Badge -->
+        <div id="camera-status-badge" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-400">
+            <span id="status-dot" class="w-2 h-2 rounded-full bg-zinc-500"></span>
+            <span id="status-text">Menyiapkan...</span>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="w-full max-w-lg px-4 flex-1 flex flex-col gap-5">
+
+        <!-- Area Viewfinder Kamera -->
+        <section class="relative w-full aspect-square max-h-[380px] mx-auto bg-zinc-900 rounded-2xl border border-zinc-800 shadow-2xl overflow-hidden flex items-center justify-center">
+            <!-- Wadah Kamera html5-qrcode -->
+            <div id="reader" class="w-full h-full"></div>
+
+            <!-- Overlay Viewfinder (Laser & Sudut Oranye) -->
+            <div id="scanner-overlay" class="hidden inset-0 absolute pointer-events-none">
+                <div class="laser-line"></div>
+                <!-- Sudut Kiri Atas -->
+                <div class="scanner-corner top-6 left-6 border-t-4 border-l-4 rounded-tl-xl"></div>
+                <!-- Sudut Kanan Atas -->
+                <div class="scanner-corner top-6 right-6 border-t-4 border-r-4 rounded-tr-xl"></div>
+                <!-- Sudut Kiri Bawah -->
+                <div class="scanner-corner bottom-6 left-6 border-b-4 border-l-4 rounded-bl-xl"></div>
+                <!-- Sudut Kanan Bawah -->
+                <div class="scanner-corner bottom-6 right-6 border-b-4 border-r-4 rounded-br-xl"></div>
+            </div>
+
+            <!-- Placeholder jika kamera belum aktif / izin ditolak -->
+            <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-zinc-900/95 z-10">
+                <div class="w-16 h-16 rounded-2xl bg-zinc-800 flex items-center justify-center mb-4 text-orange-500">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </div>
+                <p id="placeholder-title" class="text-sm font-semibold text-white mb-1">Mengaktifkan Kamera...</p>
+                <p id="placeholder-desc" class="text-xs text-zinc-400 mb-4 max-w-xs">Pastikan izin kamera diberikan pada browser Anda.</p>
+                <button id="btn-retry-camera" onclick="initScanner()" class="hidden px-4 py-2.5 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white text-sm font-semibold rounded-xl transition shadow-lg shadow-orange-500/20">
+                    Aktifkan Kamera
+                </button>
+            </div>
+        </section>
+
+        <!-- Baris Kontrol Kamera (Ganti Kamera, Flash, Galeri) -->
+        <section class="grid grid-cols-3 gap-2.5">
+            <!-- Tombol Ganti Kamera -->
+            <button id="btn-switch-cam" onclick="switchCamera()" class="flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-zinc-900 hover:bg-zinc-800 active:scale-95 border border-zinc-800 rounded-2xl transition disabled:opacity-40 disabled:pointer-events-none">
+                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                <span class="text-xs font-medium text-zinc-300">Ganti Kamera</span>
+            </button>
+
+            <!-- Tombol Senter / Flash -->
+            <button id="btn-flash" onclick="toggleFlash()" disabled class="flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-zinc-900 hover:bg-zinc-800 active:scale-95 border border-zinc-800 rounded-2xl transition disabled:opacity-40 disabled:pointer-events-none">
+                <svg id="flash-icon" class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                <span id="flash-text" class="text-xs font-medium text-zinc-300">Senter</span>
+            </button>
+
+            <!-- Tombol Scan dari Galeri -->
+            <label for="qr-input-file" class="cursor-pointer flex flex-col items-center justify-center gap-1.5 py-3 px-2 bg-zinc-900 hover:bg-zinc-800 active:scale-95 border border-zinc-800 rounded-2xl transition">
+                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="text-xs font-medium text-zinc-300">Dari Galeri</span>
+                <input type="file" id="qr-input-file" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
+            </label>
+        </section>
+
+        <!-- Elemen Tersembunyi untuk Scan File -->
+        <div id="file-reader-hidden" class="hidden"></div>
+
+        <!-- Kartu Hasil Scan Terbaru -->
+        <section id="result-card" class="hidden bg-zinc-900 border border-orange-500/40 rounded-2xl p-4 shadow-xl transition-all">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider bg-orange-500/15 text-orange-400 border border-orange-500/30 rounded-full" id="result-format">
+                        QR CODE
+                    </span>
+                    <span class="text-xs text-zinc-500" id="result-time">Baru saja</span>
+                </div>
+                <button onclick="closeResultCard()" class="text-zinc-500 hover:text-zinc-300 p-1 rounded-lg">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <!-- Isi Teks / URL Hasil Scan -->
+            <div class="bg-zinc-950 border border-zinc-800 rounded-xl p-3 mb-3.5 break-all">
+                <p id="result-text" class="text-sm sm:text-base font-medium text-white select-all"></p>
+            </div>
+
+            <!-- Tombol Aksi Hasil Scan -->
+            <div class="flex flex-wrap gap-2">
+                <!-- Tombol Buka Link (Muncul otomatis jika URL) -->
+                <a id="btn-open-link" href="#" target="_blank" rel="noopener noreferrer" class="hidden flex-1 min-w-[120px] flex items-center justify-center gap-2 py-2.5 px-4 bg-orange-500 hover:bg-orange-600 active:scale-95 text-white text-sm font-semibold rounded-xl transition shadow-lg shadow-orange-500/20">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    <span>Buka Link</span>
+                </a>
+
+                <!-- Tombol Salin Teks -->
+                <button onclick="copyCurrentResult()" class="flex-1 min-w-[110px] flex items-center justify-center gap-2 py-2.5 px-4 bg-zinc-800 hover:bg-zinc-700 active:scale-95 text-white text-sm font-medium rounded-xl transition border border-zinc-700">
+                    <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>Salin Teks</span>
+                </button>
+
+                <!-- Tombol Bagikan -->
+                <button id="btn-share" onclick="shareCurrentResult()" class="flex items-center justify-center gap-2 py-2.5 px-4 bg-zinc-800 hover:bg-zinc-700 active:scale-95 text-white text-sm font-medium rounded-xl transition border border-zinc-700">
+                    <svg class="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+                    <span class="sr-only sm:not-sr-only">Bagikan</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Bagian Riwayat Scan (History) -->
+        <section class="bg-zinc-900/70 border border-zinc-800/80 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h2 class="text-sm font-semibold text-white">Riwayat Scan</h2>
+                    <span id="history-count" class="px-2 py-0.5 text-xs font-medium bg-zinc-800 text-zinc-400 rounded-full">0</span>
+                </div>
+                <button id="btn-clear-history" onclick="clearHistory()" class="hidden text-xs font-medium text-red-400 hover:text-red-300 transition px-2 py-1 rounded-lg hover:bg-red-500/10">
+                    Hapus Semua
+                </button>
+            </div>
+
+            <!-- Daftar Item Riwayat -->
+            <div id="history-list" class="flex flex-col gap-2 max-h-60 overflow-y-auto pr-1">
+                <!-- Diisi secara dinamis via JS -->
+            </div>
+
+            <!-- State Kosong Riwayat -->
+            <div id="history-empty" class="py-6 text-center">
+                <p class="text-xs text-zinc-500">Belum ada riwayat pemindaian.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // ==========================================
+        // VARIABEL GLOBAL & STATE APLIKASI
+        // ==========================================
+        let html5QrCode = null;
+        let camerasList = [];
+        let currentCameraIndex = 0;
+        let isScanning = false;
+        let isFlashOn = false;
+        let lastScannedText = '';
+        let lastScanTimestamp = 0;
+        const HISTORY_STORAGE_KEY = 'scanpro_qr_history_v1';
+
+        // ==========================================
+        // INISIALISASI SAAT HALAMAN DIMUAT
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHistory();
+            initScanner();
+
+            // Sembunyikan tombol share jika browser tidak mendukung Web Share API
+            if (!navigator.share) {
+                document.getElementById('btn-share').classList.add('hidden');
+            }
+        });
+
+        // ==========================================
+        // FUNGSI EFEK SUARA BEEP (WEB AUDIO API)
+        // ==========================================
+        function playBeepSound() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                
+                const ctx = new AudioContext();
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(1046.50, ctx.currentTime); // Nada C6 jernih
+                oscillator.frequency.exponentialRampToValueAtTime(1318.51, ctx.currentTime + 0.08); // Naik sedikit ke E6
+
+                gainNode.gain.setValueAtTime(0.25, ctx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+
+                oscillator.start(ctx.currentTime);
+                oscillator.stop(ctx.currentTime + 0.15);
+            } catch (e) {
+                console.warn('Audio beep tidak didukung:', e);
+            }
+        }
+
+        // ==========================================
+        // INISIALISASI KAMERA & HTML5-QRCODE
+        // ==========================================
+        async function initScanner() {
+            const placeholder = document.getElementById('camera-placeholder');
+            const retryBtn = document.getElementById('btn-retry-camera');
+            const titleEl = document.getElementById('placeholder-title');
+            const descEl = document.getElementById('placeholder-desc');
+
+            placeholder.classList.remove('hidden');
+            retryBtn.classList.add('hidden');
+            titleEl.textContent = 'Mengakses Kamera...';
+            descEl.textContent = 'Mohon izinkan akses kamera pada browser Anda.';
+            updateStatusBadge('Mencari kamera...', 'bg-yellow-500');
+
+            try {
+                // Ambil daftar kamera yang tersedia
+                camerasList = await Html5Qrcode.getCameras();
+
+                if (!camerasList || camerasList.length === 0) {
+                    throw new Error('Tidak ada kamera yang terdeteksi di perangkat ini.');
+                }
+
+                // Prioritaskan kamera belakang (environment / back)
+                const backCamIndex = camerasList.findIndex(cam => 
+                    cam.label.toLowerCase().includes('back') || 
+                    cam.label.toLowerCase().includes('belakang') ||
+                    cam.label.toLowerCase().includes('environment')
+                );
+
+                currentCameraIndex = backCamIndex !== -1 ? backCamIndex : camerasList.length - 1;
+
+                // Nonaktifkan tombol ganti kamera jika hanya ada 1 kamera
+                document.getElementById('btn-switch-cam').disabled = camerasList.length <= 1;
+
+                await startCameraById(camerasList[currentCameraIndex].id);
+
+            } catch (err) {
+                console.error('Gagal inisialisasi kamera:', err);
+                titleEl.textContent = 'Kamera Tidak Dapat Diakses';
+                descEl.textContent = 'Pastikan izin kamera diaktifkan atau gunakan fitur "Dari Galeri" di bawah.';
+                retryBtn.classList.remove('hidden');
+                updateStatusBadge('Kamera Nonaktif', 'bg-red-500');
+            }
+        }
+
+        async function startCameraById(cameraId) {
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader", {
+                    verbose: false,
+                    formatsToSupport: [
+                        Html5QrcodeSupportedFormats.QR_CODE,
+                        Html5QrcodeSupportedFormats.EAN_13,
+                        Html5QrcodeSupportedFormats.EAN_8,
+                        Html5QrcodeSupportedFormats.CODE_128,
+                        Html5QrcodeSupportedFormats.CODE_39,
+                        Html5QrcodeSupportedFormats.UPC_A,
+                        Html5QrcodeSupportedFormats.UPC_E,
+                        Html5QrcodeSupportedFormats.DATA_MATRIX
+                    ]
+                });
+            }
+
+            // Hentikan kamera jika sedang berjalan
+            if (isScanning) {
+                await stopCamera();
+            }
+
+            const config = {
+                fps: 15,
+                qrbox: (viewfinderWidth, viewfinderHeight) => {
+                    const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+                    const boxSize = Math.floor(minEdge * 0.72);
+                    return { width: boxSize, height: boxSize };
+                },
+                aspectRatio: 1.0
+            };
+
+            try {
+                await html5QrCode.start(
+                    cameraId,
+                    config,
+                    onScanSuccess,
+                    () => {} // Abaikan error per-frame saat mencari kode
+                );
+
+                isScanning = true;
+                isFlashOn = false;
+                document.getElementById('camera-placeholder').classList.add('hidden');
+                document.getElementById('scanner-overlay').classList.remove('hidden');
+                updateStatusBadge('Aktif Memindai', 'bg-emerald-500');
+
+                // Cek dukungan Senter / Flash pada kamera aktif
+                checkTorchSupport();
+
+            } catch (err) {
+                console.error('Gagal memulai stream kamera:', err);
+                showToast('Gagal membuka kamera terpilih', true);
+                updateStatusBadge('Error Kamera', 'bg-red-500');
+            }
+        }
+
+        async function stopCamera() {
+            if (html5QrCode && isScanning) {
+                try {
+                    await html5QrCode.stop();
+                    isScanning = false;
+                    isFlashOn = false;
+                    updateFlashUI(false);
+                    document.getElementById('scanner-overlay').classList.add('hidden');
+                } catch (e) {
+                    console.warn('Error menghentikan kamera:', e);
+                }
+            }
+        }
+
+        // ==========================================
+        // GANTI KAMERA (DEPAN / BELAKANG)
+        // ==========================================
+        async function switchCamera() {
+            if (camerasList.length <= 1) {
+                showToast('Hanya 1 kamera tersedia', true);
+                return;
+            }
+            currentCameraIndex = (currentCameraIndex + 1) % camerasList.length;
+            const nextCam = camerasList[currentCameraIndex];
+            showToast(`Mengganti kamera...`);
+            await startCameraById(nextCam.id);
+        }
+
+        // ==========================================
+        // KONTROL SENTER / FLASH
+        // ==========================================
+        function checkTorchSupport() {
+            const btnFlash = document.getElementById('btn-flash');
+            try {
+                const capabilities = html5QrCode.getRunningTrackCameraCapabilities();
+                if (capabilities && capabilities.torchFeature && capabilities.torchFeature().isSupported()) {
+                    btnFlash.disabled = false;
+                } else {
+                    btnFlash.disabled = true;
+                }
+            } catch (e) {
+                btnFlash.disabled = true;
+            }
+            updateFlashUI(false);
+        }
+
+        async function toggleFlash() {
+            if (!isScanning) return;
+            try {
+                const torch = html5QrCode.getRunningTrackCameraCapabilities().torchFeature();
+                isFlashOn = !isFlashOn;
+                await torch.apply(isFlashOn);
+                updateFlashUI(isFlashOn);
+            } catch (e) {
+                showToast('Senter tidak didukung di kamera ini', true);
+            }
+        }
+
+        function updateFlashUI(active) {
+            const icon = document.getElementById('flash-icon');
+            const text = document.getElementById('flash-text');
+            if (active) {
+                icon.classList.remove('text-zinc-400');
+                icon.classList.add('text-orange-500');
+                text.textContent = 'Senter ON';
+                text.classList.add('text-orange-400');
+            } else {
+                icon.classList.add('text-zinc-400');
+                icon.classList.remove('text-orange-500');
+                text.textContent = 'Senter';
+                text.classList.remove('text-orange-400');
+            }
+        }
+
+        // ==========================================
+        // SCAN DARI GALERI / UPLOAD GAMBAR
+        // ==========================================
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showToast('Memindai gambar...');
+
+            // Gunakan instance terpisah untuk file agar kamera live tidak terganggu
+            const fileScanner = new Html5Qrcode("file-reader-hidden");
+            try {
+                const decodedResult = await fileScanner.scanFileV2(file, true);
+                onScanSuccess(decodedResult.decodedText, decodedResult);
+            } catch (err) {
+                console.error('Gagal scan gambar:', err);
+                showToast('QR Code / Barcode tidak ditemukan di gambar', true);
+            } finally {
+                event.target.value = ''; // Reset input file agar bisa upload file sama lagi
+                fileScanner.clear();
+            }
+        }
+
+        // ==========================================
+        // HANDLER SAAT BERHASIL SCAN
+        // ==========================================
+        function onScanSuccess(decodedText, decodedResult) {
+            const now = Date.now();
+            // Cooldown 2 detik untuk teks yang sama agar tidak spam beep & riwayat
+            if (decodedText === lastScannedText && (now - lastScanTimestamp) < 2000) {
+                return;
+            }
+
+            lastScannedText = decodedText;
+            lastScanTimestamp = now;
+
+            // 1. Efek suara beep & getar HP
+            playBeepSound();
+            if (navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+
+            // 2. Deteksi nama format (QR_CODE, EAN_13, dll)
+            let formatName = 'QR / BARCODE';
+            if (decodedResult && decodedResult.result && decodedResult.result.format) {
+                formatName = decodedResult.result.format.formatName.replace('_', ' ');
+            }
+
+            // 3. Tampilkan di kartu hasil
+            displayResultCard(decodedText, formatName);
+
+            // 4. Simpan ke riwayat localStorage
+            saveToHistory(decodedText, formatName);
+        }
+
+        function displayResultCard(text, formatName) {
+            const card = document.getElementById('result-card');
+            const textEl = document.getElementById('result-text');
+            const formatEl = document.getElementById('result-format');
+            const timeEl = document.getElementById('result-time');
+            const btnOpenLink = document.getElementById('btn-open-link');
+
+            textEl.textContent = text;
+            formatEl.textContent = formatName;
+            timeEl.textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            // Cek apakah hasil scan adalah URL valid (http/https)
+            if (isValidUrl(text)) {
+                btnOpenLink.href = text;
+                btnOpenLink.classList.remove('hidden');
+            } else {
+                btnOpenLink.classList.add('hidden');
+            }
+
+            card.classList.remove('hidden');
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function closeResultCard() {
+            document.getElementById('result-card').classList.add('hidden');
+            lastScannedText = '';
+        }
+
+        function isValidUrl(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // ==========================================
+        // AKSI SALIN & BAGIKAN
+        // ==========================================
+        function copyCurrentResult() {
+            const text = document.getElementById('result-text').textContent;
+            copyToClipboard(text);
+        }
+
+        function copyToClipboard(text) {
+            if (!text) return;
+            // Menggunakan fallback textarea + execCommand agar aman di semua iFrame / browser
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showToast('Teks berhasil disalin ke clipboard!');
+            } catch (err) {
+                showToast('Gagal menyalin teks', true);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        async function shareCurrentResult() {
+            const text = document.getElementById('result-text').textContent;
+            if (!text || !navigator.share) return;
+
+            try {
+                const shareData = isValidUrl(text)
+                    ? { title: 'Hasil Scan QR', url: text }
+                    : { title: 'Hasil Scan QR', text: text };
+                await navigator.share(shareData);
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    showToast('Gagal membagikan hasil', true);
+                }
+            }
+        }
+
+        // ==========================================
+        // MANAJEMEN RIWAYAT (LOCALSTORAGE)
+        // ==========================================
+        function getHistory() {
+            try {
+                return JSON.parse(localStorage.getItem(HISTORY_STORAGE_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveToHistory(text, format) {
+            let history = getHistory();
+            // Hapus duplikat jika teks yang sama sudah ada di urutan teratas
+            history = history.filter(item => item.text !== text);
+
+            const newItem = {
+                id: Date.now(),
+                text: text,
+                format: format,
+                timestamp: new Date().toLocaleString('id-ID', {
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })
+            };
+
+            history.unshift(newItem);
+            // Batasi maksimal 30 riwayat terbaru
+            if (history.length > 30) history = history.slice(0, 30);
+
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const history = getHistory();
+            const listEl = document.getElementById('history-list');
+            const emptyEl = document.getElementById('history-empty');
+            const countEl = document.getElementById('history-count');
+            const clearBtn = document.getElementById('btn-clear-history');
+
+            countEl.textContent = history.length;
+
+            if (history.length === 0) {
+                listEl.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                clearBtn.classList.add('hidden');
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            clearBtn.classList.remove('hidden');
+
+            listEl.innerHTML = history.map(item => {
+                const isUrl = isValidUrl(item.text);
+                const safeText = escapeHtml(item.text);
+                return `
+                    <div class="flex items-center justify-between gap-3 p-3 bg-zinc-950/90 hover:bg-zinc-800/70 border border-zinc-800/80 rounded-xl transition group">
+                        <div class="min-w-0 flex-1 cursor-pointer" onclick="displayResultCard('${safeText.replace(/'/g, "\\'")}', '${escapeHtml(item.format)}')">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-zinc-800 text-orange-400">${escapeHtml(item.format)}</span>
+                                <span class="text-[11px] text-zinc-500">${escapeHtml(item.timestamp)}</span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-zinc-200 truncate font-medium">${safeText}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            ${isUrl ? `
+                                <a href="${safeText}" target="_blank" rel="noopener noreferrer" title="Buka Link" class="p-2 text-orange-400 hover:bg-orange-500/15 rounded-lg transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            ` : ''}
+                            <button onclick="copyToClipboard('${safeText.replace(/'/g, "\\'")}')" title="Salin" class="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                            <button onclick="deleteHistoryItem(${item.id})" title="Hapus" class="p-2 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function deleteHistoryItem(id) {
+            const history = getHistory().filter(item => item.id !== id);
+            localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(history));
+            renderHistory();
+            showToast('Item riwayat dihapus');
+        }
+
+        function clearHistory() {
+            localStorage.removeItem(HISTORY_STORAGE_KEY);
+            renderHistory();
+            showToast('Semua riwayat berhasil dihapus');
+        }
+
+        // ==========================================
+        // UTILITAS UI (TOAST, BADGE, ESCAPE HTML)
+        // ==========================================
+        let toastTimeout;
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            msgEl.textContent = message;
+            if (isError) {
+                iconEl.className = 'text-red-400';
+                iconEl.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            } else {
+                iconEl.className = 'text-orange-500';
+                iconEl.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+            }
+
+            toast.classList.remove('opacity-0', '-translate-y-4');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', '-translate-y-4');
+            }, 2500);
+        }
+
+        function updateStatusBadge(text, dotColorClass) {
+            document.getElementById('status-text').textContent = text;
+            const dot = document.getElementById('status-dot');
+            dot.className = `w-2 h-2 rounded-full ${dotColorClass}`;
+        }
+
+        function escapeHtml(unsafe) {
+            return String(unsafe)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
