@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.webapp.kal4g3sgt.otoys",
+      "sha256_cert_fingerprints": ["FF:64:54:CB:69:C6:CF:72:5D:93:09:8B:57:72:A4:50:8A:ED:85:01:C1:FC:7F:CD:B2:C5:E7:ED:BC:8D:D7:49"]
+    }
+  }
+]
