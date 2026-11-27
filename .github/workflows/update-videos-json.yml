@@ -1,0 +1,46 @@
+name: Update videos.json
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'video/**'
+      - '!video/videos.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-videos-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate video/videos.json
+        run: |
+          mkdir -p video
+          node -e '
+            const fs = require("fs");
+            const path = require("path");
+            const dir = path.join(process.cwd(), "video");
+            const files = fs.readdirSync(dir, { withFileTypes: true })
+              .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".mp4"))
+              .map((entry) => entry.name)
+              .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
+            fs.writeFileSync(path.join(dir, "videos.json"), JSON.stringify(files, null, 2) + "\n");
+          '
+
+      - name: Commit and push if videos.json changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add video/videos.json
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan pada video/videos.json."
+          else
+            git commit -m "chore: update video/videos.json [skip ci]"
+            git push
+          fi
